@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+/* =============================================
+   TAILWIND v4 THEME
+   ============================================= */
+@theme {
+  --font-display: var(--font-display-var), sans-serif;
+  --font-serif: var(--font-serif-var), serif;
+  --font-sans: var(--font-body-var), sans-serif;
+
+  --tracking-widest2: 0.25em;
+  --tracking-widest3: 0.3em;
+
+  --animate-scroll-drop: scrollDrop 1.6s ease-in-out infinite;
+  --animate-marquee-ltr: marqueeLtr 22s linear infinite;
+  --animate-marquee-rtl: marqueeRtl 26s linear infinite;
+  --animate-reveal-up: revealUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in: fadeIn 0.6s ease both;
+  --animate-scale-line: scaleLineY 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @keyframes scrollDrop {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(200%); }
+  }
+  @keyframes marqueeLtr {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes marqueeRtl {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes revealUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scaleLineY {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+}
+
+/* =============================================
+   CSS CUSTOM PROPERTIES — default = dark
+   Candice: warm near-black, bone, oxblood red
+   ============================================= */
+:root {
+  --bg:          #0A0807;
+  --bg-alt:      #120E0C;
+  --bg-card:     #1A1310;
+  --text:        #EDE6DA;
+  --text-dim:    #6E635A;
+  --text-muted:  #2B2420;
+  --border:      rgba(237,230,218,0.07);
+  --border-hi:   rgba(237,230,218,0.18);
+  --accent:      #A82420;
+  --accent-soft: #C2453E;
+  --hero-a:      #0A0807;
+  --hero-b:      #EDE6DA;
+}
+
+html.light {
+  --bg:          #ECE5D8;
+  --bg-alt:      #E2D9C8;
+  --bg-card:     #D6CBB8;
+  --text:        #171310;
+  --text-dim:    #8B7F71;
+  --text-muted:  #C9BEAC;
+  --border:      rgba(23,19,16,0.08);
+  --border-hi:   rgba(23,19,16,0.2);
+  --accent:      #8E1F1D;
+  --accent-soft: #A82420;
+  --hero-a:      #ECE5D8;
+  --hero-b:      #171310;
+}
+
+/* =============================================
+   BASE
+   ============================================= */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  line-height: 1.65;
+  overflow-x: hidden;
+  transition: background-color 0.7s cubic-bezier(0.16,1,0.3,1),
+              color 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+
+::selection {
+  background: var(--accent);
+  color: #EDE6DA;
+}
+
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent); }
+
+/* =============================================
+   COMPONENT LAYER
+   ============================================= */
+@layer components {
+  .section-tag {
+    @apply flex items-center gap-3 mb-6 uppercase;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+  }
+
+  .section-tag::before {
+    content: '✶';
+    color: var(--accent);
+    font-size: 0.7rem;
+  }
+
+  .social-row {
+    @apply flex items-center justify-between py-5 no-underline;
+    border-bottom: 1px solid var(--border);
+    transition: padding-left 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .social-row:hover {
+    padding-left: 1rem;
+  }
+
+  /* Reveal animations */
+  .reveal {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity 0.85s cubic-bezier(0.16,1,0.3,1),
+                transform 0.85s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .reveal.from-left  { transform: translateX(-36px); }
+  .reveal.from-right { transform: translateX(36px);  }
+  .reveal.from-scale { transform: scale(0.95);       }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0) translateX(0) scale(1);
+  }
+
+  .delay-100 { transition-delay: 0.1s; }
+  .delay-200 { transition-delay: 0.2s; }
+  .delay-300 { transition-delay: 0.3s; }
+  .delay-400 { transition-delay: 0.4s; }
+  .delay-500 { transition-delay: 0.5s; }
+}
+
+/* =============================================
+   RESPONSIVE GRIDS
+   ============================================= */
+
+/* Services bento — first card spans 2 rows on desktop only */
+@media (min-width: 768px) {
+  .services-bento > div:first-child {
+    grid-row: 1 / 3;
+  }
+}
+
+/* Stats: 2 cols on mobile, 4 on desktop */
+.stats-grid {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(2, 1fr);
+  background: var(--border);
+}
+@media (min-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Brand name grid: 2 cols mobile → 3 → 4 desktop */
+.brand-logos-grid {
+  display: grid;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 640px) {
+  .brand-logos-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 900px) {
+  .brand-logos-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Campaign editorials: 1 col mobile → staggered 2 col desktop */
+.editorial-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .editorial-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  .editorial-grid > *:nth-child(even) {
+    margin-top: 4rem;
+  }
+}
+
+/* Services bento: 1 col mobile, 3 col desktop */
+.services-bento {
+  display: grid;
+  gap: 1px;
+  background: var(--border-hi);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .services-bento {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+  }
+}
+
+/* Nav mobile padding */
+@media (max-width: 640px) {
+  .hero-footer-strip {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+/* About photo card on mobile */
+@media (max-width: 640px) {
+  .about-float-card {
+    right: 0 !important;
+    bottom: -1.5rem !important;
+  }
+}
