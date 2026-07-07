@@ -36,7 +36,14 @@ export const metadata: Metadata = {
     description:
       'Nigerian-Sudanese fashion & commercial model and content creator, based between London and Lagos.',
     siteName: 'WowCandice',
-    images: [{ url: '/media/hero/hero.png', width: 1200, height: 1600, alt: 'WowCandice' }],
+    images: [
+      {
+        url: 'https://res.cloudinary.com/hc8f1wui/image/upload/f_jpg,q_auto,w_1200/candice/hero/hero',
+        width: 1200,
+        height: 2609,
+        alt: 'WowCandice',
+      },
+    ],
     locale: 'en_US',
     type: 'website',
   },
@@ -45,7 +52,9 @@ export const metadata: Metadata = {
     title: 'WowCandice — Model · Creator · Muse',
     description:
       'Nigerian-Sudanese fashion & commercial model and content creator, based between London and Lagos.',
-    images: ['/media/hero/hero.png'],
+    images: [
+      'https://res.cloudinary.com/hc8f1wui/image/upload/f_jpg,q_auto,w_1200/candice/hero/hero',
+    ],
   },
 }
 

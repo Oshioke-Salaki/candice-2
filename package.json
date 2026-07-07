@@ -19,6 +19,8 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cloudinary": "^2.10.0",
+    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "^15.1.0",
     "postcss": "^8.4.49",

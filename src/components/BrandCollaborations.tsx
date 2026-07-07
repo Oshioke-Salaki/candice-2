@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { campaignFrame, cldLoader } from "@/lib/media";
 
 /* ═══════════════════════════════════════════════════════════
    THE INDEX — editorial collaborations directory.
@@ -44,8 +45,7 @@ const COLLABS: Collab[] = [
   { id: "snowbunny", name: "Snowbunny", category: "editorial", count: 1 },
 ];
 
-const src = (id: string, n: number) =>
-  `/media/campaigns/${id}/${id}-${String(n).padStart(2, "0")}.jpg`;
+const src = campaignFrame;
 
 type Filter = "all" | "brand" | "editorial";
 
@@ -134,6 +134,7 @@ export default function BrandCollaborations() {
           {COLLABS.map((c) => (
             <Image
               key={c.id}
+              loader={cldLoader}
               src={src(c.id, 1)}
               alt=""
               fill
@@ -305,6 +306,7 @@ export default function BrandCollaborations() {
                               style={{ scrollSnapAlign: "start", background: "var(--bg-card)" }}
                             >
                               <Image
+                                loader={cldLoader}
                                 src={src(c.id, n + 1)}
                                 alt={`${c.name} — frame ${n + 1}`}
                                 width={720}

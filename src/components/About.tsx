@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
+import { cldLoader } from "@/lib/media";
 
 /* ─── Reveal hook ─────────────────────────────── */
 function useReveal() {
@@ -23,11 +24,11 @@ function useReveal() {
 
 /* ─── Images ──────────────────────────────────── */
 const IMAGES = [
-  { src: "/media/about/01.jpg", alt: "Candice — portrait" },
-  { src: "/media/about/02.jpg", alt: "Candice — editorial" },
-  { src: "/media/about/03.jpg", alt: "Candice — campaign" },
-  { src: "/media/about/04.jpg", alt: "Candice — beauty" },
-  { src: "/media/about/05.jpg", alt: "Candice — style" },
+  { src: "candice/about/01", alt: "Candice — portrait" },
+  { src: "candice/about/02", alt: "Candice — editorial" },
+  { src: "candice/about/03", alt: "Candice — campaign" },
+  { src: "candice/about/04", alt: "Candice — beauty" },
+  { src: "candice/about/05", alt: "Candice — style" },
 ];
 
 const INTERVAL = 3800; // ms between auto-advances
@@ -131,6 +132,7 @@ export default function About() {
                 }}
               >
                 <Image
+                  loader={cldLoader}
                   src={img.src}
                   alt={img.alt}
                   fill

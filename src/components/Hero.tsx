@@ -2,6 +2,7 @@
 
 import { useEffect, useLayoutEffect, useState } from "react";
 import Image from "next/image";
+import { cldLoader } from "@/lib/media";
 
 // In-session guard so client-side navigations also skip the splash.
 let splashHasPlayed = false;
@@ -112,7 +113,8 @@ export default function Hero() {
             full uncropped portrait sits on top with object-contain. ── */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/media/hero/hero.png"
+            loader={cldLoader}
+            src="candice/hero/hero"
             alt=""
             aria-hidden
             fill
@@ -125,7 +127,8 @@ export default function Hero() {
             }}
           />
           <Image
-            src="/media/hero/hero.png"
+            loader={cldLoader}
+            src="candice/hero/hero"
             alt="Candice — Hero"
             fill
             priority
