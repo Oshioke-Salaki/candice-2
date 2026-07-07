@@ -101,7 +101,7 @@ const COLLABORATIONS: BrandCollab[] = [
     brand: "AJANEE STUDIO",
     displayName: "Ajanee Studio",
     category: "editorial-shoot",
-    count: 4,
+    count: 3,
   },
   {
     id: "bolapsd",
@@ -115,7 +115,7 @@ const COLLABORATIONS: BrandCollab[] = [
     brand: "MEJI MEJI",
     displayName: "MEJI MEJI",
     category: "editorial-shoot",
-    count: 9,
+    count: 7,
   },
   {
     id: "streetsouk",
@@ -165,6 +165,13 @@ const COLLABORATIONS: BrandCollab[] = [
     displayName: "Brown Thomas SS25",
     category: "editorial-shoot",
     count: 2,
+  },
+  {
+    id: "snowbunny",
+    brand: "SNOWBUNNY",
+    displayName: "Snowbunny Campaign",
+    category: "editorial-shoot",
+    count: 1,
   },
 ];
 
