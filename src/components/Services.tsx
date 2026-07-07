@@ -120,7 +120,7 @@ export default function Services() {
         >
           <h2
             className="font-display"
-            style={{ fontSize: 'clamp(3rem, 7vw, 8rem)', lineHeight: 0.9, letterSpacing: '0.04em', color: 'var(--text)' }}
+            style={{ fontSize: 'clamp(2.2rem, 5vw, 4.2rem)', lineHeight: 0.9, letterSpacing: '0.04em', color: 'var(--text)' }}
           >
             WHAT<br />I DO
           </h2>

@@ -105,18 +105,35 @@ export default function Hero() {
         className="relative flex items-center justify-center overflow-hidden"
         style={{ height: "100svh", minHeight: 600 }}
       >
-        {/* ── Full-bleed portrait — hero-alt ── */}
+        {/* ── Full portrait over a blurred self-extension ──
+            The source image is an ultra-tall portrait (1206×2622), so
+            object-cover would crop most of it on wide screens. Instead:
+            a blurred, darkened copy fills the frame edge-to-edge, and the
+            full uncropped portrait sits on top with object-contain. ── */}
         <div className="absolute inset-0 z-0">
           <Image
             src="/media/hero/hero.png"
-            alt="Candice — Hero"
+            alt=""
+            aria-hidden
             fill
             priority
             className="object-cover"
             sizes="100vw"
             style={{
+              filter: "blur(48px) brightness(0.5) saturate(1.15)",
+              transform: "scale(1.15)",
+            }}
+          />
+          <Image
+            src="/media/hero/hero.png"
+            alt="Candice — Hero"
+            fill
+            priority
+            className="object-contain"
+            sizes="100vw"
+            style={{
               objectPosition: "50% 50%",
-              transform: open ? "scale(1.06)" : "scale(1.0)",
+              transform: open ? "scale(1.03)" : "scale(1.0)",
               transition: "transform 14s ease-out",
             }}
           />

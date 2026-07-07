@@ -86,7 +86,7 @@ function Counter({ value, label, format }: StatConfig) {
       <div
         className="font-display"
         style={{
-          fontSize:      'clamp(3rem, 5.5vw, 7rem)',
+          fontSize:      'clamp(2.2rem, 4.5vw, 4rem)',
           lineHeight:    1,
           color:         'var(--text)',
           letterSpacing: '0.02em',

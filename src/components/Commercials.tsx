@@ -53,6 +53,76 @@ function PlayIcon() {
   );
 }
 
+function SoundIcon({ unmuted }: { unmuted: boolean }) {
+  return (
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      {unmuted ? (
+        <>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+        </>
+      ) : (
+        <>
+          <line x1="23" y1="9" x2="17" y2="15" />
+          <line x1="17" y1="9" x2="23" y2="15" />
+        </>
+      )}
+    </svg>
+  );
+}
+
+function PauseIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+      <rect x="5" y="4" width="4" height="16" rx="1" />
+      <rect x="15" y="4" width="4" height="16" rx="1" />
+    </svg>
+  );
+}
+
+function CtrlBtn({
+  onClick,
+  active,
+  label,
+  children,
+}: {
+  onClick: (e: React.MouseEvent) => void;
+  active: boolean;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={label}
+      className="flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110 active:scale-95"
+      style={{
+        width: "2.2rem",
+        height: "2.2rem",
+        background: active ? "rgba(237,230,218,0.95)" : "rgba(255,255,255,0.14)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        border: "1px solid rgba(255,255,255,0.25)",
+        color: active ? "#0A0807" : "#EDE6DA",
+        cursor: "pointer",
+        flexShrink: 0,
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
 function VideoCard({
   commercial,
   isPlaying,
@@ -63,6 +133,7 @@ function VideoCard({
   onPlay: () => void;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(false);
 
   function togglePlay() {
     const v = videoRef.current;
@@ -70,10 +141,23 @@ function VideoCard({
     if (isPlaying) {
       v.pause();
     } else {
-      v.muted = false;
+      v.muted = muted;
       v.play().catch(() => {});
     }
     onPlay();
+  }
+
+  function toggleMute(e: React.MouseEvent) {
+    e.stopPropagation();
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !muted;
+    setMuted(!muted);
+  }
+
+  function pause(e: React.MouseEvent) {
+    e.stopPropagation();
+    togglePlay();
   }
 
   return (
@@ -85,20 +169,19 @@ function VideoCard({
       <video
         ref={videoRef}
         src={commercial.src}
-        muted={!isPlaying}
+        poster={commercial.poster}
         loop
         playsInline
-        preload="none"
+        preload="metadata"
         className="absolute inset-0 w-full h-full object-cover"
       />
 
       {/* Play indicator */}
       {!isPlaying && (
         <div
-          className="absolute inset-0 flex items-center justify-center group-hover:opacity-100 transition-opacity duration-300"
+          className="absolute inset-0 flex items-center justify-center transition-opacity duration-300"
           style={{
-            background: "rgba(0,0,0,0.3)",
-            backdropFilter: "blur(4px)",
+            background: "rgba(0,0,0,0.25)",
             color: "#EDE6DA",
           }}
         >
@@ -106,9 +189,25 @@ function VideoCard({
         </div>
       )}
 
+      {/* Controls while playing — pause + mute/unmute */}
+      {isPlaying && (
+        <div className="absolute bottom-4 right-4 z-20 flex items-center gap-2">
+          <CtrlBtn onClick={pause} active={false} label="Pause video">
+            <PauseIcon />
+          </CtrlBtn>
+          <CtrlBtn
+            onClick={toggleMute}
+            active={!muted}
+            label={muted ? "Unmute video" : "Mute video"}
+          >
+            <SoundIcon unmuted={!muted} />
+          </CtrlBtn>
+        </div>
+      )}
+
       {/* Title overlay */}
       <div
-        className="absolute bottom-0 left-0 right-0 px-6 pb-5 pt-12 transition-opacity duration-500"
+        className="absolute bottom-0 left-0 right-0 px-6 pb-5 pt-12 transition-opacity duration-500 pointer-events-none"
         style={{
           background: "linear-gradient(transparent, rgba(4,2,1,0.8))",
           opacity: isPlaying ? 0 : 1,
@@ -157,7 +256,7 @@ export default function Commercials() {
           <h2
             className="font-display animate-reveal-up"
             style={{
-              fontSize: "clamp(3rem, 8vw, 7rem)",
+              fontSize: "clamp(2.2rem, 5.5vw, 4.5rem)",
               lineHeight: 0.9,
               letterSpacing: "0.04em",
               color: "var(--text)",

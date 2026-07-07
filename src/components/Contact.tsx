@@ -59,7 +59,7 @@ export default function Contact() {
 
           <h2
             className="font-display mb-8"
-            style={{ fontSize: 'clamp(3.5rem, 8vw, 11rem)', lineHeight: 0.88, letterSpacing: '0.04em', color: 'var(--text)' }}
+            style={{ fontSize: 'clamp(2.5rem, 6vw, 5.5rem)', lineHeight: 0.88, letterSpacing: '0.04em', color: 'var(--text)' }}
           >
             LET&apos;S MAKE
             <br />

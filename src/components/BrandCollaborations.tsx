@@ -148,18 +148,18 @@ export default function BrandCollaborations() {
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
         {/* ═══ Header ═══ */}
         <div className="mb-14 md:mb-20">
-          <div className="section-tag mb-6">Partnerships & Campaigns</div>
+          <div className="section-tag mb-6">The Index</div>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <h2
               className="font-display"
               style={{
-                fontSize: "clamp(3rem, 9vw, 8rem)",
-                lineHeight: 0.85,
-                letterSpacing: "0.02em",
+                fontSize: "clamp(1.9rem, 4.5vw, 3.8rem)",
+                lineHeight: 0.95,
+                letterSpacing: "0.03em",
                 color: "var(--text)",
               }}
             >
-              THE&nbsp;INDEX
+              PARTNERSHIPS & CAMPAIGNS
             </h2>
             {/* ── Understated text filters ── */}
             <div className="flex gap-7 pb-2">
@@ -216,7 +216,7 @@ export default function BrandCollaborations() {
                   onClick={() => toggle(c.id)}
                   onMouseEnter={() => setHoverId(c.id)}
                   onMouseLeave={() => setHoverId(null)}
-                  className="reveal group w-full flex items-baseline gap-4 md:gap-8 text-left py-5 md:py-7 transition-opacity duration-400"
+                  className="reveal group w-full flex items-baseline gap-4 md:gap-8 text-left py-4 md:py-5 transition-opacity duration-400"
                   style={{
                     background: "none",
                     border: "none",
@@ -242,7 +242,7 @@ export default function BrandCollaborations() {
                   <span
                     className="font-display flex-1 min-w-0"
                     style={{
-                      fontSize: "clamp(1.7rem, 5.5vw, 4.2rem)",
+                      fontSize: "clamp(1.25rem, 3.4vw, 2.6rem)",
                       lineHeight: 1,
                       letterSpacing: "0.02em",
                       color: isOpen ? "var(--accent)" : "var(--text)",
