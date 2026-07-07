@@ -129,7 +129,7 @@ const COLLABORATIONS: BrandCollab[] = [
     brand: "PATRIQUE OPHIQUE",
     displayName: "Patrique Ophique",
     category: "editorial-shoot",
-    count: 3,
+    count: 2,
   },
   {
     id: "ldm-clo-ss26",
