@@ -101,7 +101,7 @@ const COLLABORATIONS: BrandCollab[] = [
     brand: "AJANEE STUDIO",
     displayName: "Ajanee Studio",
     category: "editorial-shoot",
-    count: 2,
+    count: 3,
   },
   {
     id: "bolapsd",
