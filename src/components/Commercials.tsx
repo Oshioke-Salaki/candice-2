@@ -171,9 +171,22 @@ function VideoCard({
   return (
     <div
       className="group relative overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
-      style={{ aspectRatio: "16/9", background: "var(--bg-card)" }}
+      style={{ aspectRatio: "9/16", background: "var(--bg-card)" }}
       onClick={togglePlay}
     >
+      {/* Blurred poster backdrop — fills the frame when the video's
+          aspect ratio doesn't match the card (e.g. landscape cuts) */}
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `url(${commercial.poster})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(36px) brightness(0.5)",
+          transform: "scale(1.2)",
+        }}
+      />
       <video
         ref={videoRef}
         src={commercial.src}
@@ -181,7 +194,7 @@ function VideoCard({
         loop
         playsInline
         preload="metadata"
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-contain"
       />
 
       {/* Play indicator */}
@@ -274,8 +287,8 @@ export default function Commercials() {
           </h2>
         </div>
 
-        {/* ── Grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* ── Grid — portrait reels, three across ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {COMMERCIALS.map((commercial) => (
             <VideoCard
               key={commercial.src}
