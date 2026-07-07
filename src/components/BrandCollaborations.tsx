@@ -108,7 +108,7 @@ const COLLABORATIONS: BrandCollab[] = [
     brand: "BOLAPSD",
     displayName: "BolaPSD",
     category: "editorial-shoot",
-    count: 1,
+    count: 2,
   },
   {
     id: "meji-meji",
@@ -157,7 +157,7 @@ const COLLABORATIONS: BrandCollab[] = [
     brand: "DOLORE INC",
     displayName: "Dolore Inc SS26",
     category: "editorial-shoot",
-    count: 1,
+    count: 2,
   },
   {
     id: "brown-thomas-ss25",
