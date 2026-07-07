@@ -38,6 +38,18 @@ const CAMPAIGNS: Campaign[] = [
     displayName: "DOLORE INC SS26",
     count: 5,
   },
+  {
+    id: "streetsouk-shoot",
+    name: "STREETSOUK",
+    displayName: "STREETSOUK SHOOT",
+    count: 5,
+  },
+  {
+    id: "the-shine-cartel",
+    name: "SHINE CARTEL",
+    displayName: "THE SHINE CARTEL BEAUTY",
+    count: 6,
+  },
 ];
 
 export default function CampaignShowcase() {
