@@ -32,7 +32,7 @@ const COLLABS: Collab[] = [
   { id: "wmns-wear", name: "WMNS Wear", category: "brand", count: 2, tier: "Indie" },
   // ── Editorial shoots ──
   { id: "ldm-clo-ss26", name: "LDM CLO SS26", category: "editorial", count: 9 },
-  { id: "meji-meji", name: "Meji Meji", category: "editorial", count: 6 },
+  { id: "meji-meji", name: "Meji Meji", category: "editorial", count: 8 },
   { id: "streetsouk", name: "Streetsouk", category: "editorial", count: 4 },
   { id: "ajanee-studio", name: "Ajanee Studio", category: "editorial", count: 3 },
   { id: "the-shine-cartel", name: "The Shine Cartel", category: "editorial", count: 2 },
