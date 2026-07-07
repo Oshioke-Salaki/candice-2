@@ -6,13 +6,13 @@ const COMMERCIALS = [
   {
     src: "/media/commercials/errand-ready.mp4",
     poster: "/media/commercials/errand-ready.jpg",
-    title: "Errand Ready",
-    meta: "The Snowsuit",
+    title: "Snow Bunny",
+    meta: "Errand Ready",
   },
   {
     src: "/media/commercials/lia-aw22.mp4",
     poster: "/media/commercials/lia-aw22.jpg",
-    title: "LIA AW22",
+    title: "Lia Cowan",
     meta: "Runway Show",
   },
   {
@@ -24,14 +24,14 @@ const COMMERCIALS = [
   {
     src: "/media/commercials/bts-behind-scenes.mp4",
     poster: "/media/commercials/bts-behind-scenes.jpg",
-    title: "Behind The Scenes",
-    meta: "@filmgod.x",
+    title: "Snow Bunny",
+    meta: "Behind The Scenes",
   },
   {
     src: "/media/commercials/commercial-01.mp4",
     poster: "/media/commercials/commercial-01.jpg",
-    title: "Commercial 01",
-    meta: "Campaign",
+    title: "Raindance",
+    meta: "Dave ft. Tems — Music Video",
   },
 ];
 
