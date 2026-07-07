@@ -45,6 +45,18 @@ const COMMERCIALS = [
     title: "LDM CLO",
     meta: "Collab Commercial",
   },
+  {
+    src: "/media/commercials/shine-cartel.mp4",
+    poster: "/media/commercials/shine-cartel.jpg",
+    title: "The Shine Cartel",
+    meta: "Beauty Commercial",
+  },
+  {
+    src: "/media/commercials/streetsouk.mp4",
+    poster: "/media/commercials/streetsouk.jpg",
+    title: "Streetsouk",
+    meta: "Collab Commercial",
+  },
 ];
 
 function PlayIcon() {

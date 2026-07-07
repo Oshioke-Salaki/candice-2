@@ -240,3 +240,12 @@ body {
     bottom: -1.5rem !important;
   }
 }
+
+/* ── Hidden scrollbar for horizontal film strips ── */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
