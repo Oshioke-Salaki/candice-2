@@ -1,413 +1,353 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-type BrandCollab = {
+/* ═══════════════════════════════════════════════════════════
+   THE INDEX — editorial collaborations directory.
+   Typographic rows like a magazine table of contents.
+   Hover a row → a live photo preview floats with the cursor.
+   Click a row → an inline cinematic film strip unfolds.
+   ═══════════════════════════════════════════════════════════ */
+
+type Collab = {
   id: string;
-  brand: string;
-  displayName: string;
-  category: "brand-collab" | "editorial-shoot";
+  name: string;
+  category: "brand" | "editorial";
   count: number;
-  tier?: "luxury" | "contemporary" | "street" | "indie";
+  tier?: string;
 };
 
-const COLLABORATIONS: BrandCollab[] = [
-  // ══ BRAND COLLABORATIONS ══
-  {
-    id: "lacoste",
-    brand: "LACOSTE",
-    displayName: "Lacoste",
-    category: "brand-collab",
-    count: 1,
-    tier: "luxury",
-  },
-  {
-    id: "fashion-nova",
-    brand: "FASHION NOVA",
-    displayName: "Fashion Nova",
-    category: "brand-collab",
-    count: 1,
-    tier: "contemporary",
-  },
-  {
-    id: "people-ssense",
-    brand: "SSENSE",
-    displayName: "SSENSE x People",
-    category: "brand-collab",
-    count: 1,
-    tier: "luxury",
-  },
-  {
-    id: "bershka",
-    brand: "BERSHKA",
-    displayName: "Bershka",
-    category: "brand-collab",
-    count: 2,
-    tier: "contemporary",
-  },
-  {
-    id: "timberland",
-    brand: "TIMBERLAND",
-    displayName: "Timberland",
-    category: "brand-collab",
-    count: 1,
-    tier: "street",
-  },
-  {
-    id: "vans",
-    brand: "VANS",
-    displayName: "Vans",
-    category: "brand-collab",
-    count: 1,
-    tier: "street",
-  },
-  {
-    id: "asos",
-    brand: "ASOS",
-    displayName: "ASOS",
-    category: "brand-collab",
-    count: 1,
-    tier: "contemporary",
-  },
-  {
-    id: "meshki",
-    brand: "MESHKI",
-    displayName: "Meshki",
-    category: "brand-collab",
-    count: 1,
-    tier: "indie",
-  },
-  {
-    id: "motel-rocks",
-    brand: "MOTEL ROCKS",
-    displayName: "Motel Rocks",
-    category: "brand-collab",
-    count: 1,
-    tier: "indie",
-  },
-  {
-    id: "wmns-wear",
-    brand: "WMNS WEAR",
-    displayName: "WMNS Wear",
-    category: "brand-collab",
-    count: 2,
-    tier: "indie",
-  },
-
-  // ══ EDITORIAL SHOOTS ══
-  {
-    id: "ajanee-studio",
-    brand: "AJANEE STUDIO",
-    displayName: "Ajanee Studio",
-    category: "editorial-shoot",
-    count: 3,
-  },
-  {
-    id: "bolapsd",
-    brand: "BOLAPSD",
-    displayName: "BolaPSD",
-    category: "editorial-shoot",
-    count: 2,
-  },
-  {
-    id: "meji-meji",
-    brand: "MEJI MEJI",
-    displayName: "MEJI MEJI",
-    category: "editorial-shoot",
-    count: 6,
-  },
-  {
-    id: "streetsouk",
-    brand: "STREETSOUK",
-    displayName: "Streetsouk",
-    category: "editorial-shoot",
-    count: 4,
-  },
-  {
-    id: "patrique-ophique",
-    brand: "PATRIQUE OPHIQUE",
-    displayName: "Patrique Ophique",
-    category: "editorial-shoot",
-    count: 2,
-  },
-  {
-    id: "ldm-clo-ss26",
-    brand: "LDM CLO",
-    displayName: "LDM CLO SS26",
-    category: "editorial-shoot",
-    count: 9,
-  },
-  {
-    id: "the-shine-cartel",
-    brand: "SHINE CARTEL",
-    displayName: "The Shine Cartel",
-    category: "editorial-shoot",
-    count: 2,
-  },
-  {
-    id: "vvs-lagos",
-    brand: "VVS LAGOS",
-    displayName: "VVS Lagos",
-    category: "editorial-shoot",
-    count: 2,
-  },
-  {
-    id: "dolore-inc-ss26",
-    brand: "DOLORE INC",
-    displayName: "Dolore Inc SS26",
-    category: "editorial-shoot",
-    count: 2,
-  },
-  {
-    id: "brown-thomas-ss25",
-    brand: "BROWN THOMAS",
-    displayName: "Brown Thomas SS25",
-    category: "editorial-shoot",
-    count: 2,
-  },
-  {
-    id: "snowbunny",
-    brand: "SNOWBUNNY",
-    displayName: "Snowbunny Campaign",
-    category: "editorial-shoot",
-    count: 1,
-  },
+const COLLABS: Collab[] = [
+  // ── Brand partnerships ──
+  { id: "lacoste", name: "Lacoste", category: "brand", count: 1, tier: "Luxury" },
+  { id: "people-ssense", name: "SSENSE × People", category: "brand", count: 1, tier: "Luxury" },
+  { id: "bershka", name: "Bershka", category: "brand", count: 2, tier: "Contemporary" },
+  { id: "asos", name: "ASOS", category: "brand", count: 1, tier: "Contemporary" },
+  { id: "fashion-nova", name: "Fashion Nova", category: "brand", count: 1, tier: "Contemporary" },
+  { id: "timberland", name: "Timberland", category: "brand", count: 1, tier: "Street" },
+  { id: "vans", name: "Vans", category: "brand", count: 1, tier: "Street" },
+  { id: "meshki", name: "Meshki", category: "brand", count: 1, tier: "Indie" },
+  { id: "motel-rocks", name: "Motel Rocks", category: "brand", count: 1, tier: "Indie" },
+  { id: "wmns-wear", name: "WMNS Wear", category: "brand", count: 2, tier: "Indie" },
+  // ── Editorial shoots ──
+  { id: "ldm-clo-ss26", name: "LDM CLO SS26", category: "editorial", count: 9 },
+  { id: "meji-meji", name: "Meji Meji", category: "editorial", count: 6 },
+  { id: "streetsouk", name: "Streetsouk", category: "editorial", count: 4 },
+  { id: "ajanee-studio", name: "Ajanee Studio", category: "editorial", count: 3 },
+  { id: "the-shine-cartel", name: "The Shine Cartel", category: "editorial", count: 2 },
+  { id: "patrique-ophique", name: "Patrique Ophique", category: "editorial", count: 2 },
+  { id: "bolapsd", name: "BolaPSD", category: "editorial", count: 2 },
+  { id: "vvs-lagos", name: "VVS Lagos", category: "editorial", count: 2 },
+  { id: "dolore-inc-ss26", name: "Dolore Inc SS26", category: "editorial", count: 2 },
+  { id: "brown-thomas-ss25", name: "Brown Thomas SS25", category: "editorial", count: 2 },
+  { id: "snowbunny", name: "Snowbunny", category: "editorial", count: 1 },
 ];
 
+const src = (id: string, n: number) =>
+  `/media/campaigns/${id}/${id}-${String(n).padStart(2, "0")}.jpg`;
+
+type Filter = "all" | "brand" | "editorial";
+
 export default function BrandCollaborations() {
-  const [activeType, setActiveType] = useState<"all" | "brand-collab" | "editorial-shoot">(
-    "all"
-  );
-  const [activeItem, setActiveItem] = useState(COLLABORATIONS[0].id);
-  const [photos, setPhotos] = useState<string[]>([]);
-  const gridRef = useRef<HTMLDivElement>(null);
+  const [filter, setFilter] = useState<Filter>("all");
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [hoverId, setHoverId] = useState<string | null>(null);
 
-  const filtered =
-    activeType === "all"
-      ? COLLABORATIONS
-      : COLLABORATIONS.filter((c) => c.category === activeType);
+  const sectionRef = useRef<HTMLElement>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
+  const mouse = useRef({ x: 0, y: 0 });
+  const pos = useRef({ x: 0, y: 0 });
+  const raf = useRef<number>(0);
 
-  const activeData = COLLABORATIONS.find((c) => c.id === activeItem);
+  const visible = filter === "all" ? COLLABS : COLLABS.filter((c) => c.category === filter);
+
+  /* ── Floating preview: lerp-follow the cursor with a lag ── */
+  const tick = useCallback(() => {
+    const el = previewRef.current;
+    if (el) {
+      pos.current.x += (mouse.current.x - pos.current.x) * 0.12;
+      pos.current.y += (mouse.current.y - pos.current.y) * 0.12;
+      const vx = mouse.current.x - pos.current.x;
+      const rot = Math.max(-7, Math.min(7, vx * 0.06));
+      el.style.transform = `translate3d(${pos.current.x}px, ${pos.current.y}px, 0) rotate(${rot}deg)`;
+    }
+    raf.current = requestAnimationFrame(tick);
+  }, []);
 
   useEffect(() => {
-    const photoList = Array.from({ length: activeData?.count || 0 }, (_, i) =>
-      i + 1
-    ).map(
-      (num) =>
-        `/media/campaigns/${activeItem}/${activeItem}-${String(num).padStart(2, "0")}.jpg`
-    );
-    setPhotos(photoList);
+    raf.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf.current);
+  }, [tick]);
 
-    const el = gridRef.current;
-    if (el) {
-      el.classList.remove("visible");
-      setTimeout(() => el.classList.add("visible"), 10);
-    }
-  }, [activeItem, activeData?.count]);
+  const onMouseMove = (e: React.MouseEvent) => {
+    mouse.current.x = e.clientX;
+    mouse.current.y = e.clientY;
+  };
+
+  /* ── Reveal rows on scroll ── */
+  useEffect(() => {
+    const rows = sectionRef.current?.querySelectorAll("[data-row]");
+    if (!rows) return;
+    const obs = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((en) => {
+          if (en.isIntersecting) {
+            en.target.classList.add("visible");
+            obs.unobserve(en.target);
+          }
+        }),
+      { threshold: 0.15 }
+    );
+    rows.forEach((r) => obs.observe(r));
+    return () => obs.disconnect();
+  }, [filter]);
+
+  const toggle = (id: string) => setOpenId((cur) => (cur === id ? null : id));
 
   return (
-    <section id="collaborations" className="py-32 overflow-hidden px-6 md:px-10">
-      <div className="max-w-[1400px] mx-auto">
-        {/* ── Header ── */}
-        <div className="mb-16">
-          <div className="reveal animate-fade-in" style={{ marginBottom: "1.5rem" }}>
-            <div className="section-tag">Partnerships & Campaigns</div>
-          </div>
-          <h2
-            className="font-display animate-reveal-up"
-            style={{
-              fontSize: "clamp(3rem, 8vw, 7rem)",
-              lineHeight: 0.9,
-              letterSpacing: "0.04em",
-              color: "var(--text)",
-              marginBottom: "3rem",
-            }}
-          >
-            COLLABORATIONS
-          </h2>
+    <section
+      id="collaborations"
+      ref={sectionRef}
+      className="relative py-32"
+      onMouseMove={onMouseMove}
+    >
+      {/* ═══ Floating cursor preview (desktop only) ═══ */}
+      <div
+        ref={previewRef}
+        aria-hidden="true"
+        className="hidden lg:block fixed top-0 left-0 z-50 pointer-events-none"
+        style={{ willChange: "transform" }}
+      >
+        <div
+          className="relative overflow-hidden transition-all duration-500"
+          style={{
+            width: hoverId && !openId ? "240px" : "0px",
+            height: hoverId && !openId ? "320px" : "0px",
+            marginLeft: "28px",
+            marginTop: "-160px",
+            opacity: hoverId && !openId ? 1 : 0,
+            transitionTimingFunction: "cubic-bezier(0.16,1,0.3,1)",
+            boxShadow: "0 30px 80px rgba(0,0,0,0.55)",
+          }}
+        >
+          {COLLABS.map((c) => (
+            <Image
+              key={c.id}
+              src={src(c.id, 1)}
+              alt=""
+              fill
+              sizes="240px"
+              className="object-cover transition-opacity duration-300"
+              style={{ opacity: hoverId === c.id ? 1 : 0 }}
+            />
+          ))}
+        </div>
+      </div>
 
-          {/* ── Type Filter ── */}
-          <div className="flex gap-3 mb-8 animate-reveal-up">
-            {(
-              [
-                { key: "all", label: "All" },
-                { key: "brand-collab", label: "Brand Partners" },
-                { key: "editorial-shoot", label: "Editorial" },
-              ] as const
-            ).map(({ key, label }) => (
-              <button
-                key={key}
-                onClick={() => {
-                  setActiveType(key);
-                  setActiveItem(
-                    filtered.find((c) => c.category === (key === "all" ? c.category : key))
-                      ?.id || COLLABORATIONS[0].id
-                  );
-                }}
-                className="uppercase tracking-[0.18em] px-4 py-2 transition-all duration-300"
-                style={{
-                  fontSize: "0.65rem",
-                  border: `1px solid ${activeType === key ? "var(--accent)" : "var(--border-hi)"}`,
-                  background: activeType === key ? "var(--accent)" : "transparent",
-                  color: activeType === key ? "#EDE6DA" : "var(--text-dim)",
-                  cursor: "pointer",
-                  fontWeight: activeType === key ? 700 : 400,
-                }}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-
-          {/* ── Brand Grid (Interactive) ── */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-            {filtered.map((collab) => {
-              const isActive = collab.id === activeItem;
-              const isBrand = collab.category === "brand-collab";
-              return (
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        {/* ═══ Header ═══ */}
+        <div className="mb-14 md:mb-20">
+          <div className="section-tag mb-6">Partnerships & Campaigns</div>
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <h2
+              className="font-display"
+              style={{
+                fontSize: "clamp(3rem, 9vw, 8rem)",
+                lineHeight: 0.85,
+                letterSpacing: "0.02em",
+                color: "var(--text)",
+              }}
+            >
+              THE&nbsp;INDEX
+            </h2>
+            {/* ── Understated text filters ── */}
+            <div className="flex gap-7 pb-2">
+              {(
+                [
+                  { key: "all", label: "All", n: COLLABS.length },
+                  { key: "brand", label: "Brands", n: COLLABS.filter((c) => c.category === "brand").length },
+                  { key: "editorial", label: "Editorial", n: COLLABS.filter((c) => c.category === "editorial").length },
+                ] as const
+              ).map(({ key, label, n }) => (
                 <button
-                  key={collab.id}
-                  onClick={() => setActiveItem(collab.id)}
-                  className="group relative p-3 transition-all duration-300 overflow-hidden"
+                  key={key}
+                  onClick={() => {
+                    setFilter(key);
+                    setOpenId(null);
+                  }}
+                  className="relative uppercase tracking-[0.22em] pb-1 transition-colors duration-300"
                   style={{
-                    border: `1.5px solid ${
-                      isActive ? "var(--accent)" : "var(--border-hi)"
-                    }`,
-                    background: isActive ? "rgba(194,69,62,0.08)" : "transparent",
+                    fontSize: "0.62rem",
+                    background: "none",
+                    border: "none",
                     cursor: "pointer",
+                    color: filter === key ? "var(--text)" : "var(--text-dim)",
                   }}
                 >
-                  <div
+                  {label}
+                  <sup style={{ color: "var(--accent)", marginLeft: "3px", fontSize: "0.5rem" }}>
+                    {n}
+                  </sup>
+                  <span
+                    className="absolute bottom-0 left-0 h-px transition-all duration-400"
                     style={{
-                      fontSize: "0.7rem",
-                      lineHeight: 1.2,
-                      textAlign: "center",
-                      color: "var(--text)",
-                      fontWeight: isActive ? 700 : 500,
-                      letterSpacing: "0.1em",
+                      width: filter === key ? "100%" : "0%",
+                      background: "var(--accent)",
                     }}
-                  >
-                    {collab.brand}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.5rem",
-                      color: "var(--text-dim)",
-                      marginTop: "0.3rem",
-                      opacity: 0.6,
-                    }}
-                  >
-                    {collab.count} frame{collab.count > 1 ? "s" : ""}
-                    {isBrand && collab.tier && ` • ${collab.tier.toUpperCase()}`}
-                  </div>
-                  {isActive && (
-                    <div
-                      className="absolute top-0 left-0 right-0"
-                      style={{
-                        height: "2px",
-                        background: "var(--accent)",
-                      }}
-                    />
-                  )}
+                  />
                 </button>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* ── Active Item Display ── */}
-        {activeData && (
-          <div className="mb-12 pb-8 border-b" style={{ borderColor: "var(--border)" }}>
-            <div className="flex items-baseline justify-between">
-              <div>
-                <h3
-                  className="font-serif italic"
+        {/* ═══ The index rows ═══ */}
+        <div style={{ borderTop: "1px solid var(--border)" }}>
+          {visible.map((c, i) => {
+            const isOpen = openId === c.id;
+            const isHover = hoverId === c.id;
+            const dimOthers = hoverId !== null && !isHover && !isOpen;
+            return (
+              <div key={c.id} style={{ borderBottom: "1px solid var(--border)" }}>
+                {/* ── Row ── */}
+                <button
+                  data-row
+                  onClick={() => toggle(c.id)}
+                  onMouseEnter={() => setHoverId(c.id)}
+                  onMouseLeave={() => setHoverId(null)}
+                  className="reveal group w-full flex items-baseline gap-4 md:gap-8 text-left py-5 md:py-7 transition-opacity duration-400"
                   style={{
-                    fontSize: "1.8rem",
-                    color: "var(--text)",
-                    marginBottom: "0.5rem",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    opacity: dimOthers ? 0.25 : 1,
+                    transitionDelay: `${(i % 10) * 0.04}s`,
                   }}
                 >
-                  {activeData.displayName}
-                </h3>
-                <p style={{ color: "var(--text-dim)", fontSize: "0.9rem" }}>
-                  {activeData.count} frame{activeData.count > 1 ? "s" : ""} •{" "}
-                  {activeData.category === "brand-collab" ? "Brand Partnership" : "Editorial"}
-                </p>
+                  {/* index number */}
+                  <span
+                    className="shrink-0 tracking-[0.2em] tabular-nums"
+                    style={{
+                      fontSize: "0.6rem",
+                      color: isHover || isOpen ? "var(--accent)" : "var(--text-dim)",
+                      transition: "color 0.3s",
+                      width: "2.2rem",
+                    }}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+
+                  {/* name — the star of the row */}
+                  <span
+                    className="font-display flex-1 min-w-0"
+                    style={{
+                      fontSize: "clamp(1.7rem, 5.5vw, 4.2rem)",
+                      lineHeight: 1,
+                      letterSpacing: "0.02em",
+                      color: isOpen ? "var(--accent)" : "var(--text)",
+                      transform: isHover && !isOpen ? "translateX(14px)" : "translateX(0)",
+                      transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1), color 0.3s",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {c.name.toUpperCase()}
+                  </span>
+
+                  {/* meta */}
+                  <span
+                    className="hidden sm:flex shrink-0 items-baseline gap-5 uppercase tracking-[0.18em]"
+                    style={{ fontSize: "0.58rem", color: "var(--text-dim)" }}
+                  >
+                    {c.tier && (
+                      <span style={{ color: isHover ? "var(--accent)" : "var(--text-dim)", transition: "color 0.3s" }}>
+                        {c.tier}
+                      </span>
+                    )}
+                    <span>
+                      {c.count} frame{c.count > 1 ? "s" : ""}
+                    </span>
+                  </span>
+
+                  {/* open indicator */}
+                  <span
+                    className="shrink-0 font-serif italic"
+                    style={{
+                      fontSize: "1.4rem",
+                      lineHeight: 1,
+                      color: isOpen ? "var(--accent)" : "var(--text-dim)",
+                      transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
+                      transition: "transform 0.45s cubic-bezier(0.16,1,0.3,1), color 0.3s",
+                      display: "inline-block",
+                    }}
+                  >
+                    +
+                  </span>
+                </button>
+
+                {/* ── Expanded film strip ── */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateRows: isOpen ? "1fr" : "0fr",
+                    transition: "grid-template-rows 0.65s cubic-bezier(0.16,1,0.3,1)",
+                  }}
+                >
+                  <div style={{ overflow: "hidden" }}>
+                    <div className="pb-10 pt-2">
+                      <div
+                        className="flex gap-4 md:gap-6 overflow-x-auto pb-4"
+                        style={{ scrollSnapType: "x mandatory", scrollbarWidth: "thin" }}
+                      >
+                        {isOpen &&
+                          Array.from({ length: c.count }, (_, n) => (
+                            <figure
+                              key={n}
+                              className="relative shrink-0 overflow-hidden"
+                              style={{ scrollSnapAlign: "start", background: "var(--bg-card)" }}
+                            >
+                              <Image
+                                src={src(c.id, n + 1)}
+                                alt={`${c.name} — frame ${n + 1}`}
+                                width={720}
+                                height={960}
+                                sizes="(max-width: 768px) 78vw, 420px"
+                                className="object-cover"
+                                style={{
+                                  height: "min(58vh, 520px)",
+                                  width: "auto",
+                                  maxWidth: "82vw",
+                                }}
+                              />
+                              <span
+                                className="absolute top-3 right-3 uppercase tracking-[0.18em] px-2 py-1"
+                                style={{
+                                  fontSize: "0.5rem",
+                                  color: "rgba(237,230,218,0.9)",
+                                  background: "rgba(4,2,1,0.5)",
+                                  backdropFilter: "blur(6px)",
+                                }}
+                              >
+                                {String(n + 1).padStart(2, "0")} / {String(c.count).padStart(2, "0")}
+                              </span>
+                            </figure>
+                          ))}
+                      </div>
+                      <p
+                        className="font-serif italic mt-4"
+                        style={{ fontSize: "0.95rem", color: "var(--text-dim)" }}
+                      >
+                        {c.name} — {c.category === "brand" ? "Brand Partnership" : "Editorial"}
+                        {c.tier ? ` · ${c.tier}` : ""} · drag to explore →
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              {activeData.tier && (
-                <div
-                  style={{
-                    fontSize: "0.7rem",
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    color: "var(--accent)",
-                    fontWeight: 600,
-                  }}
-                >
-                  {activeData.tier}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* ── Masonry Grid ── */}
-        <div
-          ref={gridRef}
-          className="reveal columns-1 sm:columns-2 lg:columns-3 gap-6"
-        >
-          {photos.map((photo, i) => (
-            <figure
-              key={photo}
-              className="group relative mb-6 break-inside-avoid overflow-hidden"
-              style={{
-                background: "var(--bg-card)",
-                animationDelay: `${(i % 9) * 0.05}s`,
-              }}
-            >
-              <Image
-                src={photo}
-                alt={`${activeData?.displayName} - Frame ${i + 1}`}
-                width={600}
-                height={800}
-                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              />
-
-              {/* Hover overlay */}
-              <figcaption
-                className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 px-6 pb-6 pt-12"
-                style={{
-                  background: "linear-gradient(transparent, rgba(4,2,1,0.78))",
-                }}
-              >
-                <div
-                  className="uppercase tracking-[0.22em]"
-                  style={{
-                    fontSize: "0.52rem",
-                    color: "rgba(237,230,218,0.7)",
-                  }}
-                >
-                  {activeData?.displayName}
-                </div>
-              </figcaption>
-
-              {/* Frame number */}
-              <span
-                className="absolute top-3 right-3 uppercase tracking-[0.18em] px-2 py-1"
-                style={{
-                  fontSize: "0.5rem",
-                  color: "rgba(237,230,218,0.85)",
-                  background: "rgba(4,2,1,0.45)",
-                  backdropFilter: "blur(6px)",
-                }}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-            </figure>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
