@@ -115,7 +115,7 @@ const COLLABORATIONS: BrandCollab[] = [
     brand: "MEJI MEJI",
     displayName: "MEJI MEJI",
     category: "editorial-shoot",
-    count: 6,
+    count: 7,
   },
   {
     id: "streetsouk",
