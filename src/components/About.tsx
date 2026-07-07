@@ -27,6 +27,7 @@ const IMAGES = [
   { src: "/media/about/02.jpg", alt: "Candice — editorial" },
   { src: "/media/about/03.jpg", alt: "Candice — campaign" },
   { src: "/media/about/04.jpg", alt: "Candice — beauty" },
+  { src: "/media/about/05.jpg", alt: "Candice — style" },
 ];
 
 const INTERVAL = 3800; // ms between auto-advances
