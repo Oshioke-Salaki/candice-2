@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
-import { Bebas_Neue, Cormorant_Garamond, Inter } from 'next/font/google'
+import { Space_Grotesk, Cormorant_Garamond, Inter } from 'next/font/google'
 import './globals.css'
 import ThemeProvider from '@/components/ThemeProvider'
 import ScrollProgress from '@/components/ScrollProgress'
 import Noise from '@/components/Noise'
 
-const bebasNeue = Bebas_Neue({
-  weight: '400',
+const spaceGrotesk = Space_Grotesk({
+  weight: ['400', '700'],
   subsets: ['latin'],
   variable: '--font-display-var',
   display: 'swap',
@@ -30,13 +30,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'WowCandice — Model · Creator · Muse',
   description:
-    'Candice — Nigerian-Sudanese fashion & commercial model and content creator, based between Dublin and Lagos. Editorials, campaigns, runway, and scroll-stopping stories.',
+    'Candice — Nigerian-Sudanese fashion & commercial model and content creator, based between London and Lagos. Editorials, campaigns, runway, and scroll-stopping stories.',
   openGraph: {
     title: 'WowCandice — Model · Creator · Muse',
     description:
-      'Nigerian-Sudanese fashion & commercial model and content creator, based between Dublin and Lagos.',
+      'Nigerian-Sudanese fashion & commercial model and content creator, based between London and Lagos.',
     siteName: 'WowCandice',
-    images: [{ url: '/work/red-gown.jpg', width: 1200, height: 1600, alt: 'WowCandice' }],
+    images: [{ url: '/media/hero/hero.png', width: 1200, height: 1600, alt: 'WowCandice' }],
     locale: 'en_US',
     type: 'website',
   },
@@ -44,8 +44,8 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'WowCandice — Model · Creator · Muse',
     description:
-      'Nigerian-Sudanese fashion & commercial model and content creator, based between Dublin and Lagos.',
-    images: ['/work/red-gown.jpg'],
+      'Nigerian-Sudanese fashion & commercial model and content creator, based between London and Lagos.',
+    images: ['/media/hero/hero.png'],
   },
 }
 
@@ -53,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`dark ${bebasNeue.variable} ${cormorant.variable} ${inter.variable}`}
+      className={`dark ${spaceGrotesk.variable} ${cormorant.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
       <body>

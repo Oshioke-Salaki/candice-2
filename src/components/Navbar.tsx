@@ -303,7 +303,7 @@ export default function Navbar() {
               className="uppercase tracking-[0.2em]"
               style={{ fontSize: "0.58rem", color: "var(--text-dim)" }}
             >
-              Dublin · Lagos
+              London · Lagos
             </span>
           </div>
         </div>

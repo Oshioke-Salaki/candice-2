@@ -4,6 +4,8 @@ import MarqueeStrip from "@/components/MarqueeStrip";
 import About from "@/components/About";
 import Services from "@/components/Services";
 import Work from "@/components/Work";
+import CampaignShowcase from "@/components/CampaignShowcase";
+import Commercials from "@/components/Commercials";
 import Reel from "@/components/Reel";
 import BrandsSection from "@/components/BrandsSection";
 import Stats from "@/components/Stats";
@@ -19,6 +21,8 @@ export default function Home() {
       <About />
       <Services />
       <Work />
+      <CampaignShowcase />
+      <Commercials />
       <Reel />
       <BrandsSection />
       <Stats />

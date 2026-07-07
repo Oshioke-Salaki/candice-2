@@ -105,28 +105,28 @@ export default function Hero() {
         className="relative flex items-center justify-center overflow-hidden"
         style={{ height: "100svh", minHeight: 600 }}
       >
-        {/* ── Full-bleed portrait — strawberry noir, studio ── */}
+        {/* ── Full-bleed portrait — hero-alt ── */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/work/strawberry-sheer.jpg"
-            alt="Candice — Strawberry Noir editorial"
+            src="/media/hero/hero.png"
+            alt="Candice — Hero"
             fill
             priority
             className="object-cover"
             sizes="100vw"
             style={{
-              objectPosition: "50% 18%",
+              objectPosition: "50% 50%",
               transform: open ? "scale(1.06)" : "scale(1.0)",
               transition: "transform 14s ease-out",
             }}
           />
 
-          {/* Cinematic radial vignette — darkens corners, preserves centre */}
+          {/* Cinematic radial vignette — subtle, preserves image visibility */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse 80% 80% at 50% 40%, transparent 30%, rgba(6,3,2,0.78) 100%)",
+                "radial-gradient(ellipse 90% 90% at 50% 45%, transparent 25%, rgba(6,3,2,0.45) 100%)",
             }}
           />
 
@@ -134,9 +134,9 @@ export default function Hero() {
           <div
             className="absolute top-0 left-0 right-0"
             style={{
-              height: "160px",
+              height: "140px",
               background:
-                "linear-gradient(to bottom, rgba(6,3,2,0.6) 0%, transparent 100%)",
+                "linear-gradient(to bottom, rgba(6,3,2,0.4) 0%, transparent 100%)",
             }}
           />
 
@@ -144,9 +144,9 @@ export default function Hero() {
           <div
             className="absolute bottom-0 left-0 right-0"
             style={{
-              height: "35%",
+              height: "30%",
               background:
-                "linear-gradient(to top, rgba(6,3,2,0.66) 0%, transparent 100%)",
+                "linear-gradient(to top, rgba(6,3,2,0.5) 0%, transparent 100%)",
             }}
           />
         </div>
@@ -248,7 +248,7 @@ export default function Hero() {
               transition: `opacity 0.9s ease 0.95s, transform 0.9s ${ease} 0.95s`,
             }}
           >
-            Dublin &nbsp;·&nbsp; Lagos &nbsp;·&nbsp; Worldwide
+            London &nbsp;·&nbsp; Lagos &nbsp;·&nbsp; Worldwide
           </p>
         </div>
 

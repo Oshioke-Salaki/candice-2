@@ -23,9 +23,10 @@ function useReveal() {
 
 /* ─── Images ──────────────────────────────────── */
 const IMAGES = [
-  { src: "/work/burgundy-coat.jpg", alt: "Candice — oxblood coat, beauty portrait" },
-  { src: "/work/bridal-veil.jpg", alt: "Candice — bridal editorial" },
-  { src: "/work/tan-suit.jpg", alt: "Candice — tan suit, commercial campaign" },
+  { src: "/media/about/01.jpg", alt: "Candice — portrait" },
+  { src: "/media/about/02.jpg", alt: "Candice — editorial" },
+  { src: "/media/about/03.jpg", alt: "Candice — campaign" },
+  { src: "/media/about/04.jpg", alt: "Candice — beauty" },
 ];
 
 const INTERVAL = 3800; // ms between auto-advances
