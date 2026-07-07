@@ -101,7 +101,7 @@ const COLLABORATIONS: BrandCollab[] = [
     brand: "AJANEE STUDIO",
     displayName: "Ajanee Studio",
     category: "editorial-shoot",
-    count: 8,
+    count: 4,
   },
   {
     id: "bolapsd",
@@ -115,7 +115,7 @@ const COLLABORATIONS: BrandCollab[] = [
     brand: "MEJI MEJI",
     displayName: "MEJI MEJI",
     category: "editorial-shoot",
-    count: 8,
+    count: 9,
   },
   {
     id: "streetsouk",
@@ -136,7 +136,7 @@ const COLLABORATIONS: BrandCollab[] = [
     brand: "LDM CLO",
     displayName: "LDM CLO SS26",
     category: "editorial-shoot",
-    count: 6,
+    count: 9,
   },
   {
     id: "the-shine-cartel",
