@@ -28,8 +28,8 @@ const COMMERCIALS = [
     meta: "Brand Collab",
   },
   {
-    src: "/media/commercials/commercial-01.mp4",
-    poster: "/media/commercials/commercial-01.jpg",
+    src: "/media/commercials/raindance.mp4",
+    poster: "/media/commercials/raindance.jpg",
     title: "Raindance",
     meta: "Dave ft. Tems — Music Video",
   },

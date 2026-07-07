@@ -258,14 +258,9 @@ export default function BrandCollaborations() {
 
                   {/* meta */}
                   <span
-                    className="hidden sm:flex shrink-0 items-baseline gap-5 uppercase tracking-[0.18em]"
+                    className="hidden sm:flex shrink-0 items-baseline uppercase tracking-[0.18em]"
                     style={{ fontSize: "0.58rem", color: "var(--text-dim)" }}
                   >
-                    {c.tier && (
-                      <span style={{ color: isHover ? "var(--accent)" : "var(--text-dim)", transition: "color 0.3s" }}>
-                        {c.tier}
-                      </span>
-                    )}
                     <span>
                       {c.count} frame{c.count > 1 ? "s" : ""}
                     </span>
@@ -273,9 +268,10 @@ export default function BrandCollaborations() {
 
                   {/* open indicator */}
                   <span
-                    className="shrink-0 font-serif italic"
+                    className="shrink-0 font-serif"
                     style={{
-                      fontSize: "1.4rem",
+                      fontSize: "2.3rem",
+                      fontWeight: 300,
                       lineHeight: 1,
                       color: isOpen ? "var(--accent)" : "var(--text-dim)",
                       transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
@@ -339,8 +335,7 @@ export default function BrandCollaborations() {
                         className="font-serif italic mt-4"
                         style={{ fontSize: "0.95rem", color: "var(--text-dim)" }}
                       >
-                        {c.name} — {c.category === "brand" ? "Brand Partnership" : "Editorial"}
-                        {c.tier ? ` · ${c.tier}` : ""} · drag to explore →
+                        {c.name} — {c.category === "brand" ? "Brand Partnership" : "Editorial"} · drag to explore →
                       </p>
                     </div>
                   </div>
