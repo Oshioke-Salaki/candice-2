@@ -25,13 +25,19 @@ const COMMERCIALS = [
     src: "/media/commercials/bts-behind-scenes.mp4",
     poster: "/media/commercials/bts-behind-scenes.jpg",
     title: "Snow Bunny",
-    meta: "Behind The Scenes",
+    meta: "Brand Collab",
   },
   {
     src: "/media/commercials/commercial-01.mp4",
     poster: "/media/commercials/commercial-01.jpg",
     title: "Raindance",
     meta: "Dave ft. Tems — Music Video",
+  },
+  {
+    src: "/media/commercials/meji-meji-collab.mp4",
+    poster: "/media/commercials/meji-meji-collab.jpg",
+    title: "Meji Meji",
+    meta: "Collab Commercial",
   },
 ];
 
@@ -109,7 +115,9 @@ function CtrlBtn({
       style={{
         width: "2.2rem",
         height: "2.2rem",
-        background: active ? "rgba(237,230,218,0.95)" : "rgba(255,255,255,0.14)",
+        background: active
+          ? "rgba(237,230,218,0.95)"
+          : "rgba(255,255,255,0.14)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         border: "1px solid rgba(255,255,255,0.25)",
