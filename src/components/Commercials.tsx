@@ -39,6 +39,12 @@ const COMMERCIALS = [
     title: "Meji Meji",
     meta: "Collab Commercial",
   },
+  {
+    src: "/media/commercials/ldm-clo.mp4",
+    poster: "/media/commercials/ldm-clo.jpg",
+    title: "LDM CLO",
+    meta: "Collab Commercial",
+  },
 ];
 
 function PlayIcon() {
