@@ -244,7 +244,7 @@ export default function About() {
               style={{
                 fontSize: "0.58rem",
                 border: "1px solid var(--border-hi)",
-                color: "var(--text-dim)",
+                color: "var(--text-soft)",
                 cursor: "default",
               }}
               onMouseEnter={(e) => {
@@ -257,7 +257,7 @@ export default function About() {
                 const el = e.currentTarget;
                 el.style.background = "transparent";
                 el.style.borderColor = "var(--border-hi)";
-                el.style.color = "var(--text-dim)";
+                el.style.color = "var(--text-soft)";
               }}
             >
               {tag}
@@ -272,7 +272,7 @@ export default function About() {
           style={{
             fontSize: "1.25rem",
             lineHeight: 1.5,
-            color: "var(--text-dim)",
+            color: "var(--text-soft)",
             paddingLeft: "1.5rem",
             borderLeft: "1px solid var(--accent)",
           }}

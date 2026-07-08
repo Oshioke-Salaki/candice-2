@@ -83,7 +83,7 @@ export function PageCta() {
     >
       <p
         className="font-serif italic mb-6"
-        style={{ fontSize: "1.15rem", color: "var(--text-dim)" }}
+        style={{ fontSize: "1.15rem", color: "var(--text-soft)" }}
       >
         Like what you see?
       </p>

@@ -79,9 +79,9 @@
   --bg-alt: #120e0c;
   --bg-card: #1a1310;
   --text: #ede6da;
-  --text-soft: #b7ada1;
-  --text-dim: #6e635a;
-  --text-muted: #2b2420;
+  --text-soft: #cabfb1;
+  --text-dim: #a1958a;
+  --text-muted: #4a4038;
   --border: rgba(237, 230, 218, 0.07);
   --border-hi: rgba(237, 230, 218, 0.18);
   --accent: #a82420;
@@ -95,9 +95,9 @@ html.light {
   --bg-alt: #e2d9c8;
   --bg-card: #d6cbb8;
   --text: #171310;
-  --text-soft: #4b4237;
-  --text-dim: #8b7f71;
-  --text-muted: #c9beac;
+  --text-soft: #423a30;
+  --text-dim: #665b4d;
+  --text-muted: #b3a691;
   --border: rgba(23, 19, 16, 0.08);
   --border-hi: rgba(23, 19, 16, 0.2);
   --accent: #8e1f1d;

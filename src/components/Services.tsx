@@ -89,7 +89,7 @@ function ServiceCard({ s, delay = 0 }: { s: Service; delay?: number }) {
 
       <p
         className="svc-desc relative z-10 transition-colors duration-400"
-        style={{ fontSize: "1rem", lineHeight: 1.85, color: "var(--text-dim)" }}
+        style={{ fontSize: "1rem", lineHeight: 1.85, color: "var(--text-soft)" }}
       >
         {s.desc}
       </p>

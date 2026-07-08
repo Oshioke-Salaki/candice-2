@@ -76,7 +76,7 @@ export default function Contact() {
 
           <p
             className="font-serif italic mb-10"
-            style={{ fontSize: '1.15rem', lineHeight: 1.65, color: 'var(--text-dim)', maxWidth: 380 }}
+            style={{ fontSize: '1.15rem', lineHeight: 1.65, color: 'var(--text-soft)', maxWidth: 380 }}
           >
             Campaigns, editorials, runway and content that gets replayed.
             Brands, agencies, and creative directors — let&apos;s talk.
@@ -131,7 +131,7 @@ export default function Contact() {
                   <div className="flex items-center gap-4">
                     <span
                       className="uppercase tracking-[0.18em] transition-colors duration-300"
-                      style={{ fontSize: '0.62rem', color: 'var(--text-dim)' }}
+                      style={{ fontSize: '0.62rem', color: 'var(--text-soft)' }}
                     >
                       {s.handle}
                     </span>
@@ -162,7 +162,7 @@ export default function Contact() {
             >
               For brand inquiries
             </p>
-            <p style={{ fontSize: '0.85rem', lineHeight: 1.8, color: 'var(--text-dim)' }}>
+            <p style={{ fontSize: '0.85rem', lineHeight: 1.8, color: 'var(--text-soft)' }}>
               Booking a campaign, editorial, runway show or content collaboration?
               Reach out via{' '}
               <a

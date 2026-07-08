@@ -151,7 +151,7 @@ export default function Hero() {
             style={{
               fontSize: "clamp(0.55rem, 0.9vw, 0.68rem)",
               letterSpacing: "0.55em",
-              color: "rgba(255,255,255,0.5)",
+              color: "rgba(255,255,255,0.7)",
               marginBottom: "clamp(1rem, 2.2svh, 1.8rem)",
               opacity: open ? 1 : 0,
               transform: open ? "translateY(0)" : "translateY(10px)",

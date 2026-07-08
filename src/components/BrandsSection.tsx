@@ -268,7 +268,7 @@ export default function BrandsSection() {
           </h2>
           <p
             className="font-serif italic mt-4"
-            style={{ fontSize: "1.1rem", color: "var(--text-dim)" }}
+            style={{ fontSize: "1.1rem", color: "var(--text-soft)" }}
           >
             A few names. Many stories.{" "}
             <span className="spot-hint" style={{ color: "var(--accent)" }}>
