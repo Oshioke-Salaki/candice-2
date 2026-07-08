@@ -78,7 +78,7 @@ export default function PageHeader({
 export function PageCta() {
   return (
     <section
-      className="py-24 px-6 md:px-10 text-center"
+      className="py-16 md:py-24 px-6 md:px-10 text-center"
       style={{ borderTop: "1px solid var(--border)", background: "var(--bg-alt)" }}
     >
       <p

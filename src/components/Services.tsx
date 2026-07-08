@@ -123,14 +123,14 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="py-32 px-10"
+      className="py-20 md:py-32 px-6 md:px-10"
       style={{ background: "var(--bg-alt)" }}
     >
       <div className="max-w-[1400px] mx-auto">
         {/* Header */}
         <div
           ref={headRef}
-          className="reveal flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-6"
+          className="reveal flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-20 gap-6"
         >
           <h2
             className="font-display"

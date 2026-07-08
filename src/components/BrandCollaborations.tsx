@@ -182,7 +182,7 @@ export default function BrandCollaborations() {
     <section
       id="collaborations"
       ref={sectionRef}
-      className="relative py-32"
+      className="relative py-20 md:py-32"
       onMouseMove={onMouseMove}
     >
       {/* ═══ Floating cursor preview (desktop only) ═══ */}
@@ -221,7 +221,7 @@ export default function BrandCollaborations() {
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
         {/* ═══ Header ═══ */}
-        <div className="mb-14 md:mb-20">
+        <div className="mb-10 md:mb-20">
           {/* <div className="section-tag mb-6">The Index</div> */}
           <div className="flex flex-wrap items-end justify-between gap-6">
             <h2

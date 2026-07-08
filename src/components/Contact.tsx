@@ -48,7 +48,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="py-40 px-10"
+      className="py-20 md:py-40 px-6 md:px-10"
       style={{ background: 'var(--bg)' }}
     >
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-24 md:gap-32 items-start">

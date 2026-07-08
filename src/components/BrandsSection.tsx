@@ -238,12 +238,12 @@ export default function BrandsSection() {
   return (
     <section
       id="brands"
-      className="py-32"
+      className="py-20 md:py-32"
       style={{ background: "var(--bg)", borderTop: "1px solid var(--border)" }}
     >
       {/* ══ Header ══ */}
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-        <div ref={headerRef} className="reveal text-center mb-20">
+        <div ref={headerRef} className="reveal text-center mb-12 md:mb-20">
           <div className="section-tag justify-center">
             Selected Collaborations
           </div>

@@ -100,7 +100,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="max-w-[1400px] mx-auto px-6 md:px-10 py-32 md:py-40 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center"
+      className="max-w-[1400px] mx-auto px-6 md:px-10 py-20 md:py-40 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center"
     >
       {/* ══════════════ LEFT — image carousel ══════════════ */}
       <div ref={leftRef} className="reveal from-left relative">
