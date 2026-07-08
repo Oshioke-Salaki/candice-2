@@ -95,7 +95,7 @@ function Mark({ brand, mode }: { brand: Brand; mode: "mono" | "paper" }) {
         <img
           src={brand.pair[0]}
           alt="Miu Miu"
-          loading="lazy"
+          loading="eager"
           className={imgClass}
           style={{ height: `${base * 0.75}px`, width: "auto", objectFit: "contain" }}
         />
@@ -112,7 +112,7 @@ function Mark({ brand, mode }: { brand: Brand; mode: "mono" | "paper" }) {
         <img
           src={brand.pair[1]}
           alt="L'Oréal"
-          loading="lazy"
+          loading="eager"
           className={imgClass}
           style={{ height: `${base * 0.7}px`, width: "auto", objectFit: "contain" }}
         />
@@ -124,7 +124,7 @@ function Mark({ brand, mode }: { brand: Brand; mode: "mono" | "paper" }) {
     <img
       src={brand.logo}
       alt={brand.name}
-      loading="lazy"
+      loading="eager"
       className={imgClass}
       style={{
         height: `${base * (brand.h ?? 1)}px`,
