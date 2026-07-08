@@ -7,40 +7,42 @@ import { cldBlurURL, cldLoader, cldLoaderWith } from "@/lib/media";
 /* Cloudinary two-step smart crop: first trim the dark void around
    the subject, then fill a 2:3 cover portrait — she fills the frame
    head to podium. */
-const heroLoader = cldLoaderWith("c_crop,w_0.9,h_0.62,g_auto/c_fill,ar_2:3,g_auto");
+const heroLoader = cldLoaderWith(
+  "c_crop,w_0.9,h_0.62,g_auto/c_fill,ar_2:3,g_auto",
+);
 
 // In-session guard so client-side navigations also skip the splash.
 let splashHasPlayed = false;
 
 export default function Hero() {
   const [textIn, setTextIn] = useState(false);
-  const [open,   setOpen]   = useState(false);
-  const [gone,   setGone]   = useState(false);
+  const [open, setOpen] = useState(false);
+  const [gone, setGone] = useState(false);
 
   // Runs synchronously before the browser paints — returning visitors never
   // see the preloader DOM at all, eliminating the black flash on refresh.
   useLayoutEffect(() => {
-    if (splashHasPlayed || localStorage.getItem('wcSeenSplash') === '1') {
+    if (splashHasPlayed || localStorage.getItem("wcSeenSplash") === "1") {
       setTextIn(true);
       setOpen(true);
       setGone(true);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     const alreadySeen =
-      splashHasPlayed || localStorage.getItem('wcSeenSplash') === '1';
+      splashHasPlayed || localStorage.getItem("wcSeenSplash") === "1";
 
     if (alreadySeen) return; // useLayoutEffect already handled it
 
     splashHasPlayed = true;
 
-    const t1 = setTimeout(() => setTextIn(true),  100);
-    const t2 = setTimeout(() => setOpen(true),    1900);
+    const t1 = setTimeout(() => setTextIn(true), 100);
+    const t2 = setTimeout(() => setOpen(true), 1900);
     const t3 = setTimeout(() => {
       setGone(true);
-      localStorage.setItem('wcSeenSplash', '1');
+      localStorage.setItem("wcSeenSplash", "1");
     }, 2900);
 
     return () => {
@@ -48,7 +50,7 @@ export default function Hero() {
       clearTimeout(t2);
       clearTimeout(t3);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const ease = "cubic-bezier(0.16,1,0.3,1)";
@@ -69,9 +71,10 @@ export default function Hero() {
         >
           <div className="text-center" style={{ lineHeight: 0.88 }}>
             <div
-              className="font-serif italic"
+              className="font-display"
               style={{
                 fontSize: "clamp(1.8rem, 6vw, 5.5rem)",
+                fontWeight: 700,
                 letterSpacing: "0.5em",
                 color: "#A82420",
                 transform: textIn ? "translateY(0)" : "translateY(-36px)",
@@ -82,16 +85,18 @@ export default function Hero() {
               WOW
             </div>
             <div
-              className="font-display tracking-[0.12em]"
+              className="font-display"
               style={{
                 fontSize: "clamp(2.8rem, 10vw, 10rem)",
+                fontWeight: 700,
+                letterSpacing: "-0.02em",
                 color: "#EDE6DA",
                 transform: textIn ? "translateY(0)" : "translateY(36px)",
                 opacity: textIn ? 1 : 0,
                 transition: `transform 0.75s ${ease} 0.08s, opacity 0.75s ${ease} 0.08s`,
               }}
             >
-              CANDICE
+              Candice
             </div>
           </div>
         </div>
@@ -158,12 +163,12 @@ export default function Hero() {
             <span style={{ color: "#C2453E" }}>✶</span>
           </p>
 
-          <div
-            className="font-serif italic"
+          {/* <div
+            className="font-display text-white whitespace-nowrap"
             style={{
-              fontSize: "clamp(1.5rem, 3.6vw, 3.6rem)",
-              fontWeight: 300,
-              letterSpacing: "clamp(0.35em, 1.2vw, 0.55em)",
+              fontSize: "clamp(1.4rem, 3.2vw, 3.1rem)",
+              fontWeight: 700,
+              letterSpacing: "clamp(0.3em, 1vw, 0.5em)",
               color: "rgba(255,255,255,0.9)",
               lineHeight: 1,
               marginBottom: "clamp(0.3rem, 0.8svh, 0.6rem)",
@@ -173,20 +178,21 @@ export default function Hero() {
             }}
           >
             WOW
-          </div>
+          </div> */}
 
           <h1
             className="font-display text-white whitespace-nowrap"
             style={{
-              fontSize: "clamp(3.6rem, 11.5vw, 11rem)",
+              fontSize: "clamp(4rem, 13vw, 10.5rem)",
+              fontWeight: 700,
               lineHeight: 0.85,
-              letterSpacing: "0.03em",
+              letterSpacing: "-0.02em",
               transform: open ? "translateY(0)" : "translateY(34px)",
               opacity: open ? 1 : 0,
               transition: `transform 1.1s ${ease} 0.5s, opacity 1s ${ease} 0.5s`,
             }}
           >
-            CANDICE
+            <span style={{ color: "#A82420" }}>wow</span>candice
           </h1>
         </div>
 
@@ -210,7 +216,7 @@ export default function Hero() {
             placeholder="blur"
             blurDataURL={cldBlurURL(
               "candice/hero/hero",
-              "c_crop,w_0.9,h_0.62,g_auto/c_fill,ar_2:3,g_auto"
+              "c_crop,w_0.9,h_0.62,g_auto/c_fill,ar_2:3,g_auto",
             )}
             className="object-cover"
             sizes="(max-width: 768px) 88vw, 460px"

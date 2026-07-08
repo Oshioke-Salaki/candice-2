@@ -1,6 +1,24 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
+import { Bricolage_Grotesque, DM_Sans } from 'next/font/google'
 import './globals.css'
+
+/* Bricolage Grotesque — the house display face. Drives every heading
+   with its contemporary, characterful grotesque letterforms. */
+const bricolage = Bricolage_Grotesque({
+  weight: ['400', '500', '600', '700', '800'],
+  subsets: ['latin'],
+  variable: '--font-bricolage',
+  display: 'swap',
+})
+
+/* DM Sans — highly legible humanist sans for readable body copy. */
+const dmSans = DM_Sans({
+  weight: ['400', '500'],
+  subsets: ['latin'],
+  variable: '--font-dm',
+  display: 'swap',
+})
 import ThemeProvider from '@/components/ThemeProvider'
 import ScrollProgress from '@/components/ScrollProgress'
 import Noise from '@/components/Noise'
@@ -17,16 +35,6 @@ const neueMontreal = localFont({
     { path: '../fonts/ppneuemontreal-bold.otf', weight: '700', style: 'normal' },
   ],
   variable: '--font-neue',
-  display: 'swap',
-})
-
-/* Clash Display — the edge. Drives all display headings; its funky
-   geometric letterforms carry the alte personality. */
-const clashDisplay = localFont({
-  src: [
-    { path: '../fonts/ClashDisplay-Variable.woff2', weight: '200 700', style: 'normal' },
-  ],
-  variable: '--font-clash',
   display: 'swap',
 })
 
@@ -76,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`dark ${neueMontreal.variable} ${clashDisplay.variable} ${zodiak.variable}`}
+      className={`dark ${neueMontreal.variable} ${bricolage.variable} ${zodiak.variable} ${dmSans.variable}`}
       suppressHydrationWarning
     >
       <body>

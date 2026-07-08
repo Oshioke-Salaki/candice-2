@@ -179,28 +179,28 @@ export default function About() {
 
         <h2
           ref={headRef}
-          className="reveal font-serif mb-8"
+          className="reveal font-display mb-8"
           style={{
-            fontSize: "clamp(2.2rem, 3.5vw, 4rem)",
-            fontWeight: 300,
-            lineHeight: 1.1,
+            fontSize: "clamp(2.4rem, 4vw, 4.4rem)",
+            fontWeight: 700,
+            lineHeight: 1.02,
+            letterSpacing: "-0.02em",
             color: "var(--text)",
           }}
         >
           A muse.
           <br />
-          <em style={{ color: "var(--text-dim)", fontStyle: "italic" }}>
-            And an artist.
-          </em>
+          <span style={{ color: "var(--text-dim)" }}>And an artist.</span>
         </h2>
 
         <p
           ref={body1Ref}
           className="reveal mb-6"
           style={{
-            fontSize: "0.9rem",
-            lineHeight: 1.9,
-            color: "var(--text-dim)",
+            fontFamily: "var(--font-dm), sans-serif",
+            fontSize: "1.2rem",
+            lineHeight: 1.75,
+            color: "var(--text-soft)",
           }}
         >
           I&apos;m{" "}
@@ -221,9 +221,10 @@ export default function About() {
           ref={body2Ref}
           className="reveal mb-10"
           style={{
-            fontSize: "0.9rem",
-            lineHeight: 1.9,
-            color: "var(--text-dim)",
+            fontFamily: "var(--font-dm), sans-serif",
+            fontSize: "1.2rem",
+            lineHeight: 1.75,
+            color: "var(--text-soft)",
           }}
         >
           My work lives where modeling meets storytelling — cultural depth,
