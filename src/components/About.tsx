@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
-import { cldLoader } from "@/lib/media";
+import { cldBlurURL, cldLoader } from "@/lib/media";
 
 /* ─── Reveal hook ─────────────────────────────── */
 function useReveal() {
@@ -134,6 +134,8 @@ export default function About() {
                 <Image
                   loader={cldLoader}
                   src={img.src}
+                  placeholder="blur"
+                  blurDataURL={cldBlurURL(img.src)}
                   alt={img.alt}
                   fill
                   className="object-cover object-top"
@@ -209,7 +211,7 @@ export default function About() {
           <strong style={{ color: "var(--text)", fontWeight: 400 }}>
             Nigerian-Sudanese
           </strong>{" "}
-          model and content creator, based between Dublin and Lagos. Eight-plus
+          model and content creator, based between London and Lagos. Eight-plus
           years in front of the lens turned a kid who loved to pose into a
           disciplined creative fluent in fashion, beauty, photography and
           movement.

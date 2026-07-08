@@ -20,7 +20,7 @@ export default function BookPage() {
           lineOne="THE"
           lineTwo="BOOK"
           subline="Every frame tells a story — fashion, commercial, and everything off duty."
-          note="24 frames · Lagos ✶ Dublin ✶ Paris"
+          note="24 frames · Lagos ✶ London ✶ Paris"
         />
         <BookGallery />
         <PageCta />

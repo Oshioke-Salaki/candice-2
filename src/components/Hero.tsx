@@ -2,7 +2,12 @@
 
 import { useEffect, useLayoutEffect, useState } from "react";
 import Image from "next/image";
-import { cldLoader } from "@/lib/media";
+import { cldBlurURL, cldLoader, cldLoaderWith } from "@/lib/media";
+
+/* Cloudinary two-step smart crop: first trim the dark void around
+   the subject, then fill a 2:3 cover portrait — she fills the frame
+   head to podium. */
+const heroLoader = cldLoaderWith("c_crop,w_0.9,h_0.62,g_auto/c_fill,ar_2:3,g_auto");
 
 // In-session guard so client-side navigations also skip the splash.
 let splashHasPlayed = false;
@@ -93,24 +98,18 @@ export default function Hero() {
       )}
 
       {/* ═══════ HERO ═══════
-          Concept: "The Title Card"
-          Full-bleed cinematic portrait with a precisely centered typographic
-          composition built on contrast:
-            ↳ Fine spaced italic serif  "W O W"     (elegance)
-            ↳ Massive display caps      "CANDICE"   (power)
-          Framed above and below by thin ruled lines — like a couture label.
-          The rules and separators carry her oxblood red.
+          Concept: "The Cover"
+          A digital magazine cover. The masthead — fine serif "WOW" over
+          massive "CANDICE" — sits high in the frame; the portrait
+          (smart-cropped by Cloudinary, g_auto) rises from the bottom edge
+          OVER the masthead, the way a cover star overlaps the logo.
       ══════════════════════ */}
       <section
         id="home"
-        className="relative flex items-center justify-center overflow-hidden"
-        style={{ height: "100svh", minHeight: 600 }}
+        className="relative overflow-hidden"
+        style={{ height: "100svh", minHeight: 640 }}
       >
-        {/* ── Full portrait over a blurred self-extension ──
-            The source image is an ultra-tall portrait (1206×2622), so
-            object-cover would crop most of it on wide screens. Instead:
-            a blurred, darkened copy fills the frame edge-to-edge, and the
-            full uncropped portrait sits on top with object-contain. ── */}
+        {/* ── Atmospheric wash — blurred echo of the portrait ── */}
         <div className="absolute inset-0 z-0">
           <Image
             loader={cldLoader}
@@ -122,71 +121,36 @@ export default function Hero() {
             className="object-cover"
             sizes="100vw"
             style={{
-              filter: "blur(48px) brightness(0.5) saturate(1.15)",
-              transform: "scale(1.15)",
+              filter: "blur(64px) brightness(0.32) saturate(1.25)",
+              transform: "scale(1.25)",
             }}
           />
-          <Image
-            loader={cldLoader}
-            src="candice/hero/hero"
-            alt="Candice — Hero"
-            fill
-            priority
-            className="object-contain"
-            sizes="100vw"
-            style={{
-              objectPosition: "50% 50%",
-              transform: open ? "scale(1.03)" : "scale(1.0)",
-              transition: "transform 14s ease-out",
-            }}
-          />
-
-          {/* Cinematic radial vignette — subtle, preserves image visibility */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 90% 90% at 50% 45%, transparent 25%, rgba(6,3,2,0.45) 100%)",
-            }}
-          />
-
           {/* Dark cap at top — nav always readable */}
           <div
             className="absolute top-0 left-0 right-0"
             style={{
-              height: "140px",
+              height: "120px",
               background:
-                "linear-gradient(to bottom, rgba(6,3,2,0.4) 0%, transparent 100%)",
-            }}
-          />
-
-          {/* Dark gradient from bottom — grounds composition */}
-          <div
-            className="absolute bottom-0 left-0 right-0"
-            style={{
-              height: "30%",
-              background:
-                "linear-gradient(to top, rgba(6,3,2,0.5) 0%, transparent 100%)",
+                "linear-gradient(to bottom, rgba(6,3,2,0.5) 0%, transparent 100%)",
             }}
           />
         </div>
 
-        {/* ── Centered editorial composition ── */}
+        {/* ── Masthead — BEHIND the portrait, like a magazine logo ── */}
         <div
-          className="relative z-10 flex flex-col items-center text-center px-6 w-full"
-          style={{ gap: 0 }}
+          className="absolute inset-x-0 z-10 flex flex-col items-center text-center px-6"
+          style={{ top: "max(9svh, 92px)" }}
         >
-          {/* ROLE LABEL — ultra-fine, widely tracked */}
           <p
             className="uppercase font-medium"
             style={{
-              fontSize: "clamp(0.8rem, 1vw, 0.58rem)",
+              fontSize: "clamp(0.55rem, 0.9vw, 0.68rem)",
               letterSpacing: "0.55em",
-              color: "rgba(255,255,255,0.45)",
-              marginBottom: "clamp(1.2rem, 2.5vh, 2rem)",
+              color: "rgba(255,255,255,0.5)",
+              marginBottom: "clamp(1rem, 2.2svh, 1.8rem)",
               opacity: open ? 1 : 0,
               transform: open ? "translateY(0)" : "translateY(10px)",
-              transition: `opacity 0.9s ease 0.9s, transform 0.9s ${ease} 0.9s`,
+              transition: `opacity 0.9s ease 0.85s, transform 0.9s ${ease} 0.85s`,
             }}
           >
             <span style={{ color: "#C2453E" }}>✶</span> &nbsp; Model
@@ -194,83 +158,121 @@ export default function Hero() {
             <span style={{ color: "#C2453E" }}>✶</span>
           </p>
 
-          {/* TOP RULE — grows from center outward */}
-          <div
-            style={{
-              width: "clamp(40px, 6vw, 80px)",
-              height: "1px",
-              background: "rgba(194,69,62,0.75)",
-              marginBottom: "clamp(1.4rem, 3vh, 2.5rem)",
-              transformOrigin: "center",
-              transform: open ? "scaleX(1)" : "scaleX(0)",
-              transition: `transform 1s ${ease} 0.38s`,
-            }}
-            aria-hidden="true"
-          />
-
-          {/* "WOW" — Cormorant Garamond italic, elegant, tracked out */}
           <div
             className="font-serif italic"
             style={{
-              fontSize: "clamp(2.4rem, 6.5vw, 8.5rem)",
+              fontSize: "clamp(1.5rem, 3.6vw, 3.6rem)",
               fontWeight: 300,
-              letterSpacing: "clamp(0.35em, 1.5vw, 0.6em)",
-              color: "rgba(255,255,255,0.93)",
+              letterSpacing: "clamp(0.35em, 1.2vw, 0.55em)",
+              color: "rgba(255,255,255,0.9)",
               lineHeight: 1,
-              marginBottom: "clamp(0.4rem, 1vh, 0.75rem)",
-              transform: open ? "translateY(0)" : "translateY(22px)",
+              marginBottom: "clamp(0.3rem, 0.8svh, 0.6rem)",
+              transform: open ? "translateY(0)" : "translateY(20px)",
               opacity: open ? 1 : 0,
-              transition: `transform 1.1s ${ease} 0.44s, opacity 1s ${ease} 0.44s`,
+              transition: `transform 1.1s ${ease} 0.4s, opacity 1s ${ease} 0.4s`,
             }}
           >
             WOW
           </div>
 
-          {/* "CANDICE" — Bebas Neue, massive, solid white, commands the frame */}
           <h1
-            className="font-display text-white"
+            className="font-display text-white whitespace-nowrap"
             style={{
-              fontSize: "clamp(4.6rem, 17.5vw, 23rem)",
-              lineHeight: 0.82,
-              letterSpacing: "0.025em",
-              marginBottom: "clamp(1.4rem, 3vh, 2.5rem)",
-              transform: open ? "translateY(0)" : "translateY(36px)",
+              fontSize: "clamp(3.6rem, 11.5vw, 11rem)",
+              lineHeight: 0.85,
+              letterSpacing: "0.03em",
+              transform: open ? "translateY(0)" : "translateY(34px)",
               opacity: open ? 1 : 0,
-              transition: `transform 1.1s ${ease} 0.56s, opacity 1s ${ease} 0.56s`,
+              transition: `transform 1.1s ${ease} 0.5s, opacity 1s ${ease} 0.5s`,
             }}
           >
             CANDICE
           </h1>
+        </div>
 
-          {/* BOTTOM RULE */}
-          <div
-            style={{
-              width: "clamp(40px, 6vw, 80px)",
-              height: "1px",
-              background: "rgba(194,69,62,0.75)",
-              marginBottom: "clamp(1.2rem, 2.5vh, 2rem)",
-              transformOrigin: "center",
-              transform: open ? "scaleX(1)" : "scaleX(0)",
-              transition: `transform 1s ${ease} 0.68s`,
-            }}
-            aria-hidden="true"
+        {/* ── Cover star — smart-cropped portrait over the masthead ── */}
+        <div
+          className="absolute left-1/2 bottom-0 z-20"
+          style={{
+            width: "min(88vw, calc(64svh * 2 / 3))",
+            aspectRatio: "2/3",
+            transform: `translateX(-50%) translateY(${open ? "0" : "5%"})`,
+            opacity: open ? 1 : 0,
+            transition: `transform 1.4s ${ease} 0.65s, opacity 1.1s ease 0.65s`,
+          }}
+        >
+          <Image
+            loader={heroLoader}
+            src="candice/hero/hero"
+            alt="Candice — cover portrait"
+            fill
+            priority
+            placeholder="blur"
+            blurDataURL={cldBlurURL(
+              "candice/hero/hero",
+              "c_crop,w_0.9,h_0.62,g_auto/c_fill,ar_2:3,g_auto"
+            )}
+            className="object-cover"
+            sizes="(max-width: 768px) 88vw, 460px"
           />
-
-          {/* LOCATION — mirrors the role label */}
-          <p
-            className="uppercase"
+          {/* hairline frame in her oxblood red */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ border: "1px solid rgba(194,69,62,0.4)" }}
+          />
+          {/* grounding gradient inside the portrait's bottom */}
+          <div
+            className="absolute bottom-0 left-0 right-0 pointer-events-none"
             style={{
-              fontSize: "clamp(0.52rem, 1vw, 0.62rem)",
+              height: "22%",
+              background:
+                "linear-gradient(to top, rgba(6,3,2,0.55) 0%, transparent 100%)",
+            }}
+          />
+          {/* location — cover strapline, pinned to the portrait's foot */}
+          <p
+            className="absolute bottom-4 left-0 right-0 text-center uppercase"
+            style={{
+              fontSize: "clamp(0.5rem, 0.9vw, 0.6rem)",
               letterSpacing: "0.45em",
-              color: "rgba(255,255,255,0.42)",
+              color: "rgba(255,255,255,0.75)",
               opacity: open ? 1 : 0,
-              transform: open ? "translateY(0)" : "translateY(10px)",
-              transition: `opacity 0.9s ease 0.95s, transform 0.9s ${ease} 0.95s`,
+              transition: `opacity 0.9s ease 1.15s`,
             }}
           >
             London &nbsp;·&nbsp; Lagos &nbsp;·&nbsp; Worldwide
           </p>
         </div>
+
+        {/* ── Flanking rules — the couture red, framing the cover ── */}
+        <div
+          aria-hidden="true"
+          className="absolute z-10 hidden md:block"
+          style={{
+            left: "8%",
+            top: "50%",
+            width: "1px",
+            height: "clamp(60px, 14svh, 130px)",
+            background: "rgba(194,69,62,0.6)",
+            transformOrigin: "center",
+            transform: `translateY(-50%) scaleY(${open ? 1 : 0})`,
+            transition: `transform 1s ${ease} 0.9s`,
+          }}
+        />
+        <div
+          aria-hidden="true"
+          className="absolute z-10 hidden md:block"
+          style={{
+            right: "8%",
+            top: "50%",
+            width: "1px",
+            height: "clamp(60px, 14svh, 130px)",
+            background: "rgba(194,69,62,0.6)",
+            transformOrigin: "center",
+            transform: `translateY(-50%) scaleY(${open ? 1 : 0})`,
+            transition: `transform 1s ${ease} 0.9s`,
+          }}
+        />
 
         {/* ── Corner details — appear last ── */}
 

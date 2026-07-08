@@ -4,9 +4,9 @@
    TAILWIND v4 THEME
    ============================================= */
 @theme {
-  --font-display: var(--font-display-var), sans-serif;
+  --font-display: var(--font-clash), sans-serif;
   --font-serif: var(--font-serif-var), serif;
-  --font-sans: var(--font-body-var), sans-serif;
+  --font-sans: var(--font-neue), sans-serif;
 
   --tracking-widest2: 0.25em;
   --tracking-widest3: 0.3em;
@@ -239,6 +239,12 @@ body {
     right: 0 !important;
     bottom: -1.5rem !important;
   }
+}
+
+/* Clash Display's signature weight is semibold — headings default
+   to 600; explicit inline weights still override. */
+.font-display {
+  font-weight: 600;
 }
 
 /* ── Hidden scrollbar for horizontal film strips ── */

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { campaignFrame, cldLoader } from "@/lib/media";
+import { campaignFrame, cldBlurURL, cldLoader } from "@/lib/media";
 
 /* ═══════════════════════════════════════════════════════════
    THE INDEX — editorial collaborations directory.
@@ -21,36 +21,109 @@ type Collab = {
 
 const COLLABS: Collab[] = [
   // ── Brand partnerships ──
-  { id: "lacoste", name: "Lacoste", category: "brand", count: 1, tier: "Luxury" },
-  { id: "people-ssense", name: "SSENSE × People", category: "brand", count: 1, tier: "Luxury" },
-  { id: "bershka", name: "Bershka", category: "brand", count: 2, tier: "Contemporary" },
-  { id: "asos", name: "ASOS", category: "brand", count: 1, tier: "Contemporary" },
-  { id: "fashion-nova", name: "Fashion Nova", category: "brand", count: 1, tier: "Contemporary" },
-  { id: "timberland", name: "Timberland", category: "brand", count: 1, tier: "Street" },
+  {
+    id: "lacoste",
+    name: "Lacoste",
+    category: "brand",
+    count: 1,
+    tier: "Luxury",
+  },
+  {
+    id: "people-ssense",
+    name: "SSENSE × People",
+    category: "brand",
+    count: 1,
+    tier: "Luxury",
+  },
+  {
+    id: "bershka",
+    name: "Bershka",
+    category: "brand",
+    count: 2,
+    tier: "Contemporary",
+  },
+  {
+    id: "asos",
+    name: "ASOS",
+    category: "brand",
+    count: 1,
+    tier: "Contemporary",
+  },
+  {
+    id: "fashion-nova",
+    name: "Fashion Nova",
+    category: "brand",
+    count: 1,
+    tier: "Contemporary",
+  },
+  {
+    id: "timberland",
+    name: "Timberland",
+    category: "brand",
+    count: 1,
+    tier: "Street",
+  },
   { id: "vans", name: "Vans", category: "brand", count: 1, tier: "Street" },
   { id: "meshki", name: "Meshki", category: "brand", count: 1, tier: "Indie" },
-  { id: "motel-rocks", name: "Motel Rocks", category: "brand", count: 1, tier: "Indie" },
-  { id: "wmns-wear", name: "WMNS Wear", category: "brand", count: 2, tier: "Indie" },
+  {
+    id: "motel-rocks",
+    name: "Motel Rocks",
+    category: "brand",
+    count: 1,
+    tier: "Indie",
+  },
+  {
+    id: "wmns-wear",
+    name: "WMNS Wear",
+    category: "brand",
+    count: 2,
+    tier: "Indie",
+  },
   // ── Editorial shoots ──
   { id: "ldm-clo-ss26", name: "LDM CLO SS26", category: "editorial", count: 9 },
   { id: "meji-meji", name: "Meji Meji", category: "editorial", count: 7 },
   { id: "streetsouk", name: "Streetsouk", category: "editorial", count: 4 },
-  { id: "ajanee-studio", name: "Ajanee Studio", category: "editorial", count: 3 },
-  { id: "the-shine-cartel", name: "The Shine Cartel", category: "editorial", count: 2 },
-  { id: "patrique-ophique", name: "Patrique Ophique", category: "editorial", count: 2 },
+  {
+    id: "ajanee-studio",
+    name: "Ajanee Studio",
+    category: "editorial",
+    count: 3,
+  },
+  {
+    id: "the-shine-cartel",
+    name: "The Shine Cartel",
+    category: "editorial",
+    count: 2,
+  },
+  {
+    id: "patrique-ophique",
+    name: "Patrique Ophique",
+    category: "editorial",
+    count: 2,
+  },
   { id: "bolapsd", name: "BolaPSD", category: "editorial", count: 2 },
   { id: "vvs-lagos", name: "VVS Lagos", category: "editorial", count: 2 },
-  { id: "dolore-inc-ss26", name: "Dolore Inc SS26", category: "editorial", count: 2 },
-  { id: "brown-thomas-ss25", name: "Brown Thomas SS25", category: "editorial", count: 2 },
+  {
+    id: "dolore-inc-ss26",
+    name: "Dolore Inc SS26",
+    category: "editorial",
+    count: 2,
+  },
+  {
+    id: "brown-thomas-ss25",
+    name: "Brown Thomas SS25",
+    category: "editorial",
+    count: 2,
+  },
   { id: "snowbunny", name: "Snowbunny", category: "editorial", count: 1 },
 ];
 
 const src = campaignFrame;
 
-type Filter = "all" | "brand" | "editorial";
+type Filter = "brand" | "editorial";
 
 export default function BrandCollaborations() {
-  const [filter, setFilter] = useState<Filter>("all");
+  const [filter, setFilter] = useState<Filter>("brand");
   const [openId, setOpenId] = useState<string | null>(null);
   const [hoverId, setHoverId] = useState<string | null>(null);
 
@@ -60,7 +133,7 @@ export default function BrandCollaborations() {
   const pos = useRef({ x: 0, y: 0 });
   const raf = useRef<number>(0);
 
-  const visible = filter === "all" ? COLLABS : COLLABS.filter((c) => c.category === filter);
+  const visible = COLLABS.filter((c) => c.category === filter);
 
   /* ── Floating preview: lerp-follow the cursor with a lag ── */
   const tick = useCallback(() => {
@@ -97,7 +170,7 @@ export default function BrandCollaborations() {
             obs.unobserve(en.target);
           }
         }),
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     );
     rows.forEach((r) => obs.observe(r));
     return () => obs.disconnect();
@@ -149,7 +222,7 @@ export default function BrandCollaborations() {
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
         {/* ═══ Header ═══ */}
         <div className="mb-14 md:mb-20">
-          <div className="section-tag mb-6">The Index</div>
+          {/* <div className="section-tag mb-6">The Index</div> */}
           <div className="flex flex-wrap items-end justify-between gap-6">
             <h2
               className="font-display"
@@ -166,9 +239,16 @@ export default function BrandCollaborations() {
             <div className="flex gap-7 pb-2">
               {(
                 [
-                  { key: "all", label: "All", n: COLLABS.length },
-                  { key: "brand", label: "Brands", n: COLLABS.filter((c) => c.category === "brand").length },
-                  { key: "editorial", label: "Editorial", n: COLLABS.filter((c) => c.category === "editorial").length },
+                  {
+                    key: "brand",
+                    label: "Brands",
+                    n: COLLABS.filter((c) => c.category === "brand").length,
+                  },
+                  {
+                    key: "editorial",
+                    label: "Editorial",
+                    n: COLLABS.filter((c) => c.category === "editorial").length,
+                  },
                 ] as const
               ).map(({ key, label, n }) => (
                 <button
@@ -187,7 +267,13 @@ export default function BrandCollaborations() {
                   }}
                 >
                   {label}
-                  <sup style={{ color: "var(--accent)", marginLeft: "3px", fontSize: "0.5rem" }}>
+                  <sup
+                    style={{
+                      color: "var(--accent)",
+                      marginLeft: "3px",
+                      fontSize: "0.5rem",
+                    }}
+                  >
                     {n}
                   </sup>
                   <span
@@ -210,7 +296,10 @@ export default function BrandCollaborations() {
             const isHover = hoverId === c.id;
             const dimOthers = hoverId !== null && !isHover && !isOpen;
             return (
-              <div key={c.id} style={{ borderBottom: "1px solid var(--border)" }}>
+              <div
+                key={c.id}
+                style={{ borderBottom: "1px solid var(--border)" }}
+              >
                 {/* ── Row ── */}
                 <button
                   data-row
@@ -231,7 +320,8 @@ export default function BrandCollaborations() {
                     className="shrink-0 tracking-[0.2em] tabular-nums"
                     style={{
                       fontSize: "0.6rem",
-                      color: isHover || isOpen ? "var(--accent)" : "var(--text-dim)",
+                      color:
+                        isHover || isOpen ? "var(--accent)" : "var(--text-dim)",
                       transition: "color 0.3s",
                       width: "2.2rem",
                     }}
@@ -247,8 +337,12 @@ export default function BrandCollaborations() {
                       lineHeight: 1,
                       letterSpacing: "0.02em",
                       color: isOpen ? "var(--accent)" : "var(--text)",
-                      transform: isHover && !isOpen ? "translateX(14px)" : "translateX(0)",
-                      transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1), color 0.3s",
+                      transform:
+                        isHover && !isOpen
+                          ? "translateX(14px)"
+                          : "translateX(0)",
+                      transition:
+                        "transform 0.5s cubic-bezier(0.16,1,0.3,1), color 0.3s",
                       whiteSpace: "nowrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
@@ -276,7 +370,8 @@ export default function BrandCollaborations() {
                       lineHeight: 1,
                       color: isOpen ? "var(--accent)" : "var(--text-dim)",
                       transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
-                      transition: "transform 0.45s cubic-bezier(0.16,1,0.3,1), color 0.3s",
+                      transition:
+                        "transform 0.45s cubic-bezier(0.16,1,0.3,1), color 0.3s",
                       display: "inline-block",
                     }}
                   >
@@ -289,7 +384,8 @@ export default function BrandCollaborations() {
                   style={{
                     display: "grid",
                     gridTemplateRows: isOpen ? "1fr" : "0fr",
-                    transition: "grid-template-rows 0.65s cubic-bezier(0.16,1,0.3,1)",
+                    transition:
+                      "grid-template-rows 0.65s cubic-bezier(0.16,1,0.3,1)",
                   }}
                 >
                   <div style={{ overflow: "hidden" }}>
@@ -303,11 +399,16 @@ export default function BrandCollaborations() {
                             <figure
                               key={n}
                               className="relative shrink-0 overflow-hidden"
-                              style={{ scrollSnapAlign: "start", background: "var(--bg-card)" }}
+                              style={{
+                                scrollSnapAlign: "start",
+                                background: "var(--bg-card)",
+                              }}
                             >
                               <Image
                                 loader={cldLoader}
                                 src={src(c.id, n + 1)}
+                                placeholder="blur"
+                                blurDataURL={cldBlurURL(src(c.id, n + 1))}
                                 alt={`${c.name} — frame ${n + 1}`}
                                 width={720}
                                 height={960}
@@ -328,16 +429,24 @@ export default function BrandCollaborations() {
                                   backdropFilter: "blur(6px)",
                                 }}
                               >
-                                {String(n + 1).padStart(2, "0")} / {String(c.count).padStart(2, "0")}
+                                {String(n + 1).padStart(2, "0")} /{" "}
+                                {String(c.count).padStart(2, "0")}
                               </span>
                             </figure>
                           ))}
                       </div>
                       <p
                         className="font-serif italic mt-4"
-                        style={{ fontSize: "0.95rem", color: "var(--text-dim)" }}
+                        style={{
+                          fontSize: "0.95rem",
+                          color: "var(--text-dim)",
+                        }}
                       >
-                        {c.name} — {c.category === "brand" ? "Brand Partnership" : "Editorial"} · drag to explore →
+                        {c.name} —{" "}
+                        {c.category === "brand"
+                          ? "Brand Partnership"
+                          : "Editorial"}{" "}
+                        · drag to explore →
                       </p>
                     </div>
                   </div>

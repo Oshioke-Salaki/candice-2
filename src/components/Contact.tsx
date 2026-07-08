@@ -173,7 +173,7 @@ export default function Contact() {
                 email
               </a>{' '}
               or WhatsApp with a brief overview of your brand and campaign goals.
-              Based between Dublin &amp; Lagos — travels worldwide.
+              Based between London &amp; Lagos — travels worldwide.
             </p>
           </div>
         </div>

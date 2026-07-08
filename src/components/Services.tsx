@@ -14,7 +14,7 @@ const services: Service[] = [
   {
     num:  '01',
     name: 'Fashion &\nEditorial',
-    desc: 'Editorial spreads, designer lookbooks and high-fashion stories with cultural depth and modern edge. From crimson gowns in Lagos to bridal veils in Dublin — images that stop the page.',
+    desc: 'Editorial spreads, designer lookbooks and high-fashion stories with cultural depth and modern edge. From crimson gowns in Lagos to bridal veils in London — images that stop the page.',
     span: 'row-span-2',
   },
   {

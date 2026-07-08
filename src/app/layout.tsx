@@ -1,29 +1,43 @@
 import type { Metadata } from 'next'
-import { Space_Grotesk, Cormorant_Garamond, Inter } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import ThemeProvider from '@/components/ThemeProvider'
 import ScrollProgress from '@/components/ScrollProgress'
 import Noise from '@/components/Noise'
 
-const spaceGrotesk = Space_Grotesk({
-  weight: ['400', '700'],
-  subsets: ['latin'],
-  variable: '--font-display-var',
+/* PP Neue Montreal — the house grotesque. One family drives both the
+   display headings and the body text. */
+const neueMontreal = localFont({
+  src: [
+    { path: '../fonts/ppneuemontreal-thin.otf', weight: '100', style: 'normal' },
+    { path: '../fonts/ppneuemontreal-book.otf', weight: '400', style: 'normal' },
+    { path: '../fonts/ppneuemontreal-italic.otf', weight: '400', style: 'italic' },
+    { path: '../fonts/ppneuemontreal-medium.otf', weight: '500', style: 'normal' },
+    { path: '../fonts/ppneuemontreal-semibolditalic.otf', weight: '600', style: 'italic' },
+    { path: '../fonts/ppneuemontreal-bold.otf', weight: '700', style: 'normal' },
+  ],
+  variable: '--font-neue',
   display: 'swap',
 })
 
-const cormorant = Cormorant_Garamond({
-  weight: ['300', '400', '600'],
-  style: ['normal', 'italic'],
-  subsets: ['latin'],
+/* Clash Display — the edge. Drives all display headings; its funky
+   geometric letterforms carry the alte personality. */
+const clashDisplay = localFont({
+  src: [
+    { path: '../fonts/ClashDisplay-Variable.woff2', weight: '200 700', style: 'normal' },
+  ],
+  variable: '--font-clash',
+  display: 'swap',
+})
+
+/* Zodiak — sharp editorial serif; its italic carries the elegant
+   accents (WOW, pull-quotes, captions) with edge instead of curls. */
+const zodiak = localFont({
+  src: [
+    { path: '../fonts/Zodiak-Variable.woff2', weight: '400 900', style: 'normal' },
+    { path: '../fonts/Zodiak-VariableItalic.woff2', weight: '400 900', style: 'italic' },
+  ],
   variable: '--font-serif-var',
-  display: 'swap',
-})
-
-const inter = Inter({
-  weight: ['300', '400', '500'],
-  subsets: ['latin'],
-  variable: '--font-body-var',
   display: 'swap',
 })
 
@@ -62,7 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`dark ${spaceGrotesk.variable} ${cormorant.variable} ${inter.variable}`}
+      className={`dark ${neueMontreal.variable} ${clashDisplay.variable} ${zodiak.variable}`}
       suppressHydrationWarning
     >
       <body>
