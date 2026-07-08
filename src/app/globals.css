@@ -190,9 +190,14 @@ body {
 }
 @media (min-width: 640px) {
   .brand-logos-grid { grid-template-columns: repeat(3, 1fr); }
+  /* 22 cells % 3 cols = 1 orphan — stretch it across the last row */
+  .brand-logos-grid > :nth-child(22) { grid-column: span 3; }
 }
 @media (min-width: 900px) {
   .brand-logos-grid { grid-template-columns: repeat(4, 1fr); }
+  /* 22 % 4 = 2 orphans — each spans two columns to close the row */
+  .brand-logos-grid > :nth-child(21),
+  .brand-logos-grid > :nth-child(22) { grid-column: span 2; }
 }
 
 /* Campaign editorials: 1 col mobile → staggered 2 col desktop */
@@ -245,6 +250,23 @@ body {
    to 600; explicit inline weights still override. */
 .font-display {
   font-weight: 600;
+}
+
+/* ── Brand logo wall — monochrome normalization ──
+   Any logo color becomes: white on dark theme, ink on light theme,
+   cream on the accent hover wash. Requires transparent backgrounds. */
+.brand-logo {
+  filter: brightness(0) invert(1);
+  opacity: 0.78;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+html.light .brand-logo {
+  filter: brightness(0);
+}
+.logo-cell:hover .brand-logo {
+  filter: brightness(0) invert(1) sepia(0.12);
+  opacity: 1;
+  transform: scale(1.05);
 }
 
 /* ── Hidden scrollbar for horizontal film strips ── */
