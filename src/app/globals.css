@@ -181,23 +181,51 @@ body {
 }
 
 /* Brand name grid: 2 cols mobile → 3 → 4 desktop */
-.brand-logos-grid {
-  display: grid;
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  grid-template-columns: repeat(2, 1fr);
+/* ── Spotlight wall — free-flowing marks, no grid lines ── */
+.spot-flow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  column-gap: clamp(2.4rem, 6vw, 5.5rem);
+  row-gap: clamp(2.2rem, 5vh, 3.8rem);
+  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.25rem, 4vw, 3rem);
 }
-@media (min-width: 640px) {
-  .brand-logos-grid { grid-template-columns: repeat(3, 1fr); }
-  /* 22 cells % 3 cols = 1 orphan — stretch it across the last row */
-  .brand-logos-grid > :nth-child(22) { grid-column: span 3; }
+/* The light's reveal layer. Dark theme: warm paper + printed ink.
+   Light theme: the inverse — a circle of night with white marks. */
+.spot-paper {
+  background: #ede6da;
 }
-@media (min-width: 900px) {
-  .brand-logos-grid { grid-template-columns: repeat(4, 1fr); }
-  /* 22 % 4 = 2 orphans — each spans two columns to close the row */
-  .brand-logos-grid > :nth-child(21),
-  .brand-logos-grid > :nth-child(22) { grid-column: span 2; }
+html.light .spot-paper {
+  background: #12100e;
+}
+.spot-paper .brand-ink {
+  filter: brightness(0);
+  opacity: 0.92;
+}
+html.light .spot-paper .brand-ink {
+  filter: brightness(0) invert(1);
+}
+.spot-paper .brand-true {
+  filter: none;
+  opacity: 1;
+}
+.spot-paper .spot-text {
+  color: #17120d;
+}
+html.light .spot-paper .spot-text {
+  color: #ede6da;
+}
+.spot-paper .spot-x {
+  color: #8a2a24;
+}
+html.light .spot-paper .spot-x {
+  color: #c2453e;
+}
+/* the hint only makes sense with a cursor */
+.spot-hint { display: none; }
+@media (hover: hover) {
+  .spot-hint { display: inline; }
 }
 
 /* Campaign editorials: 1 col mobile → staggered 2 col desktop */
@@ -262,11 +290,6 @@ body {
 }
 html.light .brand-logo {
   filter: brightness(0);
-}
-.logo-cell:hover .brand-logo {
-  filter: brightness(0) invert(1) sepia(0.12);
-  opacity: 1;
-  transform: scale(1.05);
 }
 
 /* ── Hidden scrollbar for horizontal film strips ── */

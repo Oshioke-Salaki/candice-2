@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 /* ─── Brand roster — logo wall.
    Every mark is normalized to monochrome via CSS (.brand-logo):
@@ -60,72 +60,172 @@ function useReveal(threshold = 0.12) {
   return ref;
 }
 
-/* ─── Logo cell ───────────────────────────────── */
-function LogoCell({ brand }: { brand: Brand }) {
-  const base = 26; // px — baseline wordmark height
-  return (
-    <div
-      className="logo-cell group relative flex items-center justify-center overflow-hidden cursor-default"
-      style={{ background: "var(--bg)", minHeight: "7rem", padding: "1.5rem" }}
-      title={brand.name}
-    >
-      {/* Hover wash */}
-      <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{ background: "var(--accent)" }}
-      />
+/* ─── One logo mark, rendered for either layer ────
+   mode "mono"  → theme-aware silhouette (.brand-logo)
+   mode "paper" → printed ink on cream; Lacoste keeps
+                  its true colors (the only colored mark) */
+function Mark({ brand, mode }: { brand: Brand; mode: "mono" | "paper" }) {
+  const base = 30; // px — baseline wordmark height
+  const imgClass =
+    mode === "mono"
+      ? "brand-logo"
+      : brand.name === "Lacoste"
+        ? "brand-true"
+        : "brand-ink";
+  if (brand.text) {
+    return (
+      <span
+        className={`font-display uppercase ${mode === "paper" ? "spot-text" : ""}`}
+        style={{
+          fontSize: "1.6rem",
+          letterSpacing: "0.12em",
+          color: mode === "mono" ? "var(--text)" : undefined,
+          opacity: mode === "mono" ? 0.8 : 0.92,
+          lineHeight: 1,
+        }}
+      >
+        {brand.text}
+      </span>
+    );
+  }
 
-      {brand.text ? (
-        /* Typographic stand-in — matches the monochrome wall */
+  if (brand.pair) {
+    return (
+      <span className="flex items-center gap-3">
+        <img
+          src={brand.pair[0]}
+          alt="Miu Miu"
+          loading="lazy"
+          className={imgClass}
+          style={{ height: `${base * 0.75}px`, width: "auto", objectFit: "contain" }}
+        />
         <span
-          className="font-display relative z-10 uppercase transition-colors duration-400 group-hover:text-[#EDE6DA]"
+          className={`font-serif italic ${mode === "paper" ? "spot-x" : ""}`}
           style={{
-            fontSize: "1.5rem",
-            letterSpacing: "0.12em",
-            color: "var(--text)",
-            opacity: 0.85,
+            fontSize: "1.1rem",
+            color: mode === "mono" ? "var(--text-dim)" : undefined,
+            lineHeight: 1,
           }}
         >
-          {brand.text}
+          ×
         </span>
-      ) : brand.pair ? (
-        /* Two houses, one collab — joined by the serif × */
-        <div className="relative z-10 flex items-center justify-center gap-3 w-full">
-          <img
-            src={brand.pair[0]}
-            alt="Miu Miu"
-            loading="lazy"
-            className="brand-logo"
-            style={{ height: `${base * 0.8}px`, width: "auto", maxWidth: "34%", objectFit: "contain" }}
-          />
-          <span
-            className="font-serif italic transition-colors duration-400 group-hover:text-[#EDE6DA]"
-            style={{ fontSize: "1.1rem", color: "var(--text-dim)", lineHeight: 1 }}
-          >
-            ×
-          </span>
-          <img
-            src={brand.pair[1]}
-            alt="L'Oréal"
-            loading="lazy"
-            className="brand-logo"
-            style={{ height: `${base * 0.75}px`, width: "auto", maxWidth: "34%", objectFit: "contain" }}
-          />
-        </div>
-      ) : (
         <img
-          src={brand.logo}
-          alt={brand.name}
+          src={brand.pair[1]}
+          alt="L'Oréal"
           loading="lazy"
-          className="brand-logo relative z-10"
-          style={{
-            height: `${base * (brand.h ?? 1)}px`,
-            width: "auto",
-            maxWidth: "72%",
-            objectFit: "contain",
-          }}
+          className={imgClass}
+          style={{ height: `${base * 0.7}px`, width: "auto", objectFit: "contain" }}
         />
-      )}
+      </span>
+    );
+  }
+
+  return (
+    <img
+      src={brand.logo}
+      alt={brand.name}
+      loading="lazy"
+      className={imgClass}
+      style={{
+        height: `${base * (brand.h ?? 1)}px`,
+        width: "auto",
+        maxWidth: "min(46vw, 240px)",
+        objectFit: "contain",
+      }}
+    />
+  );
+}
+
+/* ─── The flowing wall, rendered twice (must match 1:1) ─── */
+function Flow({ mode }: { mode: "mono" | "paper" }) {
+  return (
+    <div className="spot-flow">
+      {brands.map((b) => (
+        <span key={b.name} title={b.name} className="inline-flex items-center">
+          <Mark brand={b} mode={mode} />
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/* ─── Spotlight wall — "The Contact Sheet" ────────
+   At rest: monochrome marks, no grid, free flow.
+   A soft circle of warm paper follows the cursor and
+   reveals the logos as printed ink (Lacoste in color).
+   Touch devices: the light drifts on its own. ─── */
+function SpotlightWall() {
+  const wallRef = useRef<HTMLDivElement>(null);
+  const paperRef = useRef<HTMLDivElement>(null);
+  const target = useRef({ x: -9999, y: -9999, r: 0 });
+  const cur = useRef({ x: -9999, y: -9999, r: 0 });
+  const raf = useRef(0);
+  const autoT = useRef(0);
+  const autoMode = useRef(false);
+
+  const tick = useCallback(() => {
+    const paper = paperRef.current;
+    const wall = wallRef.current;
+    if (paper && wall) {
+      if (autoMode.current) {
+        // autonomous drift for touch devices
+        autoT.current += 0.008;
+        const t = autoT.current;
+        const w = wall.offsetWidth;
+        const hgt = wall.offsetHeight;
+        target.current.x = w / 2 + Math.sin(t) * w * 0.36;
+        target.current.y = hgt / 2 + Math.cos(t * 0.73) * hgt * 0.32;
+        target.current.r = 150 + Math.sin(t * 1.6) * 30;
+      }
+      cur.current.x += (target.current.x - cur.current.x) * 0.14;
+      cur.current.y += (target.current.y - cur.current.y) * 0.14;
+      cur.current.r += (target.current.r - cur.current.r) * 0.1;
+      paper.style.clipPath = `circle(${cur.current.r}px at ${cur.current.x}px ${cur.current.y}px)`;
+    }
+    raf.current = requestAnimationFrame(tick);
+  }, []);
+
+  useEffect(() => {
+    autoMode.current = window.matchMedia("(hover: none)").matches;
+    if (autoMode.current) target.current.r = 150;
+    raf.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf.current);
+  }, [tick]);
+
+  const onMove = (e: React.MouseEvent) => {
+    if (autoMode.current) return;
+    const rect = wallRef.current!.getBoundingClientRect();
+    target.current.x = e.clientX - rect.left;
+    target.current.y = e.clientY - rect.top;
+    target.current.r = 200;
+  };
+  const onLeave = () => {
+    if (autoMode.current) return;
+    target.current.r = 0;
+  };
+
+  return (
+    <div
+      ref={wallRef}
+      className="relative overflow-hidden"
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+    >
+      {/* base — monochrome marks on the site background */}
+      <Flow mode="mono" />
+
+      {/* the light — warm paper, printed ink, true Lacoste green */}
+      <div
+        ref={paperRef}
+        aria-hidden="true"
+        className="spot-paper absolute inset-0 pointer-events-none"
+        style={{
+          clipPath: "circle(0px at 50% 50%)",
+          willChange: "clip-path",
+        }}
+      >
+        <Flow mode="paper" />
+      </div>
     </div>
   );
 }
@@ -170,17 +270,18 @@ export default function BrandsSection() {
             className="font-serif italic mt-4"
             style={{ fontSize: "1.1rem", color: "var(--text-dim)" }}
           >
-            A few names. Many stories.
+            A few names. Many stories.{" "}
+            <span className="spot-hint" style={{ color: "var(--accent)" }}>
+              Bring the light. ✶
+            </span>
           </p>
         </div>
       </div>
 
-      {/* ══ Partner brands — typographic wall ══ */}
+      {/* ══ Partner brands — spotlight wall ══ */}
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-        <div ref={logosRef} className="reveal brand-logos-grid">
-          {brands.map((b) => (
-            <LogoCell key={b.name} brand={b} />
-          ))}
+        <div ref={logosRef} className="reveal">
+          <SpotlightWall />
         </div>
       </div>
     </section>
