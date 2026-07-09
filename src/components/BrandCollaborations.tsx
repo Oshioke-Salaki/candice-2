@@ -36,6 +36,12 @@ const MODELING: Collab[] = [
   },
   { id: "streetsouk", name: "Streetsouk", category: "modeling", count: 4 },
   { id: "bolapsd", name: "BolaPSD", category: "modeling", count: 2 },
+  {
+    id: "by-naomi-smith",
+    name: "By Naomi Smith",
+    category: "modeling",
+    count: 1,
+  },
   { id: "ajanee-studio", name: "Ajanee Studio", category: "modeling", count: 3 },
   { id: "vvs-lagos", name: "VVS Lagos", category: "modeling", count: 2 },
   {

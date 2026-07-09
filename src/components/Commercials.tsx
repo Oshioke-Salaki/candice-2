@@ -25,7 +25,12 @@ const COMMERCIALS = [
     meta: "Olamide — Music Video",
     posterAt: 12,
   },
-  // TODO: Buju music-video clip slots in here once the file arrives.
+  {
+    id: "bnxn-buju",
+    title: "BNXN (Buju)",
+    meta: "Music Video Shoot",
+    posterAt: 1,
+  },
   { id: "ldm-clo", title: "LDM CLO", meta: "Collab Commercial", posterAt: 1 },
   { id: "lia-aw22", title: "Lia Cowan", meta: "Runway Show", posterAt: 1 },
   // ── The rest ──
