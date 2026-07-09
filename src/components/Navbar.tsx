@@ -1,21 +1,28 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTheme } from "./ThemeProvider";
 
-/* Slash-prefixed hashes so section links also work from /book and /content */
 const links = [
   { href: "/#about", label: "About" },
   { href: "/#services", label: "Services" },
-  { href: "/book", label: "Book" },
-  { href: "/content", label: "Content" },
+  { href: "/#work", label: "Work" },
   { href: "/#brands", label: "Brands" },
   { href: "/#contact", label: "Contact" },
 ];
 
 /* ─── Hamburger icon ─────────────────────────────── */
-function Hamburger({ open, onClick }: { open: boolean; onClick: () => void }) {
+function Hamburger({
+  open,
+  onClick,
+  color = "var(--text)",
+}: {
+  open: boolean;
+  onClick: () => void;
+  color?: string;
+}) {
   return (
     <button
       onClick={onClick}
@@ -31,7 +38,7 @@ function Hamburger({ open, onClick }: { open: boolean; onClick: () => void }) {
       <span
         className="block h-px origin-center transition-all duration-500"
         style={{
-          background: "var(--text)",
+          background: color,
           transform: open ? "translateY(4.5px) rotate(45deg)" : "none",
           width: open ? "20px" : "20px",
         }}
@@ -39,7 +46,7 @@ function Hamburger({ open, onClick }: { open: boolean; onClick: () => void }) {
       <span
         className="block h-px transition-all duration-300"
         style={{
-          background: "var(--text)",
+          background: color,
           width: open ? "0px" : "14px",
           opacity: open ? 0 : 1,
         }}
@@ -47,7 +54,7 @@ function Hamburger({ open, onClick }: { open: boolean; onClick: () => void }) {
       <span
         className="block h-px origin-center transition-all duration-500"
         style={{
-          background: "var(--text)",
+          background: color,
           transform: open ? "translateY(-4.5px) rotate(-45deg)" : "none",
           width: open ? "20px" : "20px",
         }}
@@ -61,13 +68,15 @@ function ThemeToggle({
   theme,
   toggle,
   inverted = false,
+  light = false,
 }: {
   theme: string;
   toggle: () => void;
   inverted?: boolean;
+  light?: boolean;
 }) {
-  const fg = inverted ? "var(--bg)" : "var(--text)";
-  const border = inverted ? "var(--bg)" : "var(--text)";
+  const fg = light ? "#EDE6DA" : inverted ? "var(--bg)" : "var(--text)";
+  const border = light ? "rgba(237,230,218,0.5)" : inverted ? "var(--bg)" : "var(--text)";
 
   return (
     <button
@@ -90,7 +99,7 @@ function ThemeToggle({
       onMouseEnter={(e) => {
         const el = e.currentTarget;
         el.style.background = fg;
-        el.style.color = inverted ? "var(--text)" : "var(--bg)";
+        el.style.color = light ? "#0A0807" : inverted ? "var(--text)" : "var(--bg)";
         el.style.opacity = "1";
       }}
       onMouseLeave={(e) => {
@@ -124,9 +133,15 @@ function ThemeToggle({
 /* ─── Navbar ─────────────────────────────────────── */
 export default function Navbar() {
   const { theme, toggle } = useTheme();
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuMounted, setMenuMounted] = useState(false); // for enter animation
+
+  /* The home page opens on the always-dark cinematic hero, so while the
+     nav sits over it (top, not scrolled) it must be light in BOTH themes.
+     Once scrolled — or on inner pages — it follows the active theme. */
+  const overHero = pathname === "/" && !scrolled;
 
   /* Scroll detection */
   useEffect(() => {
@@ -158,13 +173,19 @@ export default function Navbar() {
 
   /* Nav frosted-glass background (always present, deepens on scroll) */
   const isDark = theme === "dark";
-  const navBg = isDark
-    ? scrolled
-      ? "rgba(10,8,7,0.85)"
-      : "rgba(10,8,7,0.3)"
-    : scrolled
-      ? "rgba(236,229,216,0.88)"
-      : "rgba(236,229,216,0.3)";
+  const navBg = overHero
+    ? "rgba(10,8,7,0.28)"
+    : isDark
+      ? scrolled
+        ? "rgba(10,8,7,0.85)"
+        : "rgba(10,8,7,0.3)"
+      : scrolled
+        ? "rgba(236,229,216,0.88)"
+        : "rgba(236,229,216,0.3)";
+
+  /* Foreground: forced cream over the dark hero, else the theme's text. */
+  const navFg = overHero ? "#EDE6DA" : "var(--text)";
+  const navDot = overHero ? "#C2453E" : "var(--accent)";
 
   const ease = "cubic-bezier(0.16,1,0.3,1)";
 
@@ -184,20 +205,20 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           href="/#home"
-          className="font-display text-xl md:text-2xl tracking-[0.25em] no-underline shrink-0"
-          style={{ color: "var(--text)" }}
+          className="font-display text-xl md:text-2xl tracking-[0.25em] no-underline shrink-0 transition-colors duration-500"
+          style={{ color: navFg }}
         >
-          WC<span style={{ color: "var(--accent)" }}>.</span>
+          WC<span style={{ color: navDot }}>.</span>
         </Link>
 
         {/* Desktop links */}
-        <ul className="hidden md:flex list-none gap-6 lg:gap-9 flex-1 justify-center">
+        <ul className="hidden md:flex list-none gap-7 lg:gap-10 flex-1 justify-center">
           {links.map((l) => (
             <li key={l.href}>
               <Link
                 href={l.href}
-                className="no-underline text-[0.65rem] tracking-[0.2em] uppercase font-normal transition-opacity duration-300 opacity-50 hover:opacity-100 whitespace-nowrap"
-                style={{ color: "var(--text)" }}
+                className="no-underline text-[0.78rem] tracking-[0.16em] uppercase font-medium transition-all duration-300 opacity-65 hover:opacity-100 whitespace-nowrap"
+                style={{ color: navFg }}
               >
                 {l.label}
               </Link>
@@ -209,13 +230,14 @@ export default function Navbar() {
         <div className="flex items-center gap-3 shrink-0">
           {/* Theme toggle — desktop */}
           <div className="hidden md:block">
-            <ThemeToggle theme={theme} toggle={toggle} />
+            <ThemeToggle theme={theme} toggle={toggle} light={overHero} />
           </div>
 
           {/* Hamburger — mobile */}
           <Hamburger
             open={menuOpen}
             onClick={menuOpen ? closeMenu : openMenu}
+            color={menuOpen ? "var(--text)" : navFg}
           />
         </div>
       </nav>

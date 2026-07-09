@@ -4,7 +4,7 @@
    TAILWIND v4 THEME
    ============================================= */
 @theme {
-  --font-display: var(--font-bricolage), sans-serif;
+  --font-display: var(--font-anton), sans-serif;
   --font-serif: var(--font-serif-var), serif;
   --font-sans: var(--font-neue), sans-serif;
 
@@ -330,10 +330,11 @@ html.light .spot-paper .spot-x {
   }
 }
 
-/* Bricolage Grotesque reads best bold at display sizes — headings
-   default to 700; explicit inline weights still override. */
+/* Anton is a single-weight all-caps display face. Headings render
+   uppercase; wide letter-spacing would fight its condensed rhythm. */
 .font-display {
-  font-weight: 700;
+  font-weight: 400;
+  text-transform: uppercase;
 }
 
 /* ── Brand logo wall — monochrome normalization ──

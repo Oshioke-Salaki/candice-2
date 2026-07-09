@@ -24,11 +24,12 @@ function useReveal() {
 
 /* ─── Images ──────────────────────────────────── */
 const IMAGES = [
+  { src: "candice/about/00", alt: "Candice — portrait" },
   { src: "candice/about/01", alt: "Candice — portrait" },
   { src: "candice/about/02", alt: "Candice — editorial" },
   { src: "candice/about/03", alt: "Candice — campaign" },
   { src: "candice/about/04", alt: "Candice — beauty" },
-  { src: "candice/about/05", alt: "Candice — style" },
+  // { src: "candice/about/05", alt: "Candice — style" },
 ];
 
 const INTERVAL = 3800; // ms between auto-advances
@@ -181,10 +182,10 @@ export default function About() {
           ref={headRef}
           className="reveal font-display mb-8"
           style={{
-            fontSize: "clamp(2.4rem, 4vw, 4.4rem)",
-            fontWeight: 700,
+            fontSize: "clamp(2.6rem, 4.4vw, 4.8rem)",
+            fontWeight: 400,
             lineHeight: 1.02,
-            letterSpacing: "-0.02em",
+            letterSpacing: "0.01em",
             color: "var(--text)",
           }}
         >
@@ -282,39 +283,68 @@ export default function About() {
         </div>
       </div>
 
-      {/* ══════════════ DIGITALS — full-width spec band ══════════════ */}
-      <div ref={digiRef} className="reveal md:col-span-2 mt-4">
-        <p
-          className="uppercase tracking-[0.3em] mb-5"
-          style={{ fontSize: "0.6rem", color: "var(--text-dim)" }}
+      {/* ══════════════ DIGITALS — the comp card ══════════════
+          A booker's spec sheet: the full-body reference shot beside
+          the measurements, the way an agency card is laid out. */}
+      <div
+        ref={digiRef}
+        className="reveal md:col-span-2 mt-4 grid grid-cols-1 md:grid-cols-[minmax(0,0.42fr)_minmax(0,1fr)] gap-10 md:gap-16 items-start"
+      >
+        {/* Full-body reference */}
+        <div
+          className="relative overflow-hidden w-full max-w-[300px] md:max-w-none mx-auto"
+          style={{
+            aspectRatio: "3/4",
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-hi)",
+          }}
         >
-          Digitals
-        </p>
-        <dl
-          className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7"
-          style={{ borderTop: "1px solid var(--border-hi)" }}
-        >
-          {digitals.map((d) => (
-            <div
-              key={d.label}
-              className="py-5 pr-4"
-              style={{ borderBottom: "1px solid var(--border)" }}
-            >
-              <dt
-                className="uppercase tracking-[0.22em]"
-                style={{ fontSize: "0.55rem", color: "var(--text-dim)" }}
+          <Image
+            loader={cldLoader}
+            src="candice/about/full-body"
+            placeholder="blur"
+            blurDataURL={cldBlurURL("candice/about/full-body")}
+            alt="Candice — full-body digital"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 80vw, 30vw"
+          />
+        </div>
+
+        {/* Measurements */}
+        <div>
+          <p
+            className="uppercase tracking-[0.3em] mb-5"
+            style={{ fontSize: "0.6rem", color: "var(--text-dim)" }}
+          >
+            Digitals
+          </p>
+          <dl
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
+            style={{ borderTop: "1px solid var(--border-hi)" }}
+          >
+            {digitals.map((d) => (
+              <div
+                key={d.label}
+                className="py-5 pr-4"
+                style={{ borderBottom: "1px solid var(--border)" }}
               >
-                {d.label}
-              </dt>
-              <dd
-                className="font-serif mt-2"
-                style={{ fontSize: "1.5rem", color: "var(--text)" }}
-              >
-                {d.value}
-              </dd>
-            </div>
-          ))}
-        </dl>
+                <dt
+                  className="uppercase tracking-[0.22em]"
+                  style={{ fontSize: "0.55rem", color: "var(--text-dim)" }}
+                >
+                  {d.label}
+                </dt>
+                <dd
+                  className="font-serif mt-2"
+                  style={{ fontSize: "1.5rem", color: "var(--text)" }}
+                >
+                  {d.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
     </section>
   );

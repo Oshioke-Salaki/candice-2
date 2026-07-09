@@ -5,7 +5,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { campaignFrame, cldBlurURL, cldLoader } from "@/lib/media";
 
 /* ═══════════════════════════════════════════════════════════
-   THE INDEX — editorial collaborations directory.
+   MY WORK — the full body of work, in two labelled groups so
+   it reads unambiguously as BOTH modeling gigs AND brand deals.
+   Modeling leads; brand partnerships follow.
+
    Typographic rows like a magazine table of contents.
    Hover a row → a live photo preview floats with the cursor.
    Click a row → an inline cinematic film strip unfolds.
@@ -14,116 +17,75 @@ import { campaignFrame, cldBlurURL, cldLoader } from "@/lib/media";
 type Collab = {
   id: string;
   name: string;
-  category: "brand" | "editorial";
+  category: "modeling" | "brand";
   count: number;
-  tier?: string;
+  /** Custom frame sequence (1-based). Omit to run 1…count in order. */
+  order?: number[];
 };
 
-const COLLABS: Collab[] = [
-  // ── Brand partnerships ──
+/* ── Modeling — editorial & campaign shoots (leads the section) ── */
+const MODELING: Collab[] = [
+  { id: "meji-meji", name: "Meji Meji", category: "modeling", count: 7 },
   {
-    id: "lacoste",
-    name: "Lacoste",
-    category: "brand",
-    count: 1,
-    tier: "Luxury",
+    id: "ldm-clo-ss26",
+    name: "LDM CLO SS26",
+    category: "modeling",
+    count: 9,
+    // The bridal-veil frame opens the story.
+    order: [5, 1, 2, 3, 4, 6, 7, 8, 9],
   },
-  {
-    id: "people-ssense",
-    name: "SSENSE × People",
-    category: "brand",
-    count: 1,
-    tier: "Luxury",
-  },
-  {
-    id: "bershka",
-    name: "Bershka",
-    category: "brand",
-    count: 2,
-    tier: "Contemporary",
-  },
-  {
-    id: "asos",
-    name: "ASOS",
-    category: "brand",
-    count: 1,
-    tier: "Contemporary",
-  },
-  {
-    id: "fashion-nova",
-    name: "Fashion Nova",
-    category: "brand",
-    count: 1,
-    tier: "Contemporary",
-  },
-  {
-    id: "timberland",
-    name: "Timberland",
-    category: "brand",
-    count: 1,
-    tier: "Street",
-  },
-  { id: "vans", name: "Vans", category: "brand", count: 1, tier: "Street" },
-  { id: "meshki", name: "Meshki", category: "brand", count: 1, tier: "Indie" },
-  {
-    id: "motel-rocks",
-    name: "Motel Rocks",
-    category: "brand",
-    count: 1,
-    tier: "Indie",
-  },
-  {
-    id: "wmns-wear",
-    name: "WMNS Wear",
-    category: "brand",
-    count: 2,
-    tier: "Indie",
-  },
-  // ── Editorial shoots ──
-  { id: "ldm-clo-ss26", name: "LDM CLO SS26", category: "editorial", count: 9 },
-  { id: "meji-meji", name: "Meji Meji", category: "editorial", count: 7 },
-  { id: "streetsouk", name: "Streetsouk", category: "editorial", count: 4 },
-  {
-    id: "ajanee-studio",
-    name: "Ajanee Studio",
-    category: "editorial",
-    count: 3,
-  },
-  {
-    id: "the-shine-cartel",
-    name: "The Shine Cartel",
-    category: "editorial",
-    count: 2,
-  },
+  { id: "streetsouk", name: "Streetsouk", category: "modeling", count: 4 },
+  { id: "bolapsd", name: "BolaPSD", category: "modeling", count: 2 },
+  { id: "ajanee-studio", name: "Ajanee Studio", category: "modeling", count: 3 },
+  { id: "vvs-lagos", name: "VVS Lagos", category: "modeling", count: 2 },
   {
     id: "patrique-ophique",
     name: "Patrique Ophique",
-    category: "editorial",
+    category: "modeling",
     count: 2,
   },
-  { id: "bolapsd", name: "BolaPSD", category: "editorial", count: 2 },
-  { id: "vvs-lagos", name: "VVS Lagos", category: "editorial", count: 2 },
   {
     id: "dolore-inc-ss26",
     name: "Dolore Inc SS26",
-    category: "editorial",
+    category: "modeling",
     count: 2,
   },
   {
     id: "brown-thomas-ss25",
     name: "Brown Thomas SS25",
-    category: "editorial",
+    category: "modeling",
     count: 2,
   },
-  { id: "snowbunny", name: "Snowbunny", category: "editorial", count: 1 },
+  {
+    id: "the-shine-cartel",
+    name: "The Shine Cartel",
+    category: "modeling",
+    count: 2,
+  },
+  { id: "snowbunny", name: "Snowbunny", category: "modeling", count: 1 },
 ];
 
+/* ── Brand partnerships — most recognisable houses first ── */
+const BRANDS: Collab[] = [
+  { id: "lacoste", name: "Lacoste", category: "brand", count: 1 },
+  { id: "vans", name: "Vans", category: "brand", count: 1 },
+  { id: "timberland", name: "Timberland", category: "brand", count: 1 },
+  { id: "asos", name: "ASOS", category: "brand", count: 1 },
+  { id: "people-ssense", name: "SSENSE × People", category: "brand", count: 1 },
+  { id: "fashion-nova", name: "Fashion Nova", category: "brand", count: 1 },
+  { id: "bershka", name: "Bershka", category: "brand", count: 2 },
+  { id: "meshki", name: "Meshki", category: "brand", count: 1 },
+  { id: "motel-rocks", name: "Motel Rocks", category: "brand", count: 1 },
+  { id: "wmns-wear", name: "WMNS Wear", category: "brand", count: 2 },
+];
+
+const COLLABS: Collab[] = [...MODELING, ...BRANDS];
+
+/** Nth displayed frame → its real frame number on Cloudinary. */
+const frameAt = (c: Collab, i: number) => c.order?.[i] ?? i + 1;
 const src = campaignFrame;
 
-type Filter = "brand" | "editorial";
-
 export default function BrandCollaborations() {
-  const [filter, setFilter] = useState<Filter>("brand");
   const [openId, setOpenId] = useState<string | null>(null);
   const [hoverId, setHoverId] = useState<string | null>(null);
 
@@ -132,8 +94,6 @@ export default function BrandCollaborations() {
   const mouse = useRef({ x: 0, y: 0 });
   const pos = useRef({ x: 0, y: 0 });
   const raf = useRef<number>(0);
-
-  const visible = COLLABS.filter((c) => c.category === filter);
 
   /* ── Floating preview: lerp-follow the cursor with a lag ── */
   const tick = useCallback(() => {
@@ -174,13 +134,13 @@ export default function BrandCollaborations() {
     );
     rows.forEach((r) => obs.observe(r));
     return () => obs.disconnect();
-  }, [filter]);
+  }, []);
 
   const toggle = (id: string) => setOpenId((cur) => (cur === id ? null : id));
 
   return (
     <section
-      id="collaborations"
+      id="work"
       ref={sectionRef}
       className="relative py-20 md:py-32"
       onMouseMove={onMouseMove}
@@ -208,7 +168,7 @@ export default function BrandCollaborations() {
             <Image
               key={c.id}
               loader={cldLoader}
-              src={src(c.id, 1)}
+              src={src(c.id, frameAt(c, 0))}
               alt=""
               fill
               sizes="240px"
@@ -221,77 +181,125 @@ export default function BrandCollaborations() {
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
         {/* ═══ Header ═══ */}
-        <div className="mb-10 md:mb-20">
-          {/* <div className="section-tag mb-6">The Index</div> */}
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <h2
-              className="font-display"
-              style={{
-                fontSize: "clamp(1.9rem, 4.5vw, 3.8rem)",
-                lineHeight: 0.95,
-                letterSpacing: "0.03em",
-                color: "var(--text)",
-              }}
-            >
-              PARTNERSHIPS & CAMPAIGNS
-            </h2>
-            {/* ── Understated text filters ── */}
-            <div className="flex gap-7 pb-2">
-              {(
-                [
-                  {
-                    key: "brand",
-                    label: "Brands",
-                    n: COLLABS.filter((c) => c.category === "brand").length,
-                  },
-                  {
-                    key: "editorial",
-                    label: "Editorial",
-                    n: COLLABS.filter((c) => c.category === "editorial").length,
-                  },
-                ] as const
-              ).map(({ key, label, n }) => (
-                <button
-                  key={key}
-                  onClick={() => {
-                    setFilter(key);
-                    setOpenId(null);
-                  }}
-                  className="relative uppercase tracking-[0.22em] pb-1 transition-colors duration-300"
-                  style={{
-                    fontSize: "0.62rem",
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    color: filter === key ? "var(--text)" : "var(--text-dim)",
-                  }}
-                >
-                  {label}
-                  <sup
-                    style={{
-                      color: "var(--accent)",
-                      marginLeft: "3px",
-                      fontSize: "0.5rem",
-                    }}
-                  >
-                    {n}
-                  </sup>
-                  <span
-                    className="absolute bottom-0 left-0 h-px transition-all duration-400"
-                    style={{
-                      width: filter === key ? "100%" : "0%",
-                      background: "var(--accent)",
-                    }}
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
+        <div className="mb-10 md:mb-16">
+          <div className="section-tag mb-5">Selected Work</div>
+          <h2
+            className="font-display"
+            style={{
+              fontSize: "clamp(2.6rem, 7vw, 6rem)",
+              lineHeight: 0.92,
+              letterSpacing: "0.02em",
+              color: "var(--text)",
+            }}
+          >
+            MY WORK
+          </h2>
+          <p
+            className="font-serif italic mt-4"
+            style={{
+              fontSize: "clamp(1rem, 1.6vw, 1.3rem)",
+              color: "var(--text-soft)",
+              maxWidth: "44rem",
+            }}
+          >
+            Modeling gigs — editorials, campaigns and runway — and the brands
+            who book me for partnerships.
+          </p>
         </div>
 
-        {/* ═══ The index rows ═══ */}
+        {/* ═══ Group 1 — Modeling ═══ */}
+        <GroupHeading
+          label="Modeling"
+          note="Editorial & campaign shoots"
+          n={MODELING.length}
+        />
+        <IndexRows
+          items={MODELING}
+          openId={openId}
+          hoverId={hoverId}
+          setHoverId={setHoverId}
+          toggle={toggle}
+        />
+
+        {/* ═══ Group 2 — Brand partnerships ═══ */}
+        <div className="mt-16 md:mt-24">
+          <GroupHeading
+            label="Brand Partnerships"
+            note="Campaigns & collaborations"
+            n={BRANDS.length}
+          />
+          <IndexRows
+            items={BRANDS}
+            openId={openId}
+            hoverId={hoverId}
+            setHoverId={setHoverId}
+            toggle={toggle}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Group heading ─────────────────────────────── */
+function GroupHeading({
+  label,
+  note,
+  n,
+}: {
+  label: string;
+  note: string;
+  n: number;
+}) {
+  return (
+    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-5">
+      <h3
+        className="font-display"
+        style={{
+          fontSize: "clamp(1.1rem, 2vw, 1.6rem)",
+          letterSpacing: "0.04em",
+          color: "var(--text)",
+        }}
+      >
+        {label}
+        <sup
+          style={{
+            color: "var(--accent)",
+            marginLeft: "6px",
+            fontSize: "0.5em",
+          }}
+        >
+          {n}
+        </sup>
+      </h3>
+      <span
+        className="uppercase tracking-[0.22em]"
+        style={{ fontSize: "0.58rem", color: "var(--text-dim)" }}
+      >
+        {note}
+      </span>
+    </div>
+  );
+}
+
+/* ─── The interactive index rows ────────────────── */
+function IndexRows({
+  items,
+  openId,
+  hoverId,
+  setHoverId,
+  toggle,
+}: {
+  items: Collab[];
+  openId: string | null;
+  hoverId: string | null;
+  setHoverId: (id: string | null) => void;
+  toggle: (id: string) => void;
+}) {
+  return (
+    <>
         <div style={{ borderTop: "1px solid var(--border)" }}>
-          {visible.map((c, i) => {
+          {items.map((c, i) => {
             const isOpen = openId === c.id;
             const isHover = hoverId === c.id;
             const dimOthers = hoverId !== null && !isHover && !isOpen;
@@ -406,9 +414,9 @@ export default function BrandCollaborations() {
                             >
                               <Image
                                 loader={cldLoader}
-                                src={src(c.id, n + 1)}
+                                src={src(c.id, frameAt(c, n))}
                                 placeholder="blur"
-                                blurDataURL={cldBlurURL(src(c.id, n + 1))}
+                                blurDataURL={cldBlurURL(src(c.id, frameAt(c, n)))}
                                 alt={`${c.name} — frame ${n + 1}`}
                                 width={720}
                                 height={960}
@@ -439,13 +447,13 @@ export default function BrandCollaborations() {
                         className="font-serif italic mt-4"
                         style={{
                           fontSize: "0.95rem",
-                          color: "var(--text-dim)",
+                          color: "var(--text-soft)",
                         }}
                       >
                         {c.name} —{" "}
                         {c.category === "brand"
                           ? "Brand Partnership"
-                          : "Editorial"}{" "}
+                          : "Modeling"}{" "}
                         · drag to explore →
                       </p>
                     </div>
@@ -455,7 +463,6 @@ export default function BrandCollaborations() {
             );
           })}
         </div>
-      </div>
-    </section>
+    </>
   );
 }

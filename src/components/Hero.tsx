@@ -74,7 +74,7 @@ export default function Hero() {
               className="font-display"
               style={{
                 fontSize: "clamp(1.8rem, 6vw, 5.5rem)",
-                fontWeight: 700,
+                fontWeight: 400,
                 letterSpacing: "0.5em",
                 color: "#A82420",
                 transform: textIn ? "translateY(0)" : "translateY(-36px)",
@@ -88,8 +88,8 @@ export default function Hero() {
               className="font-display"
               style={{
                 fontSize: "clamp(2.8rem, 10vw, 10rem)",
-                fontWeight: 700,
-                letterSpacing: "-0.02em",
+                fontWeight: 400,
+                letterSpacing: "0.01em",
                 color: "#EDE6DA",
                 transform: textIn ? "translateY(0)" : "translateY(36px)",
                 opacity: textIn ? 1 : 0,
@@ -183,16 +183,16 @@ export default function Hero() {
           <h1
             className="font-display text-white whitespace-nowrap"
             style={{
-              fontSize: "clamp(4rem, 13vw, 10.5rem)",
-              fontWeight: 700,
-              lineHeight: 0.85,
-              letterSpacing: "-0.02em",
+              fontSize: "clamp(4.2rem, 14vw, 11.5rem)",
+              fontWeight: 400,
+              lineHeight: 0.9,
+              letterSpacing: "0.01em",
               transform: open ? "translateY(0)" : "translateY(34px)",
               opacity: open ? 1 : 0,
               transition: `transform 1.1s ${ease} 0.5s, opacity 1s ${ease} 0.5s`,
             }}
           >
-            <span style={{ color: "#A82420" }}>wow</span>candice
+            <span style={{ color: "#A82420" }}>WOW</span>CANDICE
           </h1>
         </div>
 

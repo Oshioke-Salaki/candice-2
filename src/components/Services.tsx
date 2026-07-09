@@ -13,8 +13,8 @@ interface Service {
 const services: Service[] = [
   {
     num: "01",
-    name: "Fashion &\nEditorial",
-    desc: "Editorial spreads, designer lookbooks and high-fashion stories with cultural depth and modern edge. From crimson gowns in Lagos to bridal veils in London — images that stop the page.",
+    name: "Fashion, Beauty\n& Editorial",
+    desc: "Editorial spreads, designer lookbooks, beauty stories and high-fashion narratives with cultural depth and modern edge. From crimson gowns in Lagos to bridal veils in London — images that stop the page.",
     span: "row-span-2",
   },
   {
@@ -30,7 +30,7 @@ const services: Service[] = [
   {
     num: "04",
     name: "Brand\nPartnerships",
-    desc: "Long-term ambassador deals, sponsored content, and full lifestyle integration across every platform her audience lives on.",
+    desc: "Long-term ambassador deals, sponsored content, and full lifestyle integration across every platform my audience lives on.",
   },
   {
     num: "05",

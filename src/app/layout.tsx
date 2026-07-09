@@ -1,14 +1,14 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
-import { Bricolage_Grotesque, DM_Sans } from 'next/font/google'
+import { Anton, DM_Sans } from 'next/font/google'
 import './globals.css'
 
-/* Bricolage Grotesque — the house display face. Drives every heading
-   with its contemporary, characterful grotesque letterforms. */
-const bricolage = Bricolage_Grotesque({
-  weight: ['400', '500', '600', '700', '800'],
+/* Anton — heavy condensed grotesque; the all-caps display face that
+   gives every heading its poster-scale impact. */
+const anton = Anton({
+  weight: '400',
   subsets: ['latin'],
-  variable: '--font-bricolage',
+  variable: '--font-anton',
   display: 'swap',
 })
 
@@ -84,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`dark ${neueMontreal.variable} ${bricolage.variable} ${zodiak.variable} ${dmSans.variable}`}
+      className={`dark ${neueMontreal.variable} ${anton.variable} ${zodiak.variable} ${dmSans.variable}`}
       suppressHydrationWarning
     >
       <body>
