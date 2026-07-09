@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useRef } from "react";
 
 /* ─── Brand roster — logo wall.
-   Every mark is normalized to monochrome via CSS (.brand-logo):
-   white on dark theme, ink on light, cream on the accent hover wash.
+   Every mark is normalized to monochrome via CSS (.brand-logo): white
+   on the page, ink inside the spotlight's circle of paper.
    `h` is a per-logo height multiplier to balance optical weight. ─── */
 type Brand = {
   name: string;

@@ -19,7 +19,6 @@ const dmSans = DM_Sans({
   variable: '--font-dm',
   display: 'swap',
 })
-import ThemeProvider from '@/components/ThemeProvider'
 import ScrollProgress from '@/components/ScrollProgress'
 import Noise from '@/components/Noise'
 
@@ -88,11 +87,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <body>
-        <ThemeProvider>
-          <Noise />
-          <ScrollProgress />
-          {children}
-        </ThemeProvider>
+        <Noise />
+        <ScrollProgress />
+        {children}
       </body>
     </html>
   )

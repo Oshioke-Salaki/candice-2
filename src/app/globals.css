@@ -71,7 +71,7 @@
 }
 
 /* =============================================
-   CSS CUSTOM PROPERTIES — default = dark
+   CSS CUSTOM PROPERTIES — dark only
    Candice: warm near-black, bone, oxblood red
    ============================================= */
 :root {
@@ -88,22 +88,6 @@
   --accent-soft: #c2453e;
   --hero-a: #0a0807;
   --hero-b: #ede6da;
-}
-
-html.light {
-  --bg: #ece5d8;
-  --bg-alt: #e2d9c8;
-  --bg-card: #d6cbb8;
-  --text: #171310;
-  --text-soft: #423a30;
-  --text-dim: #665b4d;
-  --text-muted: #b3a691;
-  --border: rgba(23, 19, 16, 0.08);
-  --border-hi: rgba(23, 19, 16, 0.2);
-  --accent: #8e1f1d;
-  --accent-soft: #a82420;
-  --hero-a: #ece5d8;
-  --hero-b: #171310;
 }
 
 /* =============================================
@@ -243,20 +227,13 @@ body {
   row-gap: clamp(2.2rem, 5vh, 3.8rem);
   padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.25rem, 4vw, 3rem);
 }
-/* The light's reveal layer. Dark theme: warm paper + printed ink.
-   Light theme: the inverse — a circle of night with white marks. */
+/* The light's reveal layer: a circle of warm paper with printed ink. */
 .spot-paper {
   background: #ede6da;
-}
-html.light .spot-paper {
-  background: #12100e;
 }
 .spot-paper .brand-ink {
   filter: brightness(0);
   opacity: 0.92;
-}
-html.light .spot-paper .brand-ink {
-  filter: brightness(0) invert(1);
 }
 .spot-paper .brand-true {
   filter: none;
@@ -265,14 +242,8 @@ html.light .spot-paper .brand-ink {
 .spot-paper .spot-text {
   color: #17120d;
 }
-html.light .spot-paper .spot-text {
-  color: #ede6da;
-}
 .spot-paper .spot-x {
   color: #8a2a24;
-}
-html.light .spot-paper .spot-x {
-  color: #c2453e;
 }
 /* the hint only makes sense with a cursor */
 .spot-hint {
@@ -338,17 +309,14 @@ html.light .spot-paper .spot-x {
 }
 
 /* ── Brand logo wall — monochrome normalization ──
-   Any logo color becomes: white on dark theme, ink on light theme,
-   cream on the accent hover wash. Requires transparent backgrounds. */
+   Any logo color becomes white; ink inside the spotlight's paper.
+   Requires transparent backgrounds. */
 .brand-logo {
   filter: brightness(0) invert(1);
   opacity: 0.78;
   transition:
     opacity 0.4s ease,
     transform 0.4s ease;
-}
-html.light .brand-logo {
-  filter: brightness(0);
 }
 
 /* ── Hidden scrollbar for horizontal film strips ── */

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useTheme } from "./ThemeProvider";
 
 const links = [
   { href: "/#about", label: "About" },
@@ -63,84 +62,17 @@ function Hamburger({
   );
 }
 
-/* ─── Theme toggle button ────────────────────────── */
-function ThemeToggle({
-  theme,
-  toggle,
-  inverted = false,
-  light = false,
-}: {
-  theme: string;
-  toggle: () => void;
-  inverted?: boolean;
-  light?: boolean;
-}) {
-  const fg = light ? "#EDE6DA" : inverted ? "var(--bg)" : "var(--text)";
-  const border = light ? "rgba(237,230,218,0.5)" : inverted ? "var(--bg)" : "var(--text)";
-
-  return (
-    <button
-      onClick={toggle}
-      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      className="flex items-center gap-2 transition-all duration-300"
-      style={{
-        padding: "0.45rem 1rem",
-        fontSize: "0.6rem",
-        letterSpacing: "0.18em",
-        textTransform: "uppercase",
-        color: fg,
-        background: "transparent",
-        border: `1px solid ${border}`,
-        borderRadius: 0,
-        cursor: "pointer",
-        opacity: 0.85,
-        whiteSpace: "nowrap",
-      }}
-      onMouseEnter={(e) => {
-        const el = e.currentTarget;
-        el.style.background = fg;
-        el.style.color = light ? "#0A0807" : inverted ? "var(--text)" : "var(--bg)";
-        el.style.opacity = "1";
-      }}
-      onMouseLeave={(e) => {
-        const el = e.currentTarget;
-        el.style.background = "transparent";
-        el.style.color = fg;
-        el.style.opacity = "0.85";
-      }}
-    >
-      <svg
-        width="11"
-        height="11"
-        viewBox="0 0 11 11"
-        fill="none"
-        style={{ flexShrink: 0 }}
-      >
-        <circle
-          cx="5.5"
-          cy="5.5"
-          r="4.5"
-          stroke="currentColor"
-          strokeWidth="1.1"
-        />
-        <path d="M5.5 1 A4.5 4.5 0 0 1 5.5 10 Z" fill="currentColor" />
-      </svg>
-      {theme === "dark" ? "Light" : "Dark"}
-    </button>
-  );
-}
 
 /* ─── Navbar ─────────────────────────────────────── */
 export default function Navbar() {
-  const { theme, toggle } = useTheme();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuMounted, setMenuMounted] = useState(false); // for enter animation
 
-  /* The home page opens on the always-dark cinematic hero, so while the
-     nav sits over it (top, not scrolled) it must be light in BOTH themes.
-     Once scrolled — or on inner pages — it follows the active theme. */
+  /* The home page opens on the cinematic hero, whose portrait sits behind
+     the nav. Over it we brighten the marks; once scrolled we fall back to
+     the standard text colour against the page background. */
   const overHero = pathname === "/" && !scrolled;
 
   /* Scroll detection */
@@ -172,18 +104,13 @@ export default function Navbar() {
   }
 
   /* Nav frosted-glass background (always present, deepens on scroll) */
-  const isDark = theme === "dark";
   const navBg = overHero
     ? "rgba(10,8,7,0.28)"
-    : isDark
-      ? scrolled
-        ? "rgba(10,8,7,0.85)"
-        : "rgba(10,8,7,0.3)"
-      : scrolled
-        ? "rgba(236,229,216,0.88)"
-        : "rgba(236,229,216,0.3)";
+    : scrolled
+      ? "rgba(10,8,7,0.85)"
+      : "rgba(10,8,7,0.3)";
 
-  /* Foreground: forced cream over the dark hero, else the theme's text. */
+  /* Foreground: brighter cream over the hero portrait, else standard text. */
   const navFg = overHero ? "#EDE6DA" : "var(--text)";
   const navDot = overHero ? "#C2453E" : "var(--accent)";
 
@@ -211,8 +138,9 @@ export default function Navbar() {
           WC<span style={{ color: navDot }}>.</span>
         </Link>
 
-        {/* Desktop links */}
-        <ul className="hidden md:flex list-none gap-7 lg:gap-10 flex-1 justify-center">
+        {/* Desktop links — absolutely centred so the empty right slot
+            (the theme toggle used to live there) can't skew them. */}
+        <ul className="hidden md:flex list-none gap-7 lg:gap-10 absolute left-1/2 -translate-x-1/2">
           {links.map((l) => (
             <li key={l.href}>
               <Link
@@ -228,11 +156,6 @@ export default function Navbar() {
 
         {/* Right actions */}
         <div className="flex items-center gap-3 shrink-0">
-          {/* Theme toggle — desktop */}
-          <div className="hidden md:block">
-            <ThemeToggle theme={theme} toggle={toggle} light={overHero} />
-          </div>
-
           {/* Hamburger — mobile */}
           <Hamburger
             open={menuOpen}
@@ -314,13 +237,12 @@ export default function Navbar() {
 
           {/* Menu footer */}
           <div
-            className="px-8 pb-10 flex items-center justify-between shrink-0"
+            className="px-8 pb-10 flex items-center justify-end shrink-0"
             style={{
               opacity: menuOpen ? 1 : 0,
               transition: `opacity 0.5s ease 0.55s`,
             }}
           >
-            <ThemeToggle theme={theme} toggle={toggle} />
             <span
               className="uppercase tracking-[0.2em]"
               style={{ fontSize: "0.58rem", color: "var(--text-dim)" }}
