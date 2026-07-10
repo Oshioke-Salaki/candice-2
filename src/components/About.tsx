@@ -31,7 +31,7 @@ const IMAGES = [
   { src: "candice/about/04", alt: "Candice — beauty" },
   // Pulled straight from the LDM CLO SS26 campaign — no duplicate upload.
   {
-    src: "candice/campaigns/ldm-clo-ss26/ldm-clo-ss26-04",
+    src: "candice/campaigns/ldm-clo-ss26/ldm-clo-ss26-12",
     alt: "Candice — LDM CLO SS26",
   },
 ];
