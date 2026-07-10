@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { cldBlurURL, cldLoader, cldLoaderWith } from "@/lib/media";
 
@@ -11,97 +11,20 @@ const heroLoader = cldLoaderWith(
   "c_crop,w_0.9,h_0.62,g_auto/c_fill,ar_2:3,g_auto",
 );
 
-// In-session guard so client-side navigations also skip the splash.
-let splashHasPlayed = false;
-
 export default function Hero() {
-  const [textIn, setTextIn] = useState(false);
+  /* Drives the staggered entrance of the masthead and cover portrait.
+     Flipped one frame after mount so the CSS transitions actually run. */
   const [open, setOpen] = useState(false);
-  const [gone, setGone] = useState(false);
-
-  // Runs synchronously before the browser paints — returning visitors never
-  // see the preloader DOM at all, eliminating the black flash on refresh.
-  useLayoutEffect(() => {
-    if (splashHasPlayed || localStorage.getItem("wcSeenSplash") === "1") {
-      setTextIn(true);
-      setOpen(true);
-      setGone(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
-    const alreadySeen =
-      splashHasPlayed || localStorage.getItem("wcSeenSplash") === "1";
-
-    if (alreadySeen) return; // useLayoutEffect already handled it
-
-    splashHasPlayed = true;
-
-    const t1 = setTimeout(() => setTextIn(true), 100);
-    const t2 = setTimeout(() => setOpen(true), 1900);
-    const t3 = setTimeout(() => {
-      setGone(true);
-      localStorage.setItem("wcSeenSplash", "1");
-    }, 2900);
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const t = setTimeout(() => setOpen(true), 60);
+    return () => clearTimeout(t);
   }, []);
 
   const ease = "cubic-bezier(0.16,1,0.3,1)";
 
   return (
     <>
-      {/* ═══════ PRELOADER ═══════ */}
-      {!gone && (
-        <div
-          aria-hidden="true"
-          className="fixed inset-0 z-[9990] flex items-center justify-center"
-          style={{
-            background: "#0A0807",
-            opacity: open ? 0 : 1,
-            transition: "opacity 0.9s ease 0.05s",
-            pointerEvents: open ? "none" : "auto",
-          }}
-        >
-          <div className="text-center" style={{ lineHeight: 0.88 }}>
-            <div
-              className="font-display"
-              style={{
-                fontSize: "clamp(1.8rem, 6vw, 5.5rem)",
-                fontWeight: 400,
-                letterSpacing: "0.5em",
-                color: "#A82420",
-                transform: textIn ? "translateY(0)" : "translateY(-36px)",
-                opacity: textIn ? 1 : 0,
-                transition: `transform 0.75s ${ease}, opacity 0.75s ${ease}`,
-              }}
-            >
-              WOW
-            </div>
-            <div
-              className="font-display"
-              style={{
-                fontSize: "clamp(2.8rem, 10vw, 10rem)",
-                fontWeight: 400,
-                letterSpacing: "0.01em",
-                color: "#EDE6DA",
-                transform: textIn ? "translateY(0)" : "translateY(36px)",
-                opacity: textIn ? 1 : 0,
-                transition: `transform 0.75s ${ease} 0.08s, opacity 0.75s ${ease} 0.08s`,
-              }}
-            >
-              Candice
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* ═══════ HERO ═══════
           Concept: "The Cover"
           A digital magazine cover. The masthead — fine serif "WOW" over
