@@ -29,7 +29,11 @@ const IMAGES = [
   { src: "candice/about/02", alt: "Candice — editorial" },
   { src: "candice/about/03", alt: "Candice — campaign" },
   { src: "candice/about/04", alt: "Candice — beauty" },
-  // { src: "candice/about/05", alt: "Candice — style" },
+  // Pulled straight from the LDM CLO SS26 campaign — no duplicate upload.
+  {
+    src: "candice/campaigns/ldm-clo-ss26/ldm-clo-ss26-04",
+    alt: "Candice — LDM CLO SS26",
+  },
 ];
 
 const INTERVAL = 3800; // ms between auto-advances

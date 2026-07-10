@@ -31,11 +31,19 @@ const MODELING: Collab[] = [
     name: "LDM CLO SS26",
     category: "modeling",
     count: 9,
-    // The bridal-veil frame opens the story.
-    order: [5, 1, 2, 3, 4, 6, 7, 8, 9],
+    // Client-specified sequence. Frames 10–12 are the newer shots;
+    // old frames 01, 02 and 05 are intentionally left out of the pile.
+    order: [10, 6, 11, 3, 12, 4, 7, 8, 9],
   },
   { id: "streetsouk", name: "Streetsouk", category: "modeling", count: 4 },
-  { id: "bolapsd", name: "BolaPSD", category: "modeling", count: 2 },
+  {
+    id: "bolapsd",
+    name: "BolaPSD",
+    category: "modeling",
+    count: 2,
+    // The red-jersey frame leads.
+    order: [2, 1],
+  },
   {
     id: "by-naomi-smith",
     name: "By Naomi Smith",
@@ -44,6 +52,12 @@ const MODELING: Collab[] = [
   },
   { id: "ajanee-studio", name: "Ajanee Studio", category: "modeling", count: 3 },
   { id: "vvs-lagos", name: "VVS Lagos", category: "modeling", count: 2 },
+  {
+    id: "the-shine-cartel",
+    name: "The Shine Cartel",
+    category: "modeling",
+    count: 2,
+  },
   {
     id: "patrique-ophique",
     name: "Patrique Ophique",
@@ -59,12 +73,6 @@ const MODELING: Collab[] = [
   {
     id: "brown-thomas-ss25",
     name: "Brown Thomas SS25",
-    category: "modeling",
-    count: 2,
-  },
-  {
-    id: "the-shine-cartel",
-    name: "The Shine Cartel",
     category: "modeling",
     count: 2,
   },

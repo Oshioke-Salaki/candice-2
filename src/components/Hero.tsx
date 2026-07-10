@@ -141,9 +141,13 @@ export default function Hero() {
           />
         </div>
 
-        {/* ── Masthead — BEHIND the portrait, like a magazine logo ── */}
+        {/* ── Masthead ──
+            On md+ it sits BEHIND the portrait, like a magazine logo the
+            cover star overlaps. On small screens the portrait is
+            proportionally huge and would slice the wordmark in half, so
+            the masthead is lifted above it instead. ── */}
         <div
-          className="absolute inset-x-0 z-10 flex flex-col items-center text-center px-6"
+          className="absolute inset-x-0 z-30 md:z-10 flex flex-col items-center text-center px-6"
           style={{ top: "max(9svh, 92px)" }}
         >
           <p
@@ -281,38 +285,6 @@ export default function Hero() {
         />
 
         {/* ── Corner details — appear last ── */}
-
-        {/* Bottom-left: year */}
-        <div
-          className="absolute bottom-7 left-8 md:left-14 z-10"
-          style={{
-            opacity: open ? 0.35 : 0,
-            transition: `opacity 0.8s ease 1.1s`,
-          }}
-        >
-          <span
-            className="font-display tracking-[0.25em] text-white"
-            style={{ fontSize: "0.62rem" }}
-          >
-            © {new Date().getFullYear()}
-          </span>
-        </div>
-
-        {/* Bottom-right: WC monogram */}
-        <div
-          className="absolute bottom-7 right-8 md:right-14 z-10"
-          style={{
-            opacity: open ? 0.35 : 0,
-            transition: `opacity 0.8s ease 1.1s`,
-          }}
-        >
-          <span
-            className="font-display tracking-[0.25em] text-white"
-            style={{ fontSize: "0.62rem" }}
-          >
-            WC
-          </span>
-        </div>
       </section>
     </>
   );
