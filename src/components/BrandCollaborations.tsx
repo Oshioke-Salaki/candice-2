@@ -31,9 +31,9 @@ const MODELING: Collab[] = [
     name: "LDM CLO SS26",
     category: "modeling",
     count: 9,
-    // Client-specified sequence: 10 opens, then 04, then 12, and the
+    // Client-specified sequence: 10 opens, then 12, then 04, and the
     // rest follow. Old frames 01, 02 and 05 stay out of the pile.
-    order: [10, 4, 12, 6, 11, 3, 7, 8, 9],
+    order: [10, 12, 4, 6, 11, 3, 7, 8, 9],
   },
   { id: "streetsouk", name: "Streetsouk", category: "modeling", count: 4 },
   {
