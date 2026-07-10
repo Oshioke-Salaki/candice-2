@@ -38,16 +38,19 @@ const IMAGES = [
 
 const INTERVAL = 3800; // ms between auto-advances
 
+/* The introduction reel — hinted at, not embedded. */
+const REEL_URL = "https://www.instagram.com/reel/DZliPFzAJP_/";
+
 /* ─── Skill tags ──────────────────────────────── */
-const tags = [
-  "Editorial",
-  "Runway",
-  "Campaign",
-  "Commercial",
-  "Beauty",
-  "UGC",
-  "Content Creation",
-];
+// const tags = [
+//   "Editorial",
+//   "Runway",
+//   "Campaign",
+//   "Commercial",
+//   "Beauty",
+//   "UGC",
+//   "Content Creation",
+// ];
 
 /* ─── Digitals — the spec sheet bookers ask for ── */
 const digitals = [
@@ -100,6 +103,7 @@ export default function About() {
   const body1Ref = useReveal();
   const body2Ref = useReveal();
   const quoteRef = useReveal();
+  const reelRef = useReveal();
   const digiRef = useReveal();
 
   return (
@@ -241,7 +245,7 @@ export default function About() {
         </p>
 
         {/* Skill pills */}
-        <div className="flex flex-wrap gap-2 mb-10">
+        {/* <div className="flex flex-wrap gap-2 mb-10">
           {tags.map((tag) => (
             <span
               key={tag}
@@ -268,7 +272,7 @@ export default function About() {
               {tag}
             </span>
           ))}
-        </div>
+        </div> */}
 
         <div
           ref={quoteRef}
@@ -284,6 +288,56 @@ export default function About() {
         >
           &ldquo;I don&apos;t just create visuals — I create moments that are
           felt, remembered, and impossible to ignore.&rdquo;
+        </div>
+
+        {/* ── A quieter invitation: the reel does the introducing ── */}
+        <div
+          ref={reelRef}
+          className="reveal mt-9 flex items-center gap-3 flex-wrap"
+        >
+          <span
+            className="font-serif italic"
+            style={{ fontSize: "1rem", color: "var(--text-dim)" }}
+          >
+            Words only go so far.
+          </span>
+
+          <a
+            href={REEL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Watch Candice's introduction reel on Instagram (opens in a new tab)"
+            className="reel-link group inline-flex items-center gap-2.5 no-underline"
+            style={{ color: "var(--text)" }}
+          >
+            <span
+              className="inline-flex items-center justify-center shrink-0 rounded-full transition-transform duration-300 group-hover:scale-110"
+              style={{
+                width: "1.6rem",
+                height: "1.6rem",
+                border: "1px solid var(--accent)",
+              }}
+            >
+              <svg width="8" height="9" viewBox="0 0 8 9" aria-hidden="true">
+                <polygon points="0,0 8,4.5 0,9" fill="var(--accent)" />
+              </svg>
+            </span>
+
+            <span
+              className="uppercase tracking-[0.18em] reel-label"
+              style={{ fontSize: "0.64rem" }}
+            >
+              Meet me in motion
+            </span>
+
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-300 group-hover:translate-x-1"
+              style={{ color: "var(--accent)", fontSize: "0.9rem" }}
+            >
+              ↗
+            </span>
+          </a>
         </div>
       </div>
 

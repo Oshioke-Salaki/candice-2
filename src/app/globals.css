@@ -327,3 +327,25 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* ── Intro-reel link: a hairline that draws itself on hover ── */
+.reel-label {
+  position: relative;
+  padding-bottom: 3px;
+}
+.reel-label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: var(--accent);
+  transform: scaleX(0.35);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reel-link:hover .reel-label::after,
+.reel-link:focus-visible .reel-label::after {
+  transform: scaleX(1);
+}
