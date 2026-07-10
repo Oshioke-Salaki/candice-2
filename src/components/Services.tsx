@@ -133,7 +133,7 @@ export default function Services() {
           className="reveal flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-20 gap-6"
         >
           <h2
-            className="font-display"
+            className="font-display whitespace-nowrap"
             style={{
               fontSize: "clamp(2.2rem, 5vw, 4.2rem)",
               lineHeight: 0.9,
@@ -141,8 +141,7 @@ export default function Services() {
               color: "var(--text)",
             }}
           >
-            WHAT
-            <br />I DO
+            WHAT I DO
           </h2>
           {/* <p
             className="font-serif italic md:text-right"
