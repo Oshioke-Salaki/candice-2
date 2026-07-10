@@ -25,7 +25,7 @@ const services: Service[] = [
   {
     num: "03",
     name: "Content\nCreation",
-    desc: "Scroll-stopping photo and video content for social media and digital campaigns — 3.5M+ views in 30 days speak for themselves.",
+    desc: "Scroll-stopping photo and video content for social media and digital campaigns — 6.3M+ views in 90 days speak for themselves.",
   },
   {
     num: "04",

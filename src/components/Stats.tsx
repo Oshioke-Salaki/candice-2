@@ -18,11 +18,17 @@ function compact(n: number, cap: string) {
   return `${n}`
 }
 
+/* Rolling 90-day window (Apr–Jul).
+   Views  = Instagram 4,874,470 + TikTok 1,500,000 = 6,374,470
+   Reach  = Instagram 2,326,446 (TikTok reports no reach figure)
+   Engmt. = TikTok (274,600 likes + 1,900 comments + 11,400 shares)
+            ÷ 1,500,000 views = 19.2%
+   Beyond = Instagram non-follower share of views */
 const stats: StatConfig[] = [
   {
-    value:  3_500_000,
-    label:  'Views / 30 days',
-    format: n => (n >= 3_500_000 ? '3.5M+' : compact(n, '3.5M+')),
+    value:  6_300_000,
+    label:  'Views / 90 Days',
+    format: n => (n >= 6_300_000 ? '6.3M+' : compact(n, '6.3M+')),
   },
   {
     value:  2_300_000,
@@ -31,14 +37,14 @@ const stats: StatConfig[] = [
   },
   {
     /* Counts in tenths so the decimal ticks up smoothly. */
-    value:  218,
+    value:  192,
     label:  'Engagement Rate',
     format: n => `${(n / 10).toFixed(1)}%`,
   },
   {
-    value:  96,
+    value:  762,
     label:  'Reach Beyond Followers',
-    format: n => `${n}%`,
+    format: n => `${(n / 10).toFixed(1)}%`,
   },
 ]
 
