@@ -1,351 +1,112 @@
 @import "tailwindcss";
 
 /* =============================================
-   TAILWIND v4 THEME
-   ============================================= */
-@theme {
-  --font-display: var(--font-anton), sans-serif;
-  --font-serif: var(--font-serif-var), serif;
-  --font-sans: var(--font-neue), sans-serif;
-
-  --tracking-widest2: 0.25em;
-  --tracking-widest3: 0.3em;
-
-  --animate-scroll-drop: scrollDrop 1.6s ease-in-out infinite;
-  --animate-marquee-ltr: marqueeLtr 22s linear infinite;
-  --animate-marquee-rtl: marqueeRtl 26s linear infinite;
-  --animate-reveal-up: revealUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-  --animate-fade-in: fadeIn 0.6s ease both;
-  --animate-scale-line: scaleLineY 1s cubic-bezier(0.16, 1, 0.3, 1) both;
-
-  @keyframes scrollDrop {
-    0% {
-      transform: translateY(-100%);
-    }
-    100% {
-      transform: translateY(200%);
-    }
-  }
-  @keyframes marqueeLtr {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
-  @keyframes marqueeRtl {
-    from {
-      transform: translateX(-50%);
-    }
-    to {
-      transform: translateX(0);
-    }
-  }
-  @keyframes revealUp {
-    from {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  @keyframes scaleLineY {
-    from {
-      transform: scaleY(0);
-    }
-    to {
-      transform: scaleY(1);
-    }
-  }
-}
-
-/* =============================================
-   CSS CUSTOM PROPERTIES — dark only
-   Candice: warm near-black, bone, oxblood red
+   TOKENS
+   Neutral off-white / off-black with one accent: signal red.
+   Light by default, dark follows the system setting.
    ============================================= */
 :root {
-  --bg: #0a0807;
-  --bg-alt: #120e0c;
-  --bg-card: #1a1310;
-  --text: #ede6da;
-  --text-soft: #cabfb1;
-  --text-dim: #a1958a;
-  --text-muted: #4a4038;
-  --border: rgba(237, 230, 218, 0.07);
-  --border-hi: rgba(237, 230, 218, 0.18);
-  --accent: #a82420;
-  --accent-soft: #c2453e;
-  --hero-a: #0a0807;
-  --hero-b: #ede6da;
+  --bg: #f4f4f2;
+  --surface: #e8e8e5;
+  --ink: #121213;
+  --ink-soft: #3c3c40;
+  --ink-dim: #66666c;
+  --line: rgba(18, 18, 19, 0.12);
+  --accent: #c8281a;
+  --on-accent: #ffffff;
+  --scrim: rgba(10, 10, 11, 0.62);
+  color-scheme: light;
 }
 
-/* =============================================
-   BASE
-   ============================================= */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0f10;
+    --surface: #1a1a1c;
+    --ink: #f2f2f0;
+    --ink-soft: #c6c6ca;
+    --ink-dim: #909096;
+    --line: rgba(242, 242, 240, 0.12);
+    --accent: #f0513f;
+    --on-accent: #0f0f10;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-dim: var(--ink-dim);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-scrim: var(--scrim);
+  --font-sans: var(--font-neue), ui-sans-serif, system-ui, sans-serif;
+}
+
+@theme {
+  --animate-marquee: marquee 48s linear infinite;
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+/* Z-index scale (the only values used on the page):
+   nav 40 · scroll progress 50 · mobile menu 60 · work viewer 70 */
+
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee {
+    animation: none;
+  }
 }
 
 body {
   background-color: var(--bg);
-  color: var(--text);
+  color: var(--ink);
   font-family: var(--font-sans);
-  font-weight: 300;
-  line-height: 1.65;
-  overflow-x: hidden;
-  transition:
-    background-color 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    color 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 
 ::selection {
   background: var(--accent);
-  color: #ede6da;
+  color: var(--on-accent);
 }
 
-::-webkit-scrollbar {
-  width: 2px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--accent);
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
-/* =============================================
-   COMPONENT LAYER
-   ============================================= */
-@layer components {
-  .section-tag {
-    @apply flex items-center gap-3 mb-6 uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 0.3em;
-    color: var(--text-dim);
-  }
-
-  .section-tag::before {
-    content: "✶";
-    color: var(--accent);
-    font-size: 1rem;
-  }
-
-  .social-row {
-    @apply flex items-center justify-between py-5 no-underline;
-    border-bottom: 1px solid var(--border);
-    transition: padding-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .social-row:hover {
-    padding-left: 1rem;
-  }
-
-  /* Reveal animations */
-  .reveal {
-    opacity: 0;
-    transform: translateY(36px);
-    transition:
-      opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .reveal.from-left {
-    transform: translateX(-36px);
-  }
-  .reveal.from-right {
-    transform: translateX(36px);
-  }
-  .reveal.from-scale {
-    transform: scale(0.95);
-  }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0) translateX(0) scale(1);
-  }
-
-  .delay-100 {
-    transition-delay: 0.1s;
-  }
-  .delay-200 {
-    transition-delay: 0.2s;
-  }
-  .delay-300 {
-    transition-delay: 0.3s;
-  }
-  .delay-400 {
-    transition-delay: 0.4s;
-  }
-  .delay-500 {
-    transition-delay: 0.5s;
-  }
-}
-
-/* =============================================
-   RESPONSIVE GRIDS
-   ============================================= */
-
-/* Services bento — first card spans 2 rows on desktop only */
-@media (min-width: 768px) {
-  .services-bento > div:first-child {
-    grid-row: 1 / 3;
-  }
-}
-
-/* Stats: 2 cols on mobile, 4 on desktop */
-.stats-grid {
-  display: grid;
-  gap: 1px;
-  grid-template-columns: repeat(2, 1fr);
-  background: var(--border);
-}
-@media (min-width: 768px) {
-  .stats-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* Brand name grid: 2 cols mobile → 3 → 4 desktop */
-/* ── Spotlight wall — free-flowing marks, no grid lines ── */
-.spot-flow {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  column-gap: clamp(2.4rem, 6vw, 5.5rem);
-  row-gap: clamp(2.2rem, 5vh, 3.8rem);
-  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.25rem, 4vw, 3rem);
-}
-/* The light's reveal layer: a circle of warm paper with printed ink. */
-.spot-paper {
-  background: #ede6da;
-}
-.spot-paper .brand-ink {
-  filter: brightness(0);
-  opacity: 0.92;
-}
-.spot-paper .brand-true {
-  filter: none;
-  opacity: 1;
-}
-.spot-paper .spot-text {
-  color: #17120d;
-}
-.spot-paper .spot-x {
-  color: #8a2a24;
-}
-/* the hint only makes sense with a cursor */
-.spot-hint {
-  display: none;
-}
-@media (hover: hover) {
-  .spot-hint {
-    display: inline;
-  }
-}
-
-/* Campaign editorials: 1 col mobile → staggered 2 col desktop */
-.editorial-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: 1fr;
-}
-@media (min-width: 768px) {
-  .editorial-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-  }
-  .editorial-grid > *:nth-child(even) {
-    margin-top: 4rem;
-  }
-}
-
-/* Services bento: 1 col mobile, 3 col desktop */
-.services-bento {
-  display: grid;
-  gap: 1px;
-  background: var(--border-hi);
-  grid-template-columns: 1fr;
-}
-@media (min-width: 768px) {
-  .services-bento {
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto auto;
-  }
-}
-
-/* Nav mobile padding */
-@media (max-width: 640px) {
-  .hero-footer-strip {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-  }
-}
-
-/* About photo card on mobile */
-@media (max-width: 640px) {
-  .about-float-card {
-    right: 0 !important;
-    bottom: -1.5rem !important;
-  }
-}
-
-/* Anton is a single-weight all-caps display face. Headings render
-   uppercase; wide letter-spacing would fight its condensed rhythm. */
-.font-display {
-  font-weight: 400;
-  text-transform: uppercase;
-}
-
-/* ── Brand logo wall — monochrome normalization ──
-   Any logo color becomes white; ink inside the spotlight's paper.
-   Requires transparent backgrounds. */
-.brand-logo {
-  filter: brightness(0) invert(1);
-  opacity: 0.78;
-  transition:
-    opacity 0.4s ease,
-    transform 0.4s ease;
-}
-
-/* ── Hidden scrollbar for horizontal film strips ── */
 .no-scrollbar {
   scrollbar-width: none;
-  -ms-overflow-style: none;
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-/* ── Intro-reel link: a hairline that draws itself on hover ── */
-.reel-label {
-  position: relative;
-  padding-bottom: 3px;
+/* Brand marks are normalized to one ink colour so the wall reads as a
+   single row of type, in both themes. */
+.brand-mark {
+  filter: brightness(0);
+  opacity: 0.72;
 }
-.reel-label::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 1px;
-  width: 100%;
-  background: var(--accent);
-  transform: scaleX(0.35);
-  transform-origin: left;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reel-link:hover .reel-label::after,
-.reel-link:focus-visible .reel-label::after {
-  transform: scaleX(1);
+@media (prefers-color-scheme: dark) {
+  .brand-mark {
+    filter: brightness(0) invert(1);
+  }
 }

@@ -1,11 +1,11 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import MarqueeStrip from "@/components/MarqueeStrip";
-import About from "@/components/About";
-import Services from "@/components/Services";
-import BrandCollaborations from "@/components/BrandCollaborations";
+import BrandMarquee from "@/components/BrandMarquee";
+import Work from "@/components/Work";
 import Commercials from "@/components/Commercials";
-import BrandsSection from "@/components/BrandsSection";
+import About from "@/components/About";
+import Digitals from "@/components/Digitals";
+import Services from "@/components/Services";
 import Stats from "@/components/Stats";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -14,15 +14,17 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <Hero />
-      <MarqueeStrip />
-      <About />
-      <Services />
-      <BrandCollaborations />
-      <Commercials />
-      <BrandsSection />
-      <Stats />
-      <Contact />
+      <main>
+        <Hero />
+        <BrandMarquee />
+        <Work />
+        <Commercials />
+        <About />
+        <Digitals />
+        <Services />
+        <Stats />
+        <Contact />
+      </main>
       <Footer />
     </>
   );

@@ -1,408 +1,150 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { ArrowUpRightIcon, PlayIcon } from "@phosphor-icons/react";
 import { cldBlurURL, cldLoader } from "@/lib/media";
 
-/* ─── Reveal hook ─────────────────────────────── */
-function useReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) el.classList.add("visible");
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -60px 0px" },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return ref;
-}
-
-/* ─── Images ──────────────────────────────────── */
 const IMAGES = [
-  { src: "candice/about/00", alt: "Candice — portrait" },
-  { src: "candice/about/01", alt: "Candice — portrait" },
-  { src: "candice/about/02", alt: "Candice — editorial" },
-  { src: "candice/about/03", alt: "Candice — campaign" },
-  { src: "candice/about/04", alt: "Candice — beauty" },
-  // Pulled straight from the LDM CLO SS26 campaign — no duplicate upload.
-  {
-    src: "candice/campaigns/ldm-clo-ss26/ldm-clo-ss26-12",
-    alt: "Candice — LDM CLO SS26",
-  },
+  { src: "candice/about/00", alt: "Candice, portrait" },
+  { src: "candice/about/01", alt: "Candice, portrait" },
+  { src: "candice/about/02", alt: "Candice, editorial" },
+  { src: "candice/about/03", alt: "Candice, campaign" },
+  { src: "candice/about/04", alt: "Candice, beauty" },
+  // Pulled straight from the LDM CLO SS26 campaign, no duplicate upload.
+  { src: "candice/campaigns/ldm-clo-ss26/ldm-clo-ss26-12", alt: "Candice, LDM CLO SS26" },
 ];
 
-const INTERVAL = 3800; // ms between auto-advances
+const INTERVAL = 4200; // ms between auto-advances
 
-/* The introduction reel — hinted at, not embedded. */
 const REEL_URL = "https://www.instagram.com/reel/DZliPFzAJP_/";
 
-/* ─── Skill tags ──────────────────────────────── */
-// const tags = [
-//   "Editorial",
-//   "Runway",
-//   "Campaign",
-//   "Commercial",
-//   "Beauty",
-//   "UGC",
-//   "Content Creation",
-// ];
+const ease = [0.16, 1, 0.3, 1] as const;
 
-/* ─── Digitals — the spec sheet bookers ask for ── */
-const digitals = [
-  { label: "Height", value: "5′11″" },
-  { label: "Bust", value: "36″" },
-  { label: "Waist", value: "26″" },
-  { label: "Hips", value: "40″" },
-  { label: "Dress", value: "UK 8–10" },
-  { label: "Hair", value: "Black" },
-  { label: "Eyes", value: "Dark Brown" },
-];
+const reveal = {
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.3 },
+};
 
-/* ─── About ───────────────────────────────────── */
 export default function About() {
   const [current, setCurrent] = useState(0);
-  const [prev, setPrev] = useState<number | null>(null);
-  const [dir, setDir] = useState<1 | -1>(1); // 1 = forward, -1 = backward
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  /* Auto-play */
-  const schedule = useCallback(() => {
-    timerRef.current = setTimeout(() => {
-      setCurrent((prev) => {
-        const next = (prev + 1) % IMAGES.length;
-        setDir(1);
-        setPrev(prev);
-        return next;
-      });
-    }, INTERVAL);
-  }, []);
 
   useEffect(() => {
-    schedule();
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, [current, schedule]);
-
-  /* Clear prev after transition completes */
-  useEffect(() => {
-    if (prev === null) return;
-    const t = setTimeout(() => setPrev(null), 700);
+    const t = setTimeout(() => setCurrent((c) => (c + 1) % IMAGES.length), INTERVAL);
     return () => clearTimeout(t);
-  }, [prev, current]);
-
-  /* Reveal refs */
-  const leftRef = useReveal();
-  const tagRef = useReveal();
-  const headRef = useReveal();
-  const body1Ref = useReveal();
-  const body2Ref = useReveal();
-  const quoteRef = useReveal();
-  const reelRef = useReveal();
-  const digiRef = useReveal();
+  }, [current]);
 
   return (
     <section
       id="about"
-      className="max-w-[1400px] mx-auto px-6 md:px-10 py-20 md:py-40 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center"
+      className="mx-auto grid max-w-350 scroll-mt-16 grid-cols-1 gap-14 px-5 py-24 md:grid-cols-12 md:gap-10 md:px-10 md:py-40"
     >
-      {/* ══════════════ LEFT — image carousel ══════════════ */}
-      <div ref={leftRef} className="reveal from-left relative">
-        {/* ── Main photo frame ── */}
-        <div
-          className="relative overflow-hidden"
-          style={{ aspectRatio: "3/4", background: "var(--bg-card)" }}
-        >
-          {IMAGES.map((img, i) => {
-            const isCurrent = i === current;
-            const isPrev = i === prev;
-            if (!isCurrent && !isPrev) return null;
-
-            const leaveTo = dir === 1 ? "-6%" : "6%";
-
-            return (
-              <div
-                key={img.src}
-                className="absolute inset-0"
-                style={{
-                  zIndex: isCurrent ? 2 : 1,
-                  opacity: isCurrent ? 1 : 0,
-                  transform: isCurrent
-                    ? "translateY(0) scale(1)"
-                    : `translateY(${leaveTo}) scale(0.98)`,
-                  transition: isCurrent
-                    ? "opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)"
-                    : "opacity 0.5s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1)",
-                }}
-              >
-                <Image
-                  loader={cldLoader}
-                  src={img.src}
-                  placeholder="blur"
-                  blurDataURL={cldBlurURL(img.src)}
-                  alt={img.alt}
-                  fill
-                  className="object-cover object-top"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority={i === 0}
-                />
-              </div>
-            );
-          })}
+      <motion.div
+        className="relative md:col-span-5"
+        {...reveal}
+        transition={{ duration: 0.9, ease }}
+      >
+        <div className="relative aspect-3/4 overflow-hidden bg-surface">
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={current}
+              className="absolute inset-0"
+              initial={{ opacity: 0, scale: 1.06 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1, ease }}
+            >
+              <Image
+                loader={cldLoader}
+                src={IMAGES[current].src}
+                alt={IMAGES[current].alt}
+                fill
+                placeholder="blur"
+                blurDataURL={cldBlurURL(IMAGES[current].src)}
+                sizes="(max-width: 768px) 100vw, 42vw"
+                className="object-cover object-top"
+              />
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        {/* ── Floating stat card ── */}
-        <div
-          className="about-float-card absolute z-20 -bottom-8 -right-8 w-40 p-6 text-center"
-          style={{
-            background: "var(--bg)",
-            border: "1px solid var(--border-hi)",
-            borderBottom: "2px solid var(--accent)",
-          }}
-        >
-          <div
-            className="font-display"
-            style={{ fontSize: "3rem", lineHeight: 1, color: "var(--text)" }}
-          >
-            8+
-          </div>
-          <div
-            className="uppercase tracking-[0.2em] mt-1"
-            style={{ fontSize: "0.58rem", color: "var(--text-dim)" }}
-          >
-            Years on Camera
-          </div>
+        {/* Frame picker doubles as the progress indicator */}
+        <div className="mt-4 flex gap-1.5" role="group" aria-label="Choose photo">
+          {IMAGES.map((img, i) => (
+            <button
+              key={img.src}
+              type="button"
+              onClick={() => setCurrent(i)}
+              aria-label={`Show photo ${i + 1}`}
+              aria-pressed={i === current}
+              className="h-6 flex-1"
+            >
+              <span className={`block h-0.5 transition-colors ${i === current ? "bg-accent" : "bg-line"}`} />
+            </button>
+          ))}
         </div>
-      </div>
+      </motion.div>
 
-      {/* ══════════════ RIGHT — copy ══════════════ */}
-      <div className="pt-8">
-        <div ref={tagRef} className="reveal section-tag">
-          About
-        </div>
-
-        <h2
-          ref={headRef}
-          className="reveal font-display mb-8"
-          style={{
-            fontSize: "clamp(2.6rem, 4.4vw, 4.8rem)",
-            fontWeight: 400,
-            lineHeight: 1.02,
-            letterSpacing: "0.01em",
-            color: "var(--text)",
-          }}
+      <div className="flex flex-col justify-center md:col-span-6 md:col-start-7">
+        <motion.h2
+          className="text-5xl leading-[0.95] font-bold tracking-[-0.04em] md:text-7xl"
+          {...reveal}
+          transition={{ duration: 0.9, ease }}
         >
           A muse.
           <br />
-          <span style={{ color: "var(--text-dim)" }}>And an artist.</span>
-        </h2>
+          <span className="font-normal italic text-ink-dim">And an artist.</span>
+        </motion.h2>
 
-        <p
-          ref={body1Ref}
-          className="reveal mb-6"
-          style={{
-            fontFamily: "var(--font-dm), sans-serif",
-            fontSize: "1.2rem",
-            lineHeight: 1.75,
-            color: "var(--text-soft)",
-          }}
+        <motion.div
+          className="mt-10 max-w-[58ch] space-y-5 text-lg leading-relaxed text-ink-soft"
+          {...reveal}
+          transition={{ duration: 0.9, delay: 0.1, ease }}
         >
-          I&apos;m{" "}
-          <strong style={{ color: "var(--text)", fontWeight: 400 }}>
-            Candice
-          </strong>{" "}
-          — a{" "}
-          <strong style={{ color: "var(--text)", fontWeight: 400 }}>
-            Nigerian-Sudanese
-          </strong>{" "}
-          model and content creator, based between London and Lagos. Eight-plus
-          years in front of the lens turned a kid who loved to pose into a
-          disciplined creative fluent in fashion, beauty, photography and
-          movement.
-        </p>
-
-        <p
-          ref={body2Ref}
-          className="reveal mb-10"
-          style={{
-            fontFamily: "var(--font-dm), sans-serif",
-            fontSize: "1.2rem",
-            lineHeight: 1.75,
-            color: "var(--text-soft)",
-          }}
-        >
-          My work lives where modeling meets storytelling — cultural depth,
-          modern edge. Magnetic on camera, sharp on set, across editorials,
-          campaigns and the content my audience replays.{" "}
-          <strong style={{ color: "var(--text)", fontWeight: 400 }}>
-            Don&apos;t get it twisted.
-          </strong>
-        </p>
-
-        {/* Skill pills */}
-        {/* <div className="flex flex-wrap gap-2 mb-10">
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              className="uppercase tracking-[0.18em] px-4 py-2 transition-all duration-300"
-              style={{
-                fontSize: "0.58rem",
-                border: "1px solid var(--border-hi)",
-                color: "var(--text-soft)",
-                cursor: "default",
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget;
-                el.style.background = "var(--accent)";
-                el.style.borderColor = "var(--accent)";
-                el.style.color = "#EDE6DA";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget;
-                el.style.background = "transparent";
-                el.style.borderColor = "var(--border-hi)";
-                el.style.color = "var(--text-soft)";
-              }}
-            >
-              {tag}
-            </span>
-          ))}
-        </div> */}
-
-        <div
-          ref={quoteRef}
-          role="blockquote"
-          className="reveal font-serif italic"
-          style={{
-            fontSize: "1.25rem",
-            lineHeight: 1.5,
-            color: "var(--text-soft)",
-            paddingLeft: "1.5rem",
-            borderLeft: "1px solid var(--accent)",
-          }}
-        >
-          &ldquo;I don&apos;t just create visuals — I create moments that are
-          felt, remembered, and impossible to ignore.&rdquo;
-        </div>
-
-        {/* ── A quieter invitation: the reel does the introducing ── */}
-        <div
-          ref={reelRef}
-          className="reveal mt-9 flex items-center gap-3 flex-wrap"
-        >
-          <span
-            className="font-serif italic"
-            style={{ fontSize: "1rem", color: "var(--text-dim)" }}
-          >
-            Words only go so far.
-          </span>
-
-          <a
-            href={REEL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Watch Candice's introduction reel on Instagram (opens in a new tab)"
-            className="reel-link group inline-flex items-center gap-2.5 no-underline"
-            style={{ color: "var(--text)" }}
-          >
-            <span
-              className="inline-flex items-center justify-center shrink-0 rounded-full transition-transform duration-300 group-hover:scale-110"
-              style={{
-                width: "1.6rem",
-                height: "1.6rem",
-                border: "1px solid var(--accent)",
-              }}
-            >
-              <svg width="8" height="9" viewBox="0 0 8 9" aria-hidden="true">
-                <polygon points="0,0 8,4.5 0,9" fill="var(--accent)" />
-              </svg>
-            </span>
-
-            <span
-              className="uppercase tracking-[0.18em] reel-label"
-              style={{ fontSize: "0.64rem" }}
-            >
-              Meet me in motion
-            </span>
-
-            <span
-              aria-hidden="true"
-              className="transition-transform duration-300 group-hover:translate-x-1"
-              style={{ color: "var(--accent)", fontSize: "0.9rem" }}
-            >
-              ↗
-            </span>
-          </a>
-        </div>
-      </div>
-
-      {/* ══════════════ DIGITALS — the comp card ══════════════
-          A booker's spec sheet: the full-body reference shot beside
-          the measurements, the way an agency card is laid out. */}
-      <div
-        ref={digiRef}
-        className="reveal md:col-span-2 mt-4 grid grid-cols-1 md:grid-cols-[minmax(0,0.42fr)_minmax(0,1fr)] gap-10 md:gap-16 items-start"
-      >
-        {/* Full-body reference */}
-        <div
-          className="relative overflow-hidden w-full max-w-[300px] md:max-w-none mx-auto"
-          style={{
-            aspectRatio: "3/4",
-            background: "var(--bg-card)",
-            border: "1px solid var(--border-hi)",
-          }}
-        >
-          <Image
-            loader={cldLoader}
-            src="candice/about/full-body"
-            placeholder="blur"
-            blurDataURL={cldBlurURL("candice/about/full-body")}
-            alt="Candice — full-body digital"
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 80vw, 30vw"
-          />
-        </div>
-
-        {/* Measurements */}
-        <div>
-          <p
-            className="uppercase tracking-[0.3em] mb-5"
-            style={{ fontSize: "0.6rem", color: "var(--text-dim)" }}
-          >
-            Digitals
+          <p>
+            I&apos;m <strong className="font-medium text-ink">Candice</strong>, a Nigerian-Sudanese
+            model and content creator working between London and Lagos. Eight years in front of the
+            lens turned a kid who loved to pose into a disciplined creative, fluent in fashion,
+            beauty, photography and movement.
           </p>
-          <dl
-            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
-            style={{ borderTop: "1px solid var(--border-hi)" }}
-          >
-            {digitals.map((d) => (
-              <div
-                key={d.label}
-                className="py-5 pr-4"
-                style={{ borderBottom: "1px solid var(--border)" }}
-              >
-                <dt
-                  className="uppercase tracking-[0.22em]"
-                  style={{ fontSize: "0.55rem", color: "var(--text-dim)" }}
-                >
-                  {d.label}
-                </dt>
-                <dd
-                  className="font-serif mt-2"
-                  style={{ fontSize: "1.5rem", color: "var(--text)" }}
-                >
-                  {d.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+          <p>
+            My work sits where modeling meets storytelling: cultural depth with a modern edge,
+            across editorials, campaigns and the content my audience replays.{" "}
+            <strong className="font-medium text-ink">Don&apos;t get it twisted.</strong>
+          </p>
+        </motion.div>
+
+        <motion.figure
+          className="mt-10 border-l-2 border-accent pl-6"
+          {...reveal}
+          transition={{ duration: 0.9, delay: 0.15, ease }}
+        >
+          <blockquote className="text-2xl leading-snug font-normal italic md:text-[1.75rem]">
+            &ldquo;I don&apos;t just create visuals. I create moments that are felt, remembered and
+            impossible to ignore.&rdquo;
+          </blockquote>
+          <figcaption className="mt-3 text-sm text-ink-dim">Candice, model and creator</figcaption>
+        </motion.figure>
+
+        <motion.a
+          href={REEL_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group mt-10 inline-flex w-fit items-center gap-3 text-base font-medium"
+          {...reveal}
+          transition={{ duration: 0.9, delay: 0.2, ease }}
+        >
+          <span className="flex h-11 w-11 items-center justify-center border border-ink/25 transition-colors group-hover:border-accent group-hover:bg-accent group-hover:text-on-accent">
+            <PlayIcon size={16} weight="fill" />
+          </span>
+          <span className="border-b border-transparent transition-colors group-hover:border-ink">
+            Watch the intro reel
+          </span>
+          <ArrowUpRightIcon size={16} className="text-ink-dim" />
+          <span className="sr-only">(opens Instagram in a new tab)</span>
+        </motion.a>
       </div>
     </section>
   );

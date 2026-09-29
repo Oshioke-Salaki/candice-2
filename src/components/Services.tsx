@@ -1,170 +1,96 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import { motion } from "motion/react";
+import { campaignFrame, cldLoaderWith } from "@/lib/media";
 
-interface Service {
-  num: string;
-  name: string;
-  desc: string;
-  span?: string;
-}
+type Tone = "photo" | "accent" | "plain";
 
-const services: Service[] = [
+const SERVICES: { name: string; desc: string; tone: Tone; image?: string; cls: string }[] = [
   {
-    num: "01",
-    name: "Fashion, Beauty\n& Editorial",
-    desc: "Editorial spreads, designer lookbooks, beauty stories and high-fashion narratives with cultural depth and modern edge. From crimson gowns in Lagos to bridal veils in London — images that stop the page.",
-    span: "row-span-2",
+    name: "Fashion, beauty and editorial",
+    desc: "Editorial spreads, designer lookbooks and beauty stories with cultural depth and a modern edge.",
+    tone: "photo",
+    image: campaignFrame("ldm-clo-ss26", 10),
+    cls: "md:row-span-2 min-h-[28rem]",
   },
   {
-    num: "02",
-    name: "Commercial\nModeling",
-    desc: "Brand campaigns, print advertising, beauty and e-commerce shoots. Your brand vision, delivered with polish and presence.",
+    name: "Commercial modeling",
+    desc: "Brand campaigns, print advertising and e-commerce shoots, delivered with polish and presence.",
+    tone: "plain",
+    cls: "",
   },
   {
-    num: "03",
-    name: "Content\nCreation",
-    desc: "Scroll-stopping photo and video content for social media and digital campaigns — 6.3M+ views in 90 days speak for themselves.",
+    name: "Content creation",
+    desc: "Photo and video built for social feeds and digital campaigns, shot and edited in-house.",
+    tone: "accent",
+    cls: "",
   },
   {
-    num: "04",
-    name: "Brand\nPartnerships",
-    desc: "Long-term ambassador deals, sponsored content, and full lifestyle integration across every platform my audience lives on.",
+    name: "Brand partnerships",
+    desc: "Ambassador deals, sponsored content and lifestyle integration on every platform my audience uses.",
+    tone: "photo",
+    image: campaignFrame("lacoste", 1),
+    cls: "min-h-72",
   },
   {
-    num: "05",
-    name: "Runway &\nMotion",
-    desc: "Fashion shows, presentations and music-video features — movement, discipline and stage presence from LIA runways to major sets.",
+    name: "Runway and motion",
+    desc: "Fashion shows, presentations and music-video features, from LIA runways to major sets.",
+    tone: "plain",
+    cls: "",
   },
 ];
 
-function ServiceCard({ s, delay = 0 }: { s: Service; delay?: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) el.classList.add("visible");
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      className="reveal relative overflow-hidden p-12 group cursor-default hoverable h-full flex flex-col"
-      style={{
-        background: "var(--bg-alt)",
-        transitionDelay: `${delay}s`,
-      }}
-    >
-      <div
-        className="svc-num relative z-10 mb-8 transition-colors duration-400"
-        style={{
-          fontSize: "0.9rem",
-          letterSpacing: "0.2em",
-          color: "var(--text-dim)",
-        }}
-      >
-        {s.num}
-      </div>
-
-      <h3
-        className="svc-name relative z-10 font-serif mb-6 transition-colors duration-400 whitespace-pre-line"
-        style={{
-          fontSize: "clamp(1.6rem, 2.2vw, 2.8rem)",
-          fontWeight: 300,
-          lineHeight: 1.1,
-          color: "var(--text)",
-        }}
-      >
-        {s.name}
-      </h3>
-
-      <p
-        className="svc-desc relative z-10 transition-colors duration-400"
-        style={{ fontSize: "1rem", lineHeight: 1.85, color: "var(--text-soft)" }}
-      >
-        {s.desc}
-      </p>
-
-      <span
-        className="svc-arrow relative z-10 block mt-auto pt-8 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-        style={{ color: "var(--text-dim)" }}
-      >
-        <ArrowUpRight size={24} strokeWidth={1.5} />
-      </span>
-    </div>
-  );
-}
+const photoLoader = cldLoaderWith("c_fill,ar_4:5,g_auto");
+const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function Services() {
-  const headRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = headRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) el.classList.add("visible");
-      },
-      { threshold: 0.1 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
   return (
-    <section
-      id="services"
-      className="py-20 md:py-32 px-6 md:px-10"
-      style={{ background: "var(--bg-alt)" }}
-    >
-      <div className="max-w-[1400px] mx-auto">
-        {/* Header */}
-        <div
-          ref={headRef}
-          className="reveal flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-20 gap-6"
-        >
-          <h2
-            className="font-display whitespace-nowrap"
-            style={{
-              fontSize: "clamp(2.2rem, 5vw, 4.2rem)",
-              lineHeight: 0.9,
-              letterSpacing: "0.04em",
-              color: "var(--text)",
-            }}
-          >
-            WHAT I DO
-          </h2>
-          {/* <p
-            className="font-serif italic md:text-right"
-            style={{
-              fontSize: "1.1rem",
-              color: "var(--text-dim)",
-              maxWidth: 280,
-            }}
-          >
-            A muse and an artist —<br />
-            don&apos;t get it twisted.
-          </p> */}
-        </div>
+    <section id="services" className="mx-auto max-w-350 scroll-mt-16 px-5 pb-24 md:px-10 md:pb-32">
+      <h2 className="max-w-[16ch] text-5xl leading-none font-bold tracking-[-0.04em] md:text-7xl">
+        What I do
+      </h2>
 
-        {/* Bento grid — responsive via CSS class in globals.css */}
-        <div className="services-bento">
-          {services.map((s, i) => (
-            <div key={s.num} className={i === 0 ? "h-full" : ""}>
-              <ServiceCard s={s} delay={i * 0.08} />
-            </div>
-          ))}
-        </div>
-      </div>
+      <ul className="mt-12 grid grid-cols-1 gap-3 md:grid-cols-3 md:grid-rows-2">
+        {SERVICES.map((s, i) => {
+          const onDark = s.tone === "photo";
+          return (
+            <motion.li
+              key={s.name}
+              className={`group relative flex flex-col justify-end overflow-hidden p-7 md:p-8 ${s.cls} ${
+                s.tone === "accent" ? "bg-accent text-on-accent" : s.tone === "plain" ? "bg-surface" : "bg-ink"
+              } ${onDark ? "text-white" : ""}`}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.8, delay: i * 0.06, ease }}
+            >
+              {s.image && (
+                <>
+                  <Image
+                    loader={photoLoader}
+                    src={s.image}
+                    alt=""
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+                  />
+                  <div aria-hidden className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
+                </>
+              )}
+              <div className="relative">
+                <span className={`text-sm tabular-nums ${onDark || s.tone === "accent" ? "opacity-75" : "text-ink-dim"}`}>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-2 text-2xl leading-tight font-bold tracking-[-0.02em] md:text-3xl">{s.name}</h3>
+                <p className={`mt-3 max-w-[40ch] text-base leading-relaxed ${onDark || s.tone === "accent" ? "opacity-90" : "text-ink-soft"}`}>
+                  {s.desc}
+                </p>
+              </div>
+            </motion.li>
+          );
+        })}
+      </ul>
     </section>
   );
 }

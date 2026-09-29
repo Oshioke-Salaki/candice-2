@@ -36,3 +36,8 @@ Thumbs.db
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# AI agent skills (local tooling, not part of the site)
+.agents/
+.claude/
+skills-lock.json

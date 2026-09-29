@@ -1,184 +1,64 @@
-'use client'
+"use client";
 
-import { useEffect, useRef } from 'react'
+import { motion } from "motion/react";
+import { ArrowUpRightIcon } from "@phosphor-icons/react";
+import { BOOK_HREF, BOOK_LABEL, EMAIL, SOCIALS } from "@/lib/content";
 
-const socials = [
-  {
-    name:   'Instagram',
-    handle: '@wowcandice',
-    href:   'https://www.instagram.com/wowcandice',
-  },
-  {
-    name:   'TikTok',
-    handle: '@wowcandice',
-    href:   'https://www.tiktok.com/@wowcandice',
-  },
-  {
-    name:   'WhatsApp',
-    handle: '+353 83 804 5399',
-    href:   'https://wa.me/353838045399',
-  },
-  {
-    name:   'Email',
-    handle: 'candicefarinde@gmail.com',
-    href:   'mailto:candicefarinde@gmail.com',
-  },
-]
-
-function useRevealRef() {
-  const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) el.classList.add('visible') },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-    )
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [])
-  return ref
-}
+const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function Contact() {
-  const leftRef   = useRevealRef()
-  const rightRef  = useRevealRef()
-  const noteRef   = useRevealRef()
-
   return (
-    <section
-      id="contact"
-      className="py-20 md:py-40 px-6 md:px-10"
-      style={{ background: 'var(--bg)' }}
-    >
-      <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-24 md:gap-32 items-start">
+    <section id="contact" className="mx-auto max-w-350 scroll-mt-16 px-5 py-24 md:px-10 md:py-40">
+      <motion.h2
+        className="text-[clamp(3.25rem,10vw,9rem)] leading-[0.92] font-bold tracking-[-0.045em]"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 1, ease }}
+      >
+        Let&rsquo;s make
+        <br />
+        <span className="font-normal italic text-accent">a moment.</span>
+      </motion.h2>
 
-        {/* ── LEFT ── */}
-        <div ref={leftRef} className="reveal">
-          <div className="section-tag">Get In Touch</div>
-
-          <h2
-            className="font-display mb-8"
-            style={{ fontSize: 'clamp(2.5rem, 6vw, 5.5rem)', lineHeight: 0.88, letterSpacing: '0.04em', color: 'var(--text)' }}
-          >
-            LET&apos;S MAKE
-            <br />
-            {/* Outlined variant — carries the oxblood accent */}
-            <span
-              style={{
-                WebkitTextStroke: '1.5px var(--accent-soft)',
-                color:            'transparent',
-              }}
-            >
-              A MOMENT
-            </span>
-          </h2>
-
-          <p
-            className="font-serif italic mb-10"
-            style={{ fontSize: '1.15rem', lineHeight: 1.65, color: 'var(--text-soft)', maxWidth: 380 }}
-          >
-            Campaigns, editorials, runway and content that gets replayed.
-            Brands, agencies, and creative directors — let&apos;s talk.
+      <div className="mt-14 grid grid-cols-1 gap-14 md:mt-20 md:grid-cols-12 md:gap-10">
+        <div className="md:col-span-5">
+          <p className="max-w-[40ch] text-lg leading-relaxed text-ink-soft">
+            Campaigns, editorials, runway and content. Send a short brief with dates and
+            usage. Based in London and Lagos, available worldwide.
           </p>
-
           <a
-            href="mailto:candicefarinde@gmail.com"
-            className="hoverable inline-flex items-center gap-3 no-underline transition-all duration-300 group"
-            style={{
-              fontSize:      '0.72rem',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color:         'var(--text)',
-              borderBottom:  '1px solid var(--border-hi)',
-              paddingBottom: '0.5rem',
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = '0.6' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = '1' }}
+            href={BOOK_HREF}
+            className="mt-8 inline-flex h-14 items-center bg-accent px-8 text-lg font-medium whitespace-nowrap text-on-accent transition-transform hover:-translate-y-px active:scale-[0.98]"
           >
-            candicefarinde@gmail.com
-            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            {BOOK_LABEL}
           </a>
+          <p className="mt-4 text-sm text-ink-dim">
+            or write to <a href={`mailto:${EMAIL}`} className="text-ink underline-offset-4 hover:underline">{EMAIL}</a>
+          </p>
         </div>
 
-        {/* ── RIGHT ── */}
-        <div className="flex flex-col gap-10">
-          <div ref={rightRef} className="reveal">
-            <p
-              className="uppercase tracking-[0.3em] mb-6"
-              style={{ fontSize: '0.6rem', color: 'var(--text-dim)' }}
-            >
-              Find me on
-            </p>
-
-            {/* Socials list */}
-            <div style={{ borderTop: '1px solid var(--border)' }}>
-              {socials.map(s => (
-                <a
-                  key={s.name}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hoverable social-row group no-underline"
-                  style={{ color: 'var(--text)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-                >
-                  <span
-                    className="font-serif"
-                    style={{ fontSize: '1.5rem', fontWeight: 300 }}
-                  >
-                    {s.name}
-                  </span>
-                  <div className="flex items-center gap-4">
-                    <span
-                      className="uppercase tracking-[0.18em] transition-colors duration-300"
-                      style={{ fontSize: '0.62rem', color: 'var(--text-soft)' }}
-                    >
-                      {s.handle}
-                    </span>
-                    <span
-                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      style={{ fontSize: '1rem', color: 'var(--text)' }}
-                    >
-                      ↗
-                    </span>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Brand inquiry note */}
-          <div
-            ref={noteRef}
-            className="reveal p-8"
-            style={{
-              border:     '1px solid var(--border)',
-              background: 'var(--bg-card)',
-            }}
-          >
-            <p
-              className="uppercase tracking-[0.2em] mb-3"
-              style={{ fontSize: '0.6rem', color: 'var(--text-dim)' }}
-            >
-              For brand inquiries
-            </p>
-            <p style={{ fontSize: '0.85rem', lineHeight: 1.8, color: 'var(--text-soft)' }}>
-              Booking a campaign, editorial, runway show or content collaboration?
-              Reach out via{' '}
+        <ul className="md:col-span-6 md:col-start-7">
+          {SOCIALS.map((s) => (
+            <li key={s.name} className="border-t border-line last:border-b">
               <a
-                href="mailto:candicefarinde@gmail.com"
-                className="no-underline transition-opacity duration-300 hover:opacity-70"
-                style={{ color: 'var(--text)', borderBottom: '1px solid var(--border-hi)' }}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between gap-4 py-6"
               >
-                email
-              </a>{' '}
-              or WhatsApp with a brief overview of your brand and campaign goals.
-              Based between London &amp; Lagos — travels worldwide.
-            </p>
-          </div>
-        </div>
-
+                <span className="text-3xl font-bold tracking-[-0.03em] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-2 md:text-4xl">
+                  {s.name}
+                </span>
+                <span className="flex items-center gap-3 text-base text-ink-soft">
+                  <span className="hidden sm:inline">{s.handle}</span>
+                  <ArrowUpRightIcon size={20} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
-  )
+  );
 }

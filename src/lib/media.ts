@@ -1,11 +1,11 @@
 /* ─── Cloudinary delivery helpers ─────────────────────────────
    All site media lives on Cloudinary under the `candice/` folder.
-   The cloud name is public — it appears in every delivered URL. */
+   The cloud name is public; it appears in every delivered URL. */
 
 const CLOUD = "hc8f1wui";
 const BASE = `https://res.cloudinary.com/${CLOUD}`;
 
-/** next/image loader — Cloudinary does the resizing + format work,
+/** next/image loader. Cloudinary does the resizing + format work,
     so Vercel's image optimizer is bypassed entirely. `src` is the
     Cloudinary public ID (e.g. "candice/about/01"). */
 export function cldLoader({
@@ -32,7 +32,7 @@ export function cldImage(publicId: string, width = 1280) {
   return `${BASE}/image/upload/f_auto,q_auto,w_${width},c_limit/${publicId}`;
 }
 
-/** Video delivery URL — auto codec + quality, capped height. */
+/** Video delivery URL: auto codec + quality, capped height. */
 export function cldVideo(publicId: string, maxHeight = 1280) {
   return `${BASE}/video/upload/q_auto,vc_auto,h_${maxHeight},c_limit/${publicId}.mp4`;
 }
@@ -42,7 +42,7 @@ export function cldPoster(publicId: string, offset = 1, width = 1280) {
   return `${BASE}/video/upload/so_${offset},w_${width},c_limit,f_jpg,q_auto/${publicId}.jpg`;
 }
 
-/** Tiny blurred stand-in for next/image `blurDataURL` — loads in
+/** Tiny blurred stand-in for next/image `blurDataURL`; loads in
     milliseconds so nothing ever appears as an empty dark box. Pass
     the same `transform` chain the real image uses so the blur
     matches its crop. */

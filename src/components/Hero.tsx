@@ -1,214 +1,103 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import { cldBlurURL, cldLoader, cldLoaderWith } from "@/lib/media";
+import { motion } from "motion/react";
+import { cldBlurURL, cldLoaderWith } from "@/lib/media";
+import { BOOK_LABEL } from "@/lib/content";
 
-/* Cloudinary two-step smart crop: first trim the dark void around
-   the subject, then fill a 2:3 cover portrait — she fills the frame
-   head to podium. */
-const heroLoader = cldLoaderWith(
-  "c_crop,w_0.9,h_0.62,g_auto/c_fill,ar_2:3,g_auto",
-);
+/* Cloudinary smart crop: trim the dark void around the subject, then
+   fill a 4:5 portrait so she fills the frame. */
+const HERO_CROP = "c_crop,w_0.9,h_0.62,g_auto/c_fill,ar_4:5,g_auto";
+const heroLoader = cldLoaderWith(HERO_CROP);
+
+const ease = [0.16, 1, 0.3, 1] as const;
+
+/* Each headline line rises out of its own mask, in sequence. */
+function Line({ children, delay }: { children: React.ReactNode; delay: number }) {
+  return (
+    <span className="block overflow-hidden pb-[0.06em]">
+      <motion.span
+        className="block"
+        initial={{ y: "105%" }}
+        animate={{ y: "0%" }}
+        transition={{ duration: 1, delay, ease }}
+      >
+        {children}
+      </motion.span>
+    </span>
+  );
+}
 
 export default function Hero() {
-  /* Drives the staggered entrance of the masthead and cover portrait.
-     Flipped one frame after mount so the CSS transitions actually run. */
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setOpen(true), 60);
-    return () => clearTimeout(t);
-  }, []);
-
-  const ease = "cubic-bezier(0.16,1,0.3,1)";
-
   return (
-    <>
-      {/* ═══════ HERO ═══════
-          Concept: "The Cover"
-          A digital magazine cover. The masthead — fine serif "WOW" over
-          massive "CANDICE" — sits high in the frame; the portrait
-          (smart-cropped by Cloudinary, g_auto) rises from the bottom edge
-          OVER the masthead, the way a cover star overlaps the logo.
-      ══════════════════════ */}
-      <section
-        id="home"
-        className="relative overflow-hidden"
-        style={{ height: "100svh", minHeight: 640 }}
-      >
-        {/* ── Atmospheric wash — blurred echo of the portrait ── */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            loader={cldLoader}
-            src="candice/hero/hero"
-            alt=""
-            aria-hidden
-            fill
-            priority
-            className="object-cover"
-            sizes="100vw"
-            style={{
-              filter: "blur(64px) brightness(0.32) saturate(1.25)",
-              transform: "scale(1.25)",
-            }}
-          />
-          {/* Dark cap at top — nav always readable */}
-          <div
-            className="absolute top-0 left-0 right-0"
-            style={{
-              height: "120px",
-              background:
-                "linear-gradient(to bottom, rgba(6,3,2,0.5) 0%, transparent 100%)",
-            }}
-          />
-        </div>
-
-        {/* ── Masthead ──
-            On md+ it sits BEHIND the portrait, like a magazine logo the
-            cover star overlaps. On small screens the portrait is
-            proportionally huge and would slice the wordmark in half, so
-            the masthead is lifted above it instead. ── */}
-        <div
-          className="absolute inset-x-0 z-30 md:z-10 flex flex-col items-center text-center px-6"
-          style={{ top: "max(9svh, 92px)" }}
-        >
-          <p
-            className="uppercase font-medium"
-            style={{
-              fontSize: "clamp(0.55rem, 0.9vw, 0.68rem)",
-              letterSpacing: "0.55em",
-              color: "rgba(255,255,255,0.7)",
-              marginBottom: "clamp(1rem, 2.2svh, 1.8rem)",
-              opacity: open ? 1 : 0,
-              transform: open ? "translateY(0)" : "translateY(10px)",
-              transition: `opacity 0.9s ease 0.85s, transform 0.9s ${ease} 0.85s`,
-            }}
-          >
-            <span style={{ color: "#C2453E" }}>✶</span> &nbsp; Model
-            &nbsp;·&nbsp; Creator &nbsp;·&nbsp; Muse &nbsp;{" "}
-            <span style={{ color: "#C2453E" }}>✶</span>
-          </p>
-
-          {/* <div
-            className="font-display text-white whitespace-nowrap"
-            style={{
-              fontSize: "clamp(1.4rem, 3.2vw, 3.1rem)",
-              fontWeight: 700,
-              letterSpacing: "clamp(0.3em, 1vw, 0.5em)",
-              color: "rgba(255,255,255,0.9)",
-              lineHeight: 1,
-              marginBottom: "clamp(0.3rem, 0.8svh, 0.6rem)",
-              transform: open ? "translateY(0)" : "translateY(20px)",
-              opacity: open ? 1 : 0,
-              transition: `transform 1.1s ${ease} 0.4s, opacity 1s ${ease} 0.4s`,
-            }}
-          >
-            WOW
-          </div> */}
-
-          <h1
-            className="font-display text-white whitespace-nowrap"
-            style={{
-              fontSize: "clamp(4.2rem, 14vw, 11.5rem)",
-              fontWeight: 400,
-              lineHeight: 0.9,
-              letterSpacing: "0.01em",
-              transform: open ? "translateY(0)" : "translateY(34px)",
-              opacity: open ? 1 : 0,
-              transition: `transform 1.1s ${ease} 0.5s, opacity 1s ${ease} 0.5s`,
-            }}
-          >
-            <span style={{ color: "#A82420" }}>WOW</span>CANDICE
-          </h1>
-        </div>
-
-        {/* ── Cover star — smart-cropped portrait over the masthead ── */}
-        <div
-          className="absolute left-1/2 bottom-0 z-20"
-          style={{
-            width: "min(88vw, calc(64svh * 2 / 3))",
-            aspectRatio: "2/3",
-            transform: `translateX(-50%) translateY(${open ? "0" : "5%"})`,
-            opacity: open ? 1 : 0,
-            transition: `transform 1.4s ${ease} 0.65s, opacity 1.1s ease 0.65s`,
-          }}
+    <section
+      id="home"
+      className="mx-auto grid min-h-dvh max-w-350 grid-cols-1 gap-8 px-5 pt-20 pb-10 md:grid-cols-12 md:gap-10 md:px-10 md:pt-24 md:pb-12"
+    >
+      {/* Portrait: first on mobile, right-hand column on desktop */}
+      <div className="relative order-first h-[46dvh] overflow-hidden bg-surface md:order-last md:col-span-5 md:col-start-8 md:h-auto md:max-h-[calc(100dvh-9rem)] md:self-end md:aspect-4/5">
+        <motion.div
+          className="absolute inset-0"
+          initial={{ scale: 1.14 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.6, ease }}
         >
           <Image
             loader={heroLoader}
             src="candice/hero/hero"
-            alt="Candice — cover portrait"
+            alt="Candice, cover portrait"
             fill
             priority
             placeholder="blur"
-            blurDataURL={cldBlurURL(
-              "candice/hero/hero",
-              "c_crop,w_0.9,h_0.62,g_auto/c_fill,ar_2:3,g_auto",
-            )}
-            className="object-cover"
-            sizes="(max-width: 768px) 88vw, 460px"
+            blurDataURL={cldBlurURL("candice/hero/hero", HERO_CROP)}
+            sizes="(max-width: 768px) 100vw, 40vw"
+            className="object-cover object-top"
           />
-          {/* hairline frame in her oxblood red */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{ border: "1px solid rgba(194,69,62,0.4)" }}
-          />
-          {/* grounding gradient inside the portrait's bottom */}
-          <div
-            className="absolute bottom-0 left-0 right-0 pointer-events-none"
-            style={{
-              height: "22%",
-              background:
-                "linear-gradient(to top, rgba(6,3,2,0.55) 0%, transparent 100%)",
-            }}
-          />
-          {/* location — cover strapline, pinned to the portrait's foot */}
-          <p
-            className="absolute bottom-4 left-0 right-0 text-center uppercase"
-            style={{
-              fontSize: "clamp(0.5rem, 0.9vw, 0.6rem)",
-              letterSpacing: "0.45em",
-              color: "rgba(255,255,255,0.75)",
-              opacity: open ? 1 : 0,
-              transition: `opacity 0.9s ease 1.15s`,
-            }}
-          >
-            London &nbsp;·&nbsp; Lagos &nbsp;·&nbsp; Worldwide
+        </motion.div>
+        {/* Curtain lifts to reveal the portrait */}
+        <motion.div
+          aria-hidden="true"
+          className="absolute inset-0 origin-top bg-bg"
+          initial={{ scaleY: 1 }}
+          animate={{ scaleY: 0 }}
+          transition={{ duration: 1.1, delay: 0.15, ease }}
+        />
+      </div>
+
+      <div className="flex flex-col justify-end md:col-span-7">
+        <h1 className="text-[clamp(4rem,16vw,9.5rem)] leading-[0.92] font-bold tracking-[-0.045em]">
+          <Line delay={0.25}>
+            <span className="font-normal italic text-accent">Wow</span>
+          </Line>
+          <Line delay={0.38}>Candice</Line>
+        </h1>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.7, ease }}
+        >
+          <p className="mt-6 max-w-[38ch] text-lg leading-relaxed text-ink-soft md:mt-8 md:text-xl">
+            Nigerian-Sudanese fashion and commercial model and content creator,
+            working between London and Lagos.
           </p>
-        </div>
 
-        {/* ── Flanking rules — the couture red, framing the cover ── */}
-        <div
-          aria-hidden="true"
-          className="absolute z-10 hidden md:block"
-          style={{
-            left: "8%",
-            top: "50%",
-            width: "1px",
-            height: "clamp(60px, 14svh, 130px)",
-            background: "rgba(194,69,62,0.6)",
-            transformOrigin: "center",
-            transform: `translateY(-50%) scaleY(${open ? 1 : 0})`,
-            transition: `transform 1s ${ease} 0.9s`,
-          }}
-        />
-        <div
-          aria-hidden="true"
-          className="absolute z-10 hidden md:block"
-          style={{
-            right: "8%",
-            top: "50%",
-            width: "1px",
-            height: "clamp(60px, 14svh, 130px)",
-            background: "rgba(194,69,62,0.6)",
-            transformOrigin: "center",
-            transform: `translateY(-50%) scaleY(${open ? 1 : 0})`,
-            transition: `transform 1s ${ease} 0.9s`,
-          }}
-        />
-
-        {/* ── Corner details — appear last ── */}
-      </section>
-    </>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <a
+              href="#contact"
+              className="inline-flex h-12 items-center bg-accent px-7 text-base font-medium whitespace-nowrap text-on-accent transition-transform hover:-translate-y-px active:scale-[0.98]"
+            >
+              {BOOK_LABEL}
+            </a>
+            <a
+              href="#work"
+              className="inline-flex h-12 items-center border border-ink/25 px-7 text-base font-medium whitespace-nowrap transition-colors hover:border-ink active:scale-[0.98]"
+            >
+              View work
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    </section>
   );
 }
