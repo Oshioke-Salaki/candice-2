@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { ListIcon, XIcon } from "@phosphor-icons/react";
 import { BOOK_LABEL, NAV_LINKS } from "@/lib/content";
 import { RollText } from "@/components/fx";
+import Overlay from "@/components/Overlay";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -23,15 +24,31 @@ export default function Navbar() {
     setHidden(y > 600 && y > prev);
   });
 
+  // A menu link closes the menu first; the page scrolls to its section
+  // once the menu has gone and the scroll lock is released.
+  const pending = useRef<string | null>(null);
+  const go = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    pending.current = href;
+    setMenuOpen(false);
+  };
+  const afterClose = () => {
+    const href = pending.current;
+    pending.current = null;
+    if (!href) return;
+    // Wait a frame so the scroll lock has released and restored the
+    // old position first; then glide to the chosen section.
+    requestAnimationFrame(() => {
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+      history.replaceState(null, "", href);
+    });
+  };
+
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
     if (!menuOpen) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
     window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, [menuOpen]);
 
   return (
@@ -81,13 +98,14 @@ export default function Navbar() {
         </nav>
       </motion.header>
 
-      <AnimatePresence>
+      <AnimatePresence onExitComplete={afterClose}>
         {menuOpen && (
+          <Overlay key="menu">
           <motion.div
             role="dialog"
             aria-modal="true"
             aria-label="Menu"
-            className="fixed inset-0 z-60 flex flex-col bg-bg"
+            className="fixed inset-0 z-60 flex h-dvh flex-col overscroll-contain bg-bg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -118,7 +136,7 @@ export default function Navbar() {
                 >
                   <a
                     href={l.href}
-                    onClick={() => setMenuOpen(false)}
+                    onClick={(e) => go(e, l.href)}
                     className={`block py-1 text-5xl font-bold tracking-tight ${
                       l.href === "#contact" ? "text-accent" : ""
                     }`}
@@ -129,6 +147,7 @@ export default function Navbar() {
               ))}
             </ul>
           </motion.div>
+          </Overlay>
         )}
       </AnimatePresence>
     </>

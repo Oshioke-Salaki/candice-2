@@ -95,6 +95,12 @@ body {
   outline-offset: 3px;
 }
 
+/* While a full-screen layer is open, everything else on the page is
+   hidden (see Overlay.tsx), so nothing can show around its edges. */
+body.overlay-open > :not(.overlay-root) {
+  visibility: hidden;
+}
+
 .no-scrollbar {
   scrollbar-width: none;
 }

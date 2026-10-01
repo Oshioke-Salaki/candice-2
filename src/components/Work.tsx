@@ -11,6 +11,7 @@ import {
   SpeakerSlashIcon,
   XIcon,
 } from "@phosphor-icons/react";
+import Overlay from "@/components/Overlay";
 import {
   campaignFrame,
   cldBlurURL,
@@ -322,7 +323,6 @@ function Lightbox({ collab, onClose }: { collab: Collab; onClose: () => void }) 
   useEffect(() => {
     const opener = document.activeElement as HTMLElement | null;
     closeRef.current?.focus();
-    document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowRight") go(1);
@@ -330,9 +330,8 @@ function Lightbox({ collab, onClose }: { collab: Collab; onClose: () => void }) 
     };
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "";
       window.removeEventListener("keydown", onKey);
-      opener?.focus();
+      opener?.focus({ preventScroll: true });
     };
   }, [go, onClose]);
 
@@ -357,11 +356,12 @@ function Lightbox({ collab, onClose }: { collab: Collab; onClose: () => void }) 
   };
 
   return (
+    <Overlay>
     <motion.div
       role="dialog"
       aria-modal="true"
       aria-labelledby="lightbox-title"
-      className="fixed inset-0 z-70 flex flex-col overflow-hidden bg-[#0b0b0c] text-white"
+      className="fixed inset-0 z-70 flex h-dvh flex-col overflow-hidden overscroll-contain bg-[#0b0b0c] text-white"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -562,5 +562,6 @@ function Lightbox({ collab, onClose }: { collab: Collab; onClose: () => void }) 
         </div>
       )}
     </motion.div>
+    </Overlay>
   );
 }
