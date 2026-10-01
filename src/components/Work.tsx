@@ -29,11 +29,15 @@ type Media =
   | { kind: "image"; id: string }
   | { kind: "video"; id: string; posterAt: number };
 
+type Credit = { role: string; handle: string };
+
 type Collab = {
   id: string;
   name: string;
   category: "modeling" | "brand";
   media: Media[];
+  /** Team credits, shown in the viewer like a magazine credit line. */
+  credits?: Credit[];
 };
 
 const C = "candice/campaigns";
@@ -54,7 +58,8 @@ const shoot = (
   name: string,
   media: Media[],
   category: Collab["category"] = "modeling",
-): Collab => ({ id, name, category, media });
+  credits?: Credit[],
+): Collab => ({ id, name, category, media, credits });
 
 /* Modeling: the 2026 campaigns lead, then the existing sequence. */
 const MODELING: Collab[] = [
@@ -66,6 +71,12 @@ const MODELING: Collab[] = [
     film("luxeal-hair-2026", "candy-floss", 4),
     ...photos("luxeal-hair-2026", [2, 3]),
     film("luxeal-hair-2026", "ginger-me"),
+  ], "modeling", [
+    // Credits as tagged on the original posts.
+    { role: "Hair", handle: "remilaide" },
+    { role: "Makeup", handle: "breelliant__" },
+    { role: "Wig", handle: "luxealhair" },
+    { role: "Colour", handle: "thehairpaletteuk" },
   ]),
   shoot("makeup-by-chelsea", "Makeup by Chelsea", [
     ...photos("makeup-by-chelsea", [1, 2]),
@@ -289,7 +300,7 @@ const slide = {
 };
 
 function Lightbox({ collab, onClose }: { collab: Collab; onClose: () => void }) {
-  const { media, name, category } = collab;
+  const { media, name, category, credits } = collab;
   const total = media.length;
   const [[index, dir], setState] = useState<[number, number]>([0, 0]);
   const [muted, setMuted] = useState(true);
@@ -490,6 +501,25 @@ function Lightbox({ collab, onClose }: { collab: Collab; onClose: () => void }) 
           )}
         </div>
       </div>
+
+      {credits && (
+        <p className="relative shrink-0 px-5 pt-3 text-center text-xs leading-relaxed text-white/55 md:px-10">
+          {credits.map((c, n) => (
+            <span key={c.handle} className="whitespace-nowrap">
+              {n > 0 && <span className="mx-2 text-white/25">/</span>}
+              {c.role}{" "}
+              <a
+                href={`https://www.instagram.com/${c.handle}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/85 underline-offset-4 transition-colors hover:text-white hover:underline"
+              >
+                @{c.handle}
+              </a>
+            </span>
+          ))}
+        </p>
+      )}
 
       {/* Contact strip */}
       {total > 1 && (

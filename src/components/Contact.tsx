@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { ArrowUpRightIcon } from "@phosphor-icons/react";
 import { BOOK_HREF, BOOK_LABEL, EMAIL, SOCIALS } from "@/lib/content";
+import { Magnetic, RollText } from "@/components/fx";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -27,12 +28,13 @@ export default function Contact() {
             Campaigns, editorials, runway and content. Send a short brief with dates and
             usage. Based in London and Lagos, available worldwide.
           </p>
-          <a
-            href={BOOK_HREF}
-            className="mt-8 inline-flex h-14 items-center bg-accent px-8 text-lg font-medium whitespace-nowrap text-on-accent transition-transform hover:-translate-y-px active:scale-[0.98]"
-          >
-            {BOOK_LABEL}
-          </a>
+          <div className="mt-8">
+            <Magnetic>
+              <a href={BOOK_HREF} className="group inline-flex h-14 items-center bg-accent px-8 text-lg font-medium whitespace-nowrap text-on-accent transition-transform active:scale-[0.98]">
+                <RollText>{BOOK_LABEL}</RollText>
+              </a>
+            </Magnetic>
+          </div>
           <p className="mt-4 text-sm text-ink-dim">
             or write to <a href={`mailto:${EMAIL}`} className="text-ink underline-offset-4 hover:underline">{EMAIL}</a>
           </p>

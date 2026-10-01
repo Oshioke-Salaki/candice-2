@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { ListIcon, XIcon } from "@phosphor-icons/react";
 import { BOOK_LABEL, NAV_LINKS } from "@/lib/content";
+import { RollText } from "@/components/fx";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -52,9 +53,9 @@ export default function Navbar() {
               <li key={l.href}>
                 <a
                   href={l.href}
-                  className="text-sm font-medium text-ink-soft transition-colors hover:text-ink"
+                  className="group text-sm font-medium text-ink-soft transition-colors hover:text-ink"
                 >
-                  {l.label}
+                  <RollText>{l.label}</RollText>
                 </a>
               </li>
             ))}
@@ -63,9 +64,9 @@ export default function Navbar() {
           <div className="flex items-center gap-2">
             <a
               href="#contact"
-              className="hidden h-10 items-center bg-ink px-5 text-sm font-medium whitespace-nowrap text-bg transition-transform active:scale-[0.98] sm:inline-flex"
+              className="group hidden h-10 items-center bg-ink px-5 text-sm font-medium whitespace-nowrap text-bg transition-colors hover:bg-accent hover:text-on-accent active:scale-[0.98] sm:inline-flex"
             >
-              {BOOK_LABEL}
+              <RollText>{BOOK_LABEL}</RollText>
             </a>
             <button
               type="button"
