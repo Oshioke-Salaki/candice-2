@@ -9,6 +9,7 @@ import { cldPoster, cldPosterTiny, cldVideo } from "@/lib/media";
    `posterAt` seconds, so there are no stored thumbnails. */
 const COMMERCIALS = [
   { id: "raindance", title: "Raindance", meta: "Dave ft. Tems, music video", posterAt: 1 },
+  { id: "lancey-foux-rockstar-rider", title: "Rockstar Rider", meta: "Lancey Foux, music video", posterAt: 1 },
   { id: "bts-behind-scenes", title: "Snow Bunny", meta: "Brand collab", posterAt: 1 },
   { id: "olamide-rock-me-gentle", title: "Rock Me Gentle", meta: "Olamide, music video", posterAt: 12 },
   { id: "bnxn-buju", title: "BNXN (Buju)", meta: "Music video", posterAt: 1 },
@@ -76,6 +77,23 @@ function VideoCard({
     }
   }, [isPlaying, muted]);
 
+  // Desktop hover plays a silent preview; clicking takes it to full
+  // playback with sound. Skipped for reduced-motion visitors.
+  const canPreview = () =>
+    window.matchMedia("(hover: hover) and (prefers-reduced-motion: no-preference)").matches;
+  const previewStart = () => {
+    const v = videoRef.current;
+    if (!v || isPlaying || !canPreview()) return;
+    v.muted = true;
+    v.play().catch(() => {});
+  };
+  const previewStop = () => {
+    const v = videoRef.current;
+    if (!v || isPlaying || !canPreview()) return;
+    v.pause();
+    v.load(); // back to the poster frame
+  };
+
   // Pause when the card scrolls out of view while playing.
   useEffect(() => {
     const el = cardRef.current;
@@ -89,7 +107,11 @@ function VideoCard({
 
   return (
     <li ref={cardRef} className="w-[72vw] shrink-0 snap-start sm:w-[42vw] md:w-[30vw] lg:w-84">
-      <div className="group relative aspect-9/16 overflow-hidden bg-surface">
+      <div
+        className="group relative aspect-9/16 overflow-hidden bg-surface"
+        onMouseEnter={previewStart}
+        onMouseLeave={previewStop}
+      >
         {/* Blurred poster fills the frame when a cut is landscape */}
         <div
           aria-hidden
@@ -111,7 +133,7 @@ function VideoCard({
             type="button"
             onClick={onToggle}
             aria-label={`Play ${c.title}`}
-            className="absolute inset-0 flex items-center justify-center bg-black/15 text-white"
+            className="absolute inset-0 flex items-center justify-center bg-black/15 text-white transition-colors duration-500 group-hover:bg-transparent"
           >
             <span className="flex h-16 w-16 items-center justify-center bg-accent text-on-accent transition-transform duration-300 group-hover:scale-110">
               <PlayIcon size={26} weight="fill" />

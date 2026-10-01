@@ -2,34 +2,19 @@
 
 /* =============================================
    TOKENS
-   Neutral off-white / off-black with one accent: signal red.
-   Light by default, dark follows the system setting.
+   Dark only: off-black with off-white ink and one accent, signal red.
    ============================================= */
 :root {
-  --bg: #f4f4f2;
-  --surface: #e8e8e5;
-  --ink: #121213;
-  --ink-soft: #3c3c40;
-  --ink-dim: #66666c;
-  --line: rgba(18, 18, 19, 0.12);
-  --accent: #c8281a;
-  --on-accent: #ffffff;
+  --bg: #0f0f10;
+  --surface: #1a1a1c;
+  --ink: #f2f2f0;
+  --ink-soft: #c6c6ca;
+  --ink-dim: #909096;
+  --line: rgba(242, 242, 240, 0.12);
+  --accent: #f0513f;
+  --on-accent: #0f0f10;
   --scrim: rgba(10, 10, 11, 0.62);
-  color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f0f10;
-    --surface: #1a1a1c;
-    --ink: #f2f2f0;
-    --ink-soft: #c6c6ca;
-    --ink-dim: #909096;
-    --line: rgba(242, 242, 240, 0.12);
-    --accent: #f0513f;
-    --on-accent: #0f0f10;
-    color-scheme: dark;
-  }
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -100,13 +85,8 @@ body {
 }
 
 /* Brand marks are normalized to one ink colour so the wall reads as a
-   single row of type, in both themes. */
+   single row of type. */
 .brand-mark {
-  filter: brightness(0);
+  filter: brightness(0) invert(1);
   opacity: 0.72;
-}
-@media (prefers-color-scheme: dark) {
-  .brand-mark {
-    filter: brightness(0) invert(1);
-  }
 }

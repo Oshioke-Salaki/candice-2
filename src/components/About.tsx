@@ -1,22 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { ArrowUpRightIcon, PlayIcon } from "@phosphor-icons/react";
-import { cldBlurURL, cldLoader } from "@/lib/media";
+import { cldBlurURL, cldLoader, cldLoaderWith } from "@/lib/media";
 
-const IMAGES = [
-  { src: "candice/about/00", alt: "Candice, portrait" },
-  { src: "candice/about/01", alt: "Candice, portrait" },
-  { src: "candice/about/02", alt: "Candice, editorial" },
-  { src: "candice/about/03", alt: "Candice, campaign" },
-  { src: "candice/about/04", alt: "Candice, beauty" },
-  // Pulled straight from the LDM CLO SS26 campaign, no duplicate upload.
-  { src: "candice/campaigns/ldm-clo-ss26/ldm-clo-ss26-12", alt: "Candice, LDM CLO SS26" },
-];
-
-const INTERVAL = 4200; // ms between auto-advances
+/* Three frames layered like prints on a table. Each drifts at its own
+   speed as the section scrolls past, which gives the collage depth. */
+// The original file carries a white-and-black print border; crop it off.
+const MAIN = {
+  src: "candice/about/00",
+  alt: "Candice in a sand-coloured gown",
+  crop: "c_crop,x_56,y_30,w_1408,h_2088/c_limit",
+};
+const INSET = { src: "candice/about/04", alt: "Candice, beauty close-up" };
+// Pulled straight from the LDM CLO SS26 campaign, no duplicate upload.
+const SMALL = { src: "candice/campaigns/ldm-clo-ss26/ldm-clo-ss26-12", alt: "Candice for LDM CLO SS26" };
 
 const REEL_URL = "https://www.instagram.com/reel/DZliPFzAJP_/";
 
@@ -28,63 +28,67 @@ const reveal = {
   viewport: { once: true, amount: 0.3 },
 };
 
-export default function About() {
-  const [current, setCurrent] = useState(0);
+function Print({
+  img,
+  sizes,
+  className,
+  ratio,
+}: {
+  img: { src: string; alt: string; crop?: string };
+  sizes: string;
+  className?: string;
+  ratio: string;
+}) {
+  return (
+    <div className={`group relative overflow-hidden bg-surface ${className ?? ""}`} style={{ aspectRatio: ratio }}>
+      <Image
+        loader={img.crop ? cldLoaderWith(img.crop) : cldLoader}
+        src={img.src}
+        alt={img.alt}
+        fill
+        placeholder="blur"
+        blurDataURL={cldBlurURL(img.src, img.crop)}
+        sizes={sizes}
+        className="object-cover object-top transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+      />
+    </div>
+  );
+}
 
-  useEffect(() => {
-    const t = setTimeout(() => setCurrent((c) => (c + 1) % IMAGES.length), INTERVAL);
-    return () => clearTimeout(t);
-  }, [current]);
+export default function About() {
+  const collageRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: collageRef, offset: ["start end", "end start"] });
+  // Parallax is off for visitors who prefer reduced motion.
+  const k = useReducedMotion() ? 0 : 1;
+  const yMain = useTransform(scrollYProgress, [0, 1], [30 * k, -30 * k]);
+  const yInset = useTransform(scrollYProgress, [0, 1], [90 * k, -90 * k]);
+  const ySmall = useTransform(scrollYProgress, [0, 1], [140 * k, -60 * k]);
 
   return (
     <section
       id="about"
-      className="mx-auto grid max-w-350 scroll-mt-16 grid-cols-1 gap-14 px-5 py-24 md:grid-cols-12 md:gap-10 md:px-10 md:py-40"
+      className="mx-auto grid max-w-350 scroll-mt-16 grid-cols-1 gap-20 px-5 py-24 md:grid-cols-12 md:gap-10 md:px-10 md:py-40"
     >
       <motion.div
-        className="relative md:col-span-5"
+        ref={collageRef}
+        className="relative pb-[18%] md:col-span-6 md:pr-[6%]"
         {...reveal}
-        transition={{ duration: 0.9, ease }}
+        transition={{ duration: 1, ease }}
       >
-        <div className="relative aspect-3/4 overflow-hidden bg-surface">
-          <AnimatePresence initial={false}>
-            <motion.div
-              key={current}
-              className="absolute inset-0"
-              initial={{ opacity: 0, scale: 1.06 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1, ease }}
-            >
-              <Image
-                loader={cldLoader}
-                src={IMAGES[current].src}
-                alt={IMAGES[current].alt}
-                fill
-                placeholder="blur"
-                blurDataURL={cldBlurURL(IMAGES[current].src)}
-                sizes="(max-width: 768px) 100vw, 42vw"
-                className="object-cover object-top"
-              />
-            </motion.div>
-          </AnimatePresence>
-        </div>
+        <motion.div style={{ y: yMain }} className="w-[74%]">
+          <Print img={MAIN} ratio="3/4" sizes="(max-width: 768px) 74vw, 36vw" />
+        </motion.div>
 
-        {/* Frame picker doubles as the progress indicator */}
-        <div className="mt-4 flex gap-1.5" role="group" aria-label="Choose photo">
-          {IMAGES.map((img, i) => (
-            <button
-              key={img.src}
-              type="button"
-              onClick={() => setCurrent(i)}
-              aria-label={`Show photo ${i + 1}`}
-              aria-pressed={i === current}
-              className="h-6 flex-1"
-            >
-              <span className={`block h-0.5 transition-colors ${i === current ? "bg-accent" : "bg-line"}`} />
-            </button>
-          ))}
-        </div>
+        <motion.div style={{ y: ySmall }} className="absolute top-[4%] right-0 w-[30%] md:right-[6%]">
+          <Print img={SMALL} ratio="3/4" sizes="(max-width: 768px) 30vw, 15vw" />
+        </motion.div>
+
+        <motion.div
+          style={{ y: yInset }}
+          className="absolute right-[4%] bottom-0 w-[46%] outline-8 outline-bg md:right-[10%]"
+        >
+          <Print img={INSET} ratio="4/5" sizes="(max-width: 768px) 46vw, 22vw" />
+        </motion.div>
       </motion.div>
 
       <div className="flex flex-col justify-center md:col-span-6 md:col-start-7">

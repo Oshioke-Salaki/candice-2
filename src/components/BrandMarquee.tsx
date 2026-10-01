@@ -6,6 +6,8 @@ const BRANDS: Brand[] = [
   { name: "Lacoste", logo: "/brands/final/lacoste.svg", h: 1.5 },
   { name: "Estée Lauder", logo: "/brands/final/estee-lauder.png", h: 3.1 },
   { name: "Marc Jacobs", logo: "/brands/final/marc-jacobs.png" },
+  { name: "Mowalola", text: "MOWALOLA" },
+  { name: "Kai Collective", text: "KAI COLLECTIVE" },
   { name: "Miu Miu", logo: "/brands/final/miu-miu.svg", h: 0.8 },
   { name: "L'Oréal", logo: "/brands/final/loreal.svg", h: 0.75 },
   { name: "Timberland", logo: "/brands/final/timberland.svg", h: 1.6 },
