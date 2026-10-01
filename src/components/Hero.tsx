@@ -44,10 +44,12 @@ export default function Hero() {
     <section
       ref={ref}
       id="home"
-      className="mx-auto grid min-h-dvh max-w-350 grid-cols-1 gap-8 px-5 pt-20 pb-10 md:grid-cols-12 md:gap-10 md:px-10 md:pt-24 md:pb-12"
+      className="mx-auto grid min-h-dvh max-w-350 grid-cols-1 grid-rows-[minmax(36dvh,1fr)_auto] gap-6 px-5 pt-20 pb-8 md:gap-8 md:px-10 md:pt-24 md:pb-10 wide:grid-cols-12 wide:grid-rows-1 wide:gap-10 wide:pb-12"
     >
-      {/* Portrait: first on mobile, right-hand column on desktop */}
-      <div className="relative order-first h-[46dvh] overflow-hidden bg-surface md:order-last md:col-span-5 md:col-start-8 md:h-auto md:max-h-[calc(100dvh-9rem)] md:self-end md:aspect-4/5">
+      {/* Portrait. Stacked (phones, tablets): it fills whatever height the
+          text leaves, shown whole on black so the photo's own black
+          backdrop runs edge to edge. Side by side (laptops): a 4:5 cover. */}
+      <div className="relative order-first min-h-0 overflow-hidden bg-black wide:order-last wide:col-span-5 wide:col-start-8 wide:aspect-4/5 wide:max-h-[calc(100dvh-9rem)] wide:self-end wide:bg-surface">
         <motion.div
           className="absolute inset-0"
           style={{ y: imgY }}
@@ -63,8 +65,8 @@ export default function Hero() {
             priority
             placeholder="blur"
             blurDataURL={cldBlurURL("candice/hero/hero", HERO_CROP)}
-            sizes="(max-width: 768px) 100vw, 40vw"
-            className="object-cover object-top"
+            sizes="(min-width: 640px) and (orientation: landscape) 40vw, 100vw"
+            className="object-contain wide:object-cover wide:object-top"
           />
         </motion.div>
         {/* Curtain lifts to reveal the portrait */}
@@ -77,8 +79,8 @@ export default function Hero() {
         />
       </div>
 
-      <motion.div className="flex flex-col justify-end md:col-span-7" style={{ y: textY, opacity: textFade }}>
-        <h1 className="text-[clamp(4rem,16vw,9.5rem)] leading-[0.92] font-bold tracking-[-0.045em]">
+      <motion.div className="flex flex-col justify-end wide:col-span-7" style={{ y: textY, opacity: textFade }}>
+        <h1 className="text-[clamp(3.5rem,15vw,8rem)] wide:text-[min(8.5vw,16dvh,9.5rem)] leading-[0.92] font-bold tracking-[-0.045em]">
           <Line delay={0.25}>
             <span className="font-normal italic text-accent">Wow</span>
           </Line>
@@ -90,12 +92,12 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.7, ease }}
         >
-          <p className="mt-6 max-w-[38ch] text-lg leading-relaxed text-ink-soft md:mt-8 md:text-xl">
+          <p className="mt-5 max-w-[38ch] text-lg leading-relaxed text-ink-soft md:mt-6 md:text-xl wide:mt-8">
             Nigerian-Sudanese fashion and commercial model and content creator,
             working between London and Lagos.
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          <div className="mt-6 flex flex-wrap items-center gap-3 wide:mt-8">
             <Magnetic>
               <a
                 href="#contact"

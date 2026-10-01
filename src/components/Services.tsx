@@ -46,12 +46,12 @@ const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function Services() {
   return (
-    <section id="services" className="mx-auto max-w-350 scroll-mt-16 px-5 pb-24 md:px-10 md:pb-32">
+    <section id="services" className="mx-auto max-w-350 scroll-mt-16 px-5 pb-20 md:px-10 md:pb-24 lg:pb-28">
       <h2 className="max-w-[16ch] text-5xl leading-none font-bold tracking-[-0.04em] md:text-7xl">
         What I do
       </h2>
 
-      <ul className="mt-12 grid grid-cols-1 gap-3 md:grid-cols-3 md:grid-rows-2">
+      <ul className="mt-8 grid grid-cols-1 gap-3 md:mt-10 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2">
         {SERVICES.map((s, i) => {
           const onDark = s.tone === "photo";
           return (

@@ -170,10 +170,10 @@ export default function Work() {
   const cols = useColumns();
 
   return (
-    <section id="work" className="mx-auto max-w-350 scroll-mt-16 px-5 py-24 md:px-10 md:py-32">
+    <section id="work" className="mx-auto max-w-350 scroll-mt-16 px-5 py-20 md:px-10 md:py-24 lg:py-28">
       <h2 className="text-5xl leading-none font-bold tracking-[-0.04em] md:text-7xl">Selected work</h2>
 
-      <div role="tablist" aria-label="Work type" className="mt-10 flex gap-8 border-b border-line">
+      <div role="tablist" aria-label="Work type" className="mt-8 flex gap-8 border-b border-line md:mt-10">
         {TABS.map((t) => {
           const active = t.key === tab;
           return (
@@ -204,7 +204,7 @@ export default function Work() {
         <motion.div
           key={tab}
           role="tabpanel"
-          className="mt-10 grid gap-4 md:gap-6"
+          className="mt-8 grid gap-4 md:mt-10 md:gap-6"
           style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -280,7 +280,7 @@ function Card({ c, i, onOpen }: { c: Collab; i: number; onOpen: () => void }) {
             </span>
           )}
         </div>
-        <div className="mt-3 flex flex-col gap-0.5 lg:flex-row lg:items-baseline lg:justify-between lg:gap-3">
+        <div className="mt-3 flex flex-col gap-0.5 xl:flex-row xl:items-baseline xl:justify-between xl:gap-3">
           <span className="text-base font-medium md:text-lg">{c.name}</span>
           <span className="shrink-0 text-sm tabular-nums text-ink-dim">{countLabel(c.media)}</span>
         </div>

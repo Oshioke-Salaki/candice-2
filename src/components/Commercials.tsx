@@ -169,7 +169,7 @@ export default function Commercials() {
   };
 
   return (
-    <section id="film" className="scroll-mt-16 bg-surface py-24 md:py-32">
+    <section id="film" className="scroll-mt-16 bg-surface py-16 md:py-20 lg:py-24">
       <div className="mx-auto flex max-w-350 items-end justify-between gap-6 px-5 md:px-10">
         <h2 className="text-5xl leading-none font-bold tracking-[-0.04em] md:text-7xl">
           On <span className="font-normal italic">film</span>
@@ -186,7 +186,7 @@ export default function Commercials() {
 
       <motion.ul
         ref={railRef}
-        className="no-scrollbar mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 scroll-px-5 md:gap-6 md:px-10 md:scroll-px-10 xl:px-[max(2.5rem,calc((100vw-1400px)/2+2.5rem))] xl:scroll-px-[max(2.5rem,calc((100vw-1400px)/2+2.5rem))]"
+        className="no-scrollbar mt-8 flex md:mt-10 snap-x snap-mandatory gap-4 overflow-x-auto px-5 scroll-px-5 md:gap-6 md:px-10 md:scroll-px-10 xl:px-[max(2.5rem,calc((100vw-1400px)/2+2.5rem))] xl:scroll-px-[max(2.5rem,calc((100vw-1400px)/2+2.5rem))]"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}

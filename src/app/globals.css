@@ -17,6 +17,11 @@
   color-scheme: dark;
 }
 
+/* `wide:` = any landscape screen 640px+ across: laptops, tablets on
+   their side, phones held sideways. Portrait tablets (iPad Pro is
+   1024 wide) keep the stacked layout instead of a squeezed one. */
+@custom-variant wide (@media (min-width: 640px) and (orientation: landscape));
+
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);

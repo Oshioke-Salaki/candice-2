@@ -53,7 +53,7 @@ function Mark({ b, hidden }: { b: Brand; hidden?: boolean }) {
 
 export default function BrandMarquee() {
   return (
-    <section aria-label="Brands Candice has worked with" className="overflow-hidden border-y border-line py-10">
+    <section aria-label="Brands Candice has worked with" className="overflow-hidden border-y border-line py-8 md:py-10">
       {/* Track is doubled so translating -50% loops seamlessly. Under
           reduced motion the animation stops and the first copy stays put. */}
       <div className="flex w-max animate-marquee items-center hover:[animation-play-state:paused]">

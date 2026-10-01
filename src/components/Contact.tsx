@@ -9,7 +9,7 @@ const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function Contact() {
   return (
-    <section id="contact" className="mx-auto max-w-350 scroll-mt-16 px-5 py-24 md:px-10 md:py-40">
+    <section id="contact" className="mx-auto max-w-350 scroll-mt-16 px-5 py-20 md:px-10 md:py-24 lg:py-28">
       <motion.h2
         className="text-[clamp(3.25rem,10vw,9rem)] leading-[0.92] font-bold tracking-[-0.045em]"
         initial={{ opacity: 0, y: 40 }}
@@ -22,8 +22,8 @@ export default function Contact() {
         <span className="font-normal italic text-accent">a moment.</span>
       </motion.h2>
 
-      <div className="mt-14 grid grid-cols-1 gap-14 md:mt-20 md:grid-cols-12 md:gap-10">
-        <div className="md:col-span-5">
+      <div className="mt-10 grid grid-cols-1 gap-10 md:mt-14 lg:grid-cols-12">
+        <div className="lg:col-span-5">
           <p className="max-w-[40ch] text-lg leading-relaxed text-ink-soft">
             Campaigns, editorials, runway and content. Send a short brief with dates and
             usage. Based in London and Lagos, available worldwide.
@@ -40,7 +40,7 @@ export default function Contact() {
           </p>
         </div>
 
-        <ul className="md:col-span-6 md:col-start-7">
+        <ul className="lg:col-span-6 lg:col-start-7">
           {SOCIALS.map((s) => (
             <li key={s.name} className="border-t border-line last:border-b">
               <a

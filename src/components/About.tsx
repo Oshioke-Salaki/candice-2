@@ -100,12 +100,13 @@ export default function About() {
   return (
     <section
       id="about"
-      className="mx-auto grid max-w-350 scroll-mt-16 grid-cols-1 gap-20 px-5 py-24 md:grid-cols-12 md:items-center md:gap-10 md:px-10 md:py-40"
+      className="mx-auto grid max-w-350 scroll-mt-16 grid-cols-1 gap-12 px-5 py-20 md:gap-14 md:px-10 md:py-24 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-28"
     >
       <motion.div
         ref={collageRef}
-        className="relative aspect-[10/14] md:col-span-6"
+        className="relative mx-auto aspect-[10/14] w-full max-w-[40rem] lg:col-span-6 lg:max-w-none"
         {...reveal}
+        viewport={{ once: true, amount: 0.1 }}
         transition={{ duration: 1, ease }}
       >
         {PRINTS.map((p) => (
@@ -113,9 +114,9 @@ export default function About() {
         ))}
       </motion.div>
 
-      <div className="flex flex-col justify-center md:col-span-6 md:col-start-7">
+      <div className="flex flex-col justify-center lg:col-span-6 lg:col-start-7">
         <motion.h2
-          className="text-5xl leading-[0.95] font-bold tracking-[-0.04em] md:text-7xl"
+          className="text-5xl leading-[0.95] font-bold tracking-[-0.04em] md:text-7xl lg:text-6xl xl:text-7xl"
           {...reveal}
           transition={{ duration: 0.9, ease }}
         >
@@ -125,7 +126,7 @@ export default function About() {
         </motion.h2>
 
         <motion.div
-          className="mt-10 max-w-[58ch] space-y-5 text-lg leading-relaxed text-ink-soft"
+          className="mt-8 max-w-[58ch] space-y-5 text-lg leading-relaxed text-ink-soft"
           {...reveal}
           transition={{ duration: 0.9, delay: 0.1, ease }}
         >
@@ -143,7 +144,7 @@ export default function About() {
         </motion.div>
 
         <motion.figure
-          className="mt-10 border-l-2 border-accent pl-6"
+          className="mt-8 border-l-2 border-accent pl-6"
           {...reveal}
           transition={{ duration: 0.9, delay: 0.15, ease }}
         >
@@ -158,7 +159,7 @@ export default function About() {
           href={REEL_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="group mt-10 inline-flex w-fit items-center gap-3 text-base font-medium"
+          className="group mt-8 inline-flex w-fit items-center gap-3 text-base font-medium"
           {...reveal}
           transition={{ duration: 0.9, delay: 0.2, ease }}
         >

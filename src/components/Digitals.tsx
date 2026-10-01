@@ -20,11 +20,11 @@ const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function Digitals() {
   return (
-    <section className="mx-auto grid max-w-350 grid-cols-1 gap-10 px-5 pb-24 md:grid-cols-12 md:px-10 md:pb-40">
-      <div className="md:col-span-8">
+    <section className="mx-auto grid max-w-350 grid-cols-1 gap-8 px-5 pb-20 sm:grid-cols-12 md:px-10 md:pb-24 xl:gap-10 xl:pb-28">
+      <div className="sm:col-span-7 xl:col-span-8">
         <h2 className="text-5xl leading-none font-bold tracking-[-0.04em] md:text-7xl">Digitals</h2>
 
-        <dl className="mt-10 grid grid-cols-2 gap-px bg-line md:grid-cols-4">
+        <dl className="mt-8 grid grid-cols-2 gap-px bg-line md:mt-10 xl:grid-cols-4">
           {DIGITALS.map((d, i) => {
             const lead = i === 0;
             return (
@@ -53,7 +53,7 @@ export default function Digitals() {
       </div>
 
       <motion.div
-        className="relative mx-auto aspect-3/4 w-full max-w-sm overflow-hidden bg-surface md:col-span-4 md:max-w-none md:self-end"
+        className="relative aspect-3/4 w-full overflow-hidden bg-surface sm:order-first sm:col-span-5 sm:aspect-auto sm:h-full sm:min-h-96 xl:order-last xl:col-span-4 xl:aspect-3/4 xl:h-auto xl:min-h-0 xl:self-end"
         initial={{ opacity: 0, y: 28 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}

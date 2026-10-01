@@ -39,7 +39,7 @@ function Counter({ to, format }: { to: number; format: (n: number) => string }) 
   }, [inView, reduce, to, format]);
 
   return (
-    <span ref={ref} className="tabular-nums">
+    <span ref={ref}>
       {format(to)}
     </span>
   );
@@ -48,15 +48,15 @@ function Counter({ to, format }: { to: number; format: (n: number) => string }) 
 export default function Stats() {
   return (
     <section aria-labelledby="stats-title" className="border-y border-line">
-      <div className="mx-auto max-w-350 px-5 py-16 md:px-10 md:py-24">
+      <div className="mx-auto max-w-350 px-5 py-14 md:px-10 md:py-20">
         <p id="stats-title" className="text-xs font-medium tracking-[0.18em] text-ink-dim uppercase">
           Instagram and TikTok, last 90 days
         </p>
-        <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-4">
+        <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
           {STATS.map((s, i) => (
-            <div key={s.label} className={`flex flex-col-reverse justify-end ${i > 0 ? "md:border-l md:border-line md:pl-8" : ""}`}>
+            <div key={s.label} className={`flex flex-col-reverse justify-end ${i > 0 ? "lg:border-l lg:border-line lg:pl-8" : ""}`}>
               <dt className="mt-3 text-base text-ink-soft">{s.label}</dt>
-              <dd className="text-5xl leading-none font-bold tracking-[-0.04em] md:text-6xl lg:text-7xl">
+              <dd className="text-5xl leading-none font-bold tracking-[-0.04em] md:text-6xl xl:text-7xl">
                 <Counter to={s.to} format={s.format} />
               </dd>
             </div>
