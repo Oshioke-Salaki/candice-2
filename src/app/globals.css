@@ -35,17 +35,6 @@
   --font-sans: var(--font-neue), ui-sans-serif, system-ui, sans-serif;
 }
 
-@theme {
-  --animate-marquee: marquee 48s linear infinite;
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
-}
 
 /* Z-index scale (the only values used on the page):
    nav 40 · sound button 45 · scroll progress 50 · mobile menu 60 ·
@@ -71,9 +60,6 @@ html {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-  .animate-marquee {
-    animation: none;
   }
 }
 
@@ -147,5 +133,4 @@ body.overlay-open > :not(.overlay-root) {
    single row of type. */
 .brand-mark {
   filter: brightness(0) invert(1);
-  opacity: 0.72;
 }
