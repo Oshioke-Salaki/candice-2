@@ -27,11 +27,6 @@ export function cldLoaderWith(transform: string) {
     `${BASE}/image/upload/${transform},f_auto,q_${quality ?? "auto"},w_${width}/${src}`;
 }
 
-/** Plain image URL for non-next/image uses (CSS backgrounds etc.). */
-export function cldImage(publicId: string, width = 1280) {
-  return `${BASE}/image/upload/f_auto,q_auto,w_${width},c_limit/${publicId}`;
-}
-
 /** Video delivery URL: auto codec + quality, capped height. */
 export function cldVideo(publicId: string, maxHeight = 1280) {
   return `${BASE}/video/upload/q_auto,vc_auto,h_${maxHeight},c_limit/${publicId}.mp4`;

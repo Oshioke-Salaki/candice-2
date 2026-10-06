@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import ScrollProgress from "@/components/ScrollProgress";
+import SoundToggle from "@/components/SoundToggle";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/lib/site";
 import { EMAIL, SOCIALS } from "@/lib/content";
 
@@ -100,6 +101,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           <ScrollProgress />
           {children}
+          <SoundToggle />
         </Providers>
       </body>
     </html>
