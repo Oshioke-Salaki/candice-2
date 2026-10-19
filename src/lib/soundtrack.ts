@@ -1,12 +1,8 @@
 /* ─── Soundtrack ──────────────────────────────────────────────
    One director for the site's sound, living outside React.
 
-   • Alter Ego (Doechii ft. JT) is the score. It starts on the beat
-     drop and loops.
-   • Scrolling into About crossfades to Candice's intro reel voice.
-     When she finishes, or the visitor scrolls on, the score returns
-     from where it left off. Each visit to About starts her intro
-     where it was left; once finished it starts from the top.
+   • Candice's intro reel voice (by Aston) plays site-wide and loops,
+     with a short breath of silence baked into the file at the seam.
    • Any site video playing with sound fades the soundtrack out; it
      fades back when the video stops. Silent previews don't count.
    • Hidden tab or locked phone: paused. Back: resumes.
@@ -22,12 +18,12 @@
    • Every play() promise is caught: a refusal just waits for the
      next gesture instead of throwing. */
 
-export type TrackId = "score" | "voice";
+export type TrackId = "voice";
 
 export const TRACKS: Record<TrackId, { src: string; title: string; artist: string; level: number; loop: boolean }> = {
-  score: { src: "/audio/alter-ego.mp3", title: "Alter Ego", artist: "Doechii ft. JT", level: 0.8, loop: true },
-  voice: { src: "/audio/intro-reel.mp3", title: "Intro", artist: "Candice", level: 1, loop: false },
+  voice: { src: "/audio/intro-reel.mp3", title: "Intro", artist: "Candice", level: 1, loop: true },
 };
+const IDS = Object.keys(TRACKS) as TrackId[];
 
 const FADE = 1.2; // seconds
 const STORAGE_KEY = "wc-sound";
@@ -60,8 +56,6 @@ class Soundtrack {
   private gains: Partial<Record<TrackId, GainNode>> = {};
   private pauseTimers: Partial<Record<TrackId, number>> = {};
 
-  private inAbout = false;
-  private voiceDone = false;
   private videoAudible = false;
   private hidden = false;
 
@@ -131,7 +125,6 @@ class Soundtrack {
       this.reconcile();
     });
 
-    this.watchAbout();
   }
 
   /** The sound button. Runs inside a click, so it may unlock audio. */
@@ -165,11 +158,7 @@ class Soundtrack {
 
   /** Which track should be heard right now, ignoring pauses. */
   private wanted(): TrackId | null {
-    const voiceOk = !this.failed.voice;
-    const scoreOk = !this.failed.score;
-    if (this.inAbout && !this.voiceDone && voiceOk) return "voice";
-    if (scoreOk) return "score";
-    return null;
+    return this.failed.voice ? null : "voice";
   }
 
   private element(id: TrackId) {
@@ -182,16 +171,9 @@ class Soundtrack {
     el.setAttribute("playsinline", "");
     el.addEventListener("error", () => {
       this.failed[id] = true;
-      if (this.failed.score && this.failed.voice) this.set({ unavailable: true, playing: null });
+      if (IDS.every((t) => this.failed[t])) this.set({ unavailable: true, playing: null });
       this.reconcile();
     });
-    if (id === "voice") {
-      el.addEventListener("ended", () => {
-        this.voiceDone = true;
-        el!.currentTime = 0;
-        this.reconcile();
-      });
-    }
     this.els[id] = el;
     return el;
   }
@@ -200,8 +182,7 @@ class Soundtrack {
   private start() {
     if (this.state.unavailable || this.state.starting) return;
     this.set({ starting: true });
-    const score = this.element("score");
-    const voice = this.element("voice");
+    IDS.forEach((id) => this.element(id));
 
     // Web Audio graph: element → gain → speakers. Built once.
     if (!this.ctx) {
@@ -211,7 +192,7 @@ class Soundtrack {
           const session = (navigator as Navigator & { audioSession?: { type: string } }).audioSession;
           if (session) session.type = "playback";
           const ctx = new Ctx();
-          (["score", "voice"] as TrackId[]).forEach((id) => {
+          IDS.forEach((id) => {
             const gain = ctx.createGain();
             gain.gain.value = 0;
             ctx.createMediaElementSource(this.els[id]!).connect(gain).connect(ctx.destination);
@@ -227,12 +208,13 @@ class Soundtrack {
     }
     this.resumeContext();
 
-    // Start both inside the gesture so iOS lets us play them later;
-    // they sit at zero gain until reconcile() decides.
+    // Start inside the gesture so iOS lets us play later; it sits at
+    // zero gain until reconcile() fades it in.
     const want = this.wanted();
     let pending = 0;
     let ok = false;
-    for (const [id, el] of [["score", score], ["voice", voice]] as const) {
+    for (const id of IDS) {
+      const el = this.els[id]!;
       if (this.failed[id]) continue;
       if (!this.ctx) el.volume = 0;
       pending++;
@@ -277,35 +259,13 @@ class Soundtrack {
     }
   }
 
-  private watchAbout() {
-    const attach = () => {
-      const about = document.getElementById("about");
-      if (!about) return false;
-      // "In About" = the section crosses the middle band of the screen.
-      const io = new IntersectionObserver(
-        ([entry]) => {
-          const now = entry.isIntersecting;
-          if (now === this.inAbout) return;
-          this.inAbout = now;
-          // Leaving About re-arms her intro for the next visit.
-          if (!now) this.voiceDone = false;
-          this.reconcile();
-        },
-        { rootMargin: "-45% 0px -45% 0px" },
-      );
-      io.observe(about);
-      return true;
-    };
-    if (!attach()) window.addEventListener("load", attach, { once: true });
-  }
-
   /** Bring every track to where it should be. */
   private reconcile() {
     const { enabled, started } = this.state;
     const yielding = this.videoAudible;
     const target = enabled && started && !yielding && !this.hidden ? this.wanted() : null;
 
-    (["score", "voice"] as TrackId[]).forEach((id) => {
+    IDS.forEach((id) => {
       const el = this.els[id];
       if (!el) return;
       if (id === target) this.fadeIn(id, el);
